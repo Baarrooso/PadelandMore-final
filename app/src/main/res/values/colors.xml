@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#87CEEB</color>
+    <color name="purple_500">#87CEEB</color>
+    <color name="purple_700">#87CEEB</color>
+    <color name="teal_200">#00E676</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="mi_color_barra_estado">#87CEEB</color>
+    <color name="notif_no_leida">#E0E0E0</color>
+    <color name="notif_leida">#F2F2F2</color>
+</resources>

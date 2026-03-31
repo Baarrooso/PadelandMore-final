@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/btnReservarPistas"
+        android:icon="@drawable/asistencia"
+        android:title="Reservar Pistas" />
+    <item
+        android:id="@+id/btnJugadores"
+        android:icon="@drawable/miembros"
+        android:title="Jugadores" />
+    <item
+        android:id="@+id/btnPerfil"
+        android:icon="@drawable/usermenu"
+        android:title="Perfil" />
+    <item
+        android:id="@+id/btnSorteos"
+        android:icon="@drawable/estadisticas"
+        android:title="Sorteos" />
+    <item
+        android:id="@+id/btnTorneos"
+        android:icon="@drawable/estadisticas"
+        android:title="Torneos" />
+</menu>

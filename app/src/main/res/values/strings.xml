@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">PadelManager</string>
+
+    <string-array name="niveles_padel">
+        <item>Principiante</item>
+        <item>Iniciado</item>
+        <item>Intermedio</item>
+        <item>Avanzado</item>
+        <item>Profesional</item>
+    </string-array>
+
+    <string-array name="mano_juego">
+        <item>Derecha</item>
+        <item>Izquierda</item>
+        <item>Ambidextro</item>
+    </string-array>
+</resources>
