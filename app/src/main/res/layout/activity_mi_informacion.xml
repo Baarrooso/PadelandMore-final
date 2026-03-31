@@ -13,7 +13,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:background="#1A0026">
+            android:background="#87CEEB">
 
             <TextView
                 android:layout_width="wrap_content"

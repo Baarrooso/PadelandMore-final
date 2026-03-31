@@ -45,11 +45,6 @@ public class EquipoFragment extends Fragment {
         btnMiembros.setOnClickListener(view ->
                 startActivity(new Intent(getContext(), MiembrosActivity.class))
         );
-        // BOTÓN REGISTRO DE ALINEACIÓN
-        RelativeLayout btnAlineacion = v.findViewById(R.id.btnAlineacion);
-        btnAlineacion.setOnClickListener(view ->
-                startActivity(new Intent(getContext(), AlineacionActivity.class))
-        );
 
         return v;
     }

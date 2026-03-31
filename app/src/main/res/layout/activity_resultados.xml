@@ -9,7 +9,7 @@
         android:id="@+id/headerResultados"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="#1A0026"
+        android:background="#87CEEB"
         android:padding="16dp">
 
         <TextView

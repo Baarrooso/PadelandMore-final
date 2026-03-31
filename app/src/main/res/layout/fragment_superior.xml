@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="75dp"
-    android:background="#1A0026"
+    android:background="#87CEEB"
     android:paddingStart="10dp"
     android:paddingEnd="10dp"
     android:paddingTop="5dp"
     android:paddingBottom="5dp">
 
-    <!-- LOGO DEL EQUIPO - REDONDO -->
+    <!-- LOGO DEL EQUIPO - REDONDO (OCULTO) -->
     <ImageView
         android:id="@+id/imgLogo"
         android:layout_width="50dp"
@@ -17,7 +17,8 @@
         android:layout_centerVertical="true"
         android:scaleType="centerCrop"
         android:background="@drawable/circle_mask"
-        android:padding="2dp" />
+        android:padding="2dp"
+        android:visibility="gone" />
 
     <!-- NOMBRE DEL EQUIPO - MÁXIMO 15 CARACTERES -->
     <TextView
@@ -28,9 +29,9 @@
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:layout_toEndOf="@id/imgLogo"
+        android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="16dp"
         android:maxLines="1"
         android:ellipsize="end"
         android:maxLength="15"/>
@@ -58,7 +59,7 @@
         android:layout_alignTop="@id/imgNotificaciones"/>
 
 
-    <!-- FOTO DEL USUARIO GOOGLE -->
+    <!-- FOTO DEL USUARIO GOOGLE (OCULTA) -->
     <ImageView
         android:id="@+id/imgPerfil"
         android:layout_width="45dp"
@@ -67,5 +68,6 @@
         android:layout_centerVertical="true"
         android:scaleType="centerCrop"
         android:background="@drawable/circle_mask"
-        android:padding="2dp"/>
+        android:padding="2dp"
+        android:visibility="gone"/>
 </RelativeLayout>

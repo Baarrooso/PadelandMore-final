@@ -12,7 +12,7 @@ android {
     defaultConfig {
         applicationId = "com.example.tmanager"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -69,7 +69,7 @@ dependencies {
     // -------------------------------------------------------
     // 🔥 FIREBASE (USANDO BoM — NO VERSIONES MANUALES)
     // -------------------------------------------------------
-    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation(platform("com.google.firebase:firebase-bom:34.11.0"))
 
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
@@ -79,7 +79,7 @@ dependencies {
     // -------------------------------------------------------
     // 🔥 GOOGLE SIGN-IN
     // -------------------------------------------------------
-    implementation("com.google.android.gms:play-services-auth:21.2.0")
+    implementation("com.google.android.gms:play-services-auth:21.5.1")
 
     // -------------------------------------------------------
     // 🔥 GLIDE

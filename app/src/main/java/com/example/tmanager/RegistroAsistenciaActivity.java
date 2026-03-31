@@ -31,9 +31,10 @@ public class RegistroAsistenciaActivity extends AppCompatActivity {
         recycler.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new RegistroAsistenciaAdapter(this, eventos, ev -> {
-            Intent i = new Intent(this, DetalleAsistenciaEventoActivity.class);
-            i.putExtra("eventoId", ev.getId());
-            startActivity(i);
+            // DetalleAsistenciaEventoActivity fue eliminada
+            // Intent i = new Intent(this, DetalleAsistenciaEventoActivity.class);
+            // i.putExtra("eventoId", ev.getId());
+            // startActivity(i);
         });
 
         recycler.setAdapter(adapter);

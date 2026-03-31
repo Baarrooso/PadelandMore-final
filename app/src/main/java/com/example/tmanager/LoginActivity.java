@@ -186,9 +186,8 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (equipoId == null && "none".equals(rol)) {
 
-                        Intent i = new Intent(this, ExpulsadoActivity.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(i);
+                        // ExpulsadoActivity fue eliminada, redirigir a MainActivity
+                        startActivity(new Intent(this, MainActivity.class));
                         finish();
 
                     } else {

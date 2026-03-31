@@ -90,8 +90,8 @@ public class FragmentSuperiorActivity extends Fragment {
     }
 
     private void cargarCabeceraPadel() {
-        imgLogo.setImageResource(R.drawable.balon);
-        txtNombreEquipo.setText("PadelManager");
+        // Pelota eliminada - Solo mostrar el nombre
+        txtNombreEquipo.setText("Padel and More");
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) return;

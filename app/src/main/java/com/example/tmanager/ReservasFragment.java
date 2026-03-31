@@ -43,18 +43,26 @@ public class ReservasFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         ListView listReservas = view.findViewById(R.id.listReservas);
-        FloatingActionButton btnNuevaReserva = view.findViewById(R.id.btnNuevaReserva);
+
+        // Botones de las 4 pistas
+        view.findViewById(R.id.btnReservarPista1).setOnClickListener(v ->
+            mostrarDialogoReserva("Pista 1 - Central", "Club Padel Madrid", "1"));
+        view.findViewById(R.id.btnReservarPista2).setOnClickListener(v ->
+            mostrarDialogoReserva("Pista 2 - Lateral", "Club Padel Madrid", "2"));
+        view.findViewById(R.id.btnReservarPista3).setOnClickListener(v ->
+            mostrarDialogoReserva("Pista 3 - Premium", "Club Padel Alcalá", "3"));
+        view.findViewById(R.id.btnReservarPista4).setOnClickListener(v ->
+            mostrarDialogoReserva("Pista 4 - Indoor", "Club Padel Getafe", "4"));
 
         adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, reservas);
         listReservas.setAdapter(adapter);
 
         cargarReservas();
-        btnNuevaReserva.setOnClickListener(v -> mostrarDialogoReserva());
 
         return view;
     }
 
-    private void mostrarDialogoReserva() {
+    private void mostrarDialogoReserva(String nombrePista, String club, String numeroPista) {
         View form = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_reserva_pista, null, false);
 
         EditText edtClub = form.findViewById(R.id.edtClub);
@@ -62,21 +70,25 @@ public class ReservasFragment extends Fragment {
         EditText edtFecha = form.findViewById(R.id.edtFecha);
         EditText edtHora = form.findViewById(R.id.edtHora);
 
-        new AlertDialog.Builder(requireContext())
-                .setTitle("Nueva reserva")
+        // Pre-rellenar los campos
+        edtClub.setText(club);
+        edtPista.setText(nombrePista);
+
+        new AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
+                .setTitle("Reservar " + nombrePista)
                 .setView(form)
                 .setPositiveButton("Reservar", (dialog, which) -> {
-                    String club = edtClub.getText().toString().trim();
-                    String pista = edtPista.getText().toString().trim();
+                    String clubText = edtClub.getText().toString().trim();
+                    String pistaText = edtPista.getText().toString().trim();
                     String fecha = edtFecha.getText().toString().trim();
                     String hora = edtHora.getText().toString().trim();
 
-                    if (club.isEmpty() || pista.isEmpty() || fecha.isEmpty() || hora.isEmpty()) {
+                    if (clubText.isEmpty() || pistaText.isEmpty() || fecha.isEmpty() || hora.isEmpty()) {
                         Toast.makeText(requireContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    guardarReserva(club, pista, fecha, hora);
+                    guardarReserva(clubText, pistaText, fecha, hora);
                 })
                 .setNegativeButton("Cancelar", null)
                 .show();

@@ -40,7 +40,11 @@ public class WelcomeActivity extends AppCompatActivity {
             txtNombreUsuario.setText(nombre);
         }
 
-        btnCrearEquipo.setOnClickListener(v -> startActivity(new Intent(this, CrearEquipoActivity.class)));
-        btnUnirseEquipo.setOnClickListener(v -> startActivity(new Intent(this, UnirseEquipoActivity.class)));
+        btnCrearEquipo.setOnClickListener(v -> {
+            // CrearEquipoActivity fue eliminada
+        });
+        btnUnirseEquipo.setOnClickListener(v -> {
+            // UnirseEquipoActivity fue eliminada
+        });
     }
 }
