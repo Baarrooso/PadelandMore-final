@@ -54,6 +54,19 @@ public class ReservasFragment extends Fragment {
         view.findViewById(R.id.btnReservarPista4).setOnClickListener(v ->
             mostrarDialogoReserva("Pista 4 - Indoor", "Club Padel Getafe", "4"));
 
+        // Botones de Sorteos y Torneos
+        view.findViewById(R.id.btnSorteosReserva).setOnClickListener(v ->
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContainer, new SorteosFragment())
+                    .addToBackStack(null)
+                    .commit());
+
+        view.findViewById(R.id.btnTorneosReserva).setOnClickListener(v ->
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContainer, new TorneosFragment())
+                    .addToBackStack(null)
+                    .commit());
+
         adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, reservas);
         listReservas.setAdapter(adapter);
 
