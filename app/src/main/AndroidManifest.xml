@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.TManager"
+        tools:targetApi="31">
+
+        <!-- FirstActivity - Actividad inicial de la aplicación -->
+        <activity
+            android:name=".FirstActivity"
+            android:exported="true"
+            android:theme="@style/Theme.TManager">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- MainActivity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.TManager" />
+
+        <activity android:name=".CrearEquipoActivity" android:exported="true" />
+        <activity android:name=".UnirseEquipoActivity" android:exported="true" />
+        <activity android:name=".LoginActivity" android:exported="true" />
+        <activity android:name=".RegisterActivity" android:exported="true" />
+        <activity android:name=".WelcomeActivity" android:exported="true" />
+        <activity android:name=".ResultadosActivity" android:exported="true" />
+        <activity android:name=".EstadisticasJugadoresActivity" android:exported="true" />
+        <activity android:name=".RegistroAsistenciaActivity" android:exported="true" />
+        <activity android:name=".DetalleAsistenciaEventoActivity" android:exported="true" />
+        <activity android:name=".MiInformacionActivity" android:exported="true" />
+        <activity android:name=".DetallesEquipoActivity" android:exported="true" />
+        <activity android:name=".MiembrosActivity" android:exported="true" />
+        <activity android:name=".NotificacionesActivity" android:exported="true" />
+        <activity android:name=".MensajesActivity" android:exported="true" />
+        <activity android:name=".AlineacionActivity" android:exported="true" />
+        <activity android:name=".ExpulsadoActivity" android:exported="true" />
+        <activity android:name=".PadelNivelActivity" android:exported="true" />
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>

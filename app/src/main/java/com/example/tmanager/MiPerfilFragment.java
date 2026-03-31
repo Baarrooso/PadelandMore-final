@@ -1,0 +1,76 @@
+package com.example.tmanager;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+public class MiPerfilFragment extends Fragment {
+
+    RelativeLayout btnMiInformacion, btnDetallesEquipo, btnCentroAyuda, btnNivelPadel;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+
+        View v = inflater.inflate(R.layout.fragment_mi_perfil, container, false);
+
+        btnMiInformacion = v.findViewById(R.id.btnMiInformacion);
+        btnDetallesEquipo = v.findViewById(R.id.btnDetallesEquipo);
+        btnCentroAyuda = v.findViewById(R.id.btnCentroAyuda);
+        btnNivelPadel = v.findViewById(R.id.btnNivelPadel);
+
+        //  COMPROBAR ROL DEL USUARIO
+        comprobarRolUsuario();
+
+        btnMiInformacion.setOnClickListener(view ->
+                startActivity(new Intent(getContext(), MiInformacionActivity.class))
+        );
+
+        btnDetallesEquipo.setOnClickListener(view ->
+                startActivity(new Intent(getContext(), DetallesEquipoActivity.class))
+        );
+
+        btnNivelPadel.setOnClickListener(view ->
+                startActivity(new Intent(getContext(), PadelNivelActivity.class))
+        );
+
+        return v;
+    }
+
+    //   COMPROBAR ROL Y OCULTAR BOTÓN SI ES JUGADOR
+    private void comprobarRolUsuario() {
+
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) return;
+
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        FirebaseFirestore.getInstance()
+                .collection("usuarios")
+                .document(uid)
+                .get()
+                .addOnSuccessListener(doc -> {
+
+                    if (!doc.exists()) return;
+
+                    String rol = doc.getString("rol");
+
+                    //  JUGADOR NO VE DETALLES DE EQUIPO
+                    if ("entrenador".equals(rol)) {
+                        btnDetallesEquipo.setVisibility(View.VISIBLE);
+                    }
+
+                });
+    }
+}

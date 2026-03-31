@@ -1,0 +1,40 @@
+﻿# Gradle
+.gradle/
+build/
+# Local configuration
+local.properties
+# Android Studio
+.idea/
+*.iml
+*.apk
+*.ap_
+*.class
+*.dex
+.DS_Store
+# Build directories
+bin/
+gen/
+out/
+# IDE Configuration
+.classpath
+.project
+.settings/
+.checkstyle
+lint.xml
+# Firebase
+google-services.json
+# Kotlin
+.kotlin/
+*.kt.bak
+# Temporary files
+*.tmp
+*.log
+*.bak
+*.swp
+*.swo
+*~
+# Build outputs
+*.aab
+# Native libraries
+libs/
+obj/

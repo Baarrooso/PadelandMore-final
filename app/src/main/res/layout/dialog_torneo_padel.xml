@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/edtNombreTorneo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre del torneo" />
+
+    <EditText
+        android:id="@+id/edtCiudadTorneo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ciudad" />
+
+    <EditText
+        android:id="@+id/edtFechaTorneo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Fecha (dd/mm/aaaa)" />
+
+    <EditText
+        android:id="@+id/edtNivelTorneo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nivel recomendado (1-7)"
+        android:inputType="number" />
+
+</LinearLayout>
+
