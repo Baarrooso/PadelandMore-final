@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#87CEEB</color>
-    <color name="purple_500">#87CEEB</color>
-    <color name="purple_700">#87CEEB</color>
-    <color name="teal_200">#00E676</color>
-    <color name="teal_700">#FF018786</color>
+    <!-- Colores Playtomic -->
+    <color name="purple_200">#1F8FD9</color>
+    <color name="purple_500">#1F8FD9</color>
+    <color name="purple_700">#0B6FB0</color>
+    <color name="teal_200">#FF8C00</color>
+    <color name="teal_700">#FF6600</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="mi_color_barra_estado">#87CEEB</color>
+    <color name="mi_color_barra_estado">#0B6FB0</color>
     <color name="notif_no_leida">#E0E0E0</color>
     <color name="notif_leida">#F2F2F2</color>
+
+    <!-- Colores adicionales Playtomic -->
+    <color name="primary_blue">#1F8FD9</color>
+    <color name="dark_blue">#0B6FB0</color>
+    <color name="accent_orange">#FF8C00</color>
+    <color name="light_gray">#F5F5F5</color>
+    <color name="medium_gray">#999999</color>
+    <color name="dark_gray">#333333</color>
 </resources>

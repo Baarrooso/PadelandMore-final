@@ -1,8 +1,9 @@
 <resources>
     <style name="Theme.TManager" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/mi_color_barra_estado</item>
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryDark">@color/purple_700</item>
-        <item name="colorAccent">@color/teal_200</item>
+        <item name="android:statusBarColor">@color/dark_blue</item>
+        <item name="colorPrimary">@color/primary_blue</item>
+        <item name="colorPrimaryDark">@color/dark_blue</item>
+        <item name="colorAccent">@color/accent_orange</item>
+        <item name="android:windowBackground">@color/light_gray</item>
     </style>
 </resources>

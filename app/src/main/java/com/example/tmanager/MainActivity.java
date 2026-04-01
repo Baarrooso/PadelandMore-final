@@ -36,22 +36,18 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        bottomNavigationView.setSelectedItemId(R.id.btnReservarPistas);
+        bottomNavigationView.setSelectedItemId(R.id.btnInicio);
         loadFragment(new ReservasFragment());
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment fragment = null;
 
-            if (item.getItemId() == R.id.btnReservarPistas) {
+            if (item.getItemId() == R.id.btnInicio) {
                 fragment = new ReservasFragment();
-            } else if (item.getItemId() == R.id.btnJugadores) {
+            } else if (item.getItemId() == R.id.btnComunidad) {
                 fragment = new MatchNivelFragment();
             } else if (item.getItemId() == R.id.btnPerfil) {
                 fragment = new MiPerfilFragment();
-            } else if (item.getItemId() == R.id.btnSorteos) {
-                fragment = new SorteosFragment();
-            } else if (item.getItemId() == R.id.btnTorneos) {
-                fragment = new TorneosFragment();
             }
 
             if (fragment != null) {
