@@ -5,24 +5,47 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Header -->
-    <RelativeLayout
+    <!-- Header Mejorado -->
+    <LinearLayout
         android:id="@+id/headerReservas"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/primary_blue">
+        android:layout_height="120dp"
+        android:background="@drawable/gradient_header"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:elevation="8dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:text="Reservar Pistas"
+            android:text="Inicio"
             android:textColor="#FFFFFF"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textSize="16sp"
+            android:textStyle="normal"
+            android:alpha="0.9" />
 
-    </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Padel and More"
+            android:textColor="#FFFFFF"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:letterSpacing="0.02" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🎾 Reserva tus clases y pistas"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp"
+            android:alpha="0.85" />
+
+    </LinearLayout>
 
     <!-- Botones Sorteos y Torneos -->
     <LinearLayout
