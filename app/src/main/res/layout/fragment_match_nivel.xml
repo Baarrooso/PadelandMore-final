@@ -31,7 +31,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nivel buscado: 3"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/white" />
 
         <SeekBar
             android:id="@+id/seekNivelBuscado"
@@ -52,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Buscar"
-            android:backgroundTint="@color/primary_blue"
+            android:backgroundTint="@color/accent_orange"
             android:textColor="@color/white"
             android:textStyle="bold" />
     </LinearLayout>

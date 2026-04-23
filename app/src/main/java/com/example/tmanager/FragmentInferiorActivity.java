@@ -80,8 +80,8 @@ public class FragmentInferiorActivity extends Fragment {
     }
 
     private void resetButtons() {
-        // Colores por defecto - Azul oscuro
-        int colorDefault = 0xFF0D1B2A;
+        // Colores por defecto - Blanco
+        int colorDefault = 0xFFFFFFFF;
 
         txtEventos.setTextColor(colorDefault);
         txtEquipo.setTextColor(colorDefault);
