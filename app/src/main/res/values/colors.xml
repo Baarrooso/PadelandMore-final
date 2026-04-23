@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Colores Playtomic -->
-    <color name="purple_200">#1F8FD9</color>
-    <color name="purple_500">#1F8FD9</color>
-    <color name="purple_700">#0B6FB0</color>
-    <color name="teal_200">#FF8C00</color>
-    <color name="teal_700">#FF6600</color>
+    <!-- Tema Azul Oscuro con Dorado -->
+    <color name="purple_200">#0D1B2A</color>
+    <color name="purple_500">#0D1B2A</color>
+    <color name="purple_700">#050C15</color>
+    <color name="teal_200">#D4AF37</color>
+    <color name="teal_700">#B8860B</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="mi_color_barra_estado">#0B6FB0</color>
+    <color name="mi_color_barra_estado">#050C15</color>
     <color name="notif_no_leida">#E0E0E0</color>
     <color name="notif_leida">#F2F2F2</color>
 
-    <!-- Colores adicionales Playtomic -->
-    <color name="primary_blue">#1F8FD9</color>
-    <color name="dark_blue">#0B6FB0</color>
-    <color name="accent_orange">#FF8C00</color>
+    <!-- Colores principales - Azul Oscuro y Dorado -->
+    <color name="primary_blue">#0D1B2A</color>
+    <color name="dark_blue">#050C15</color>
+    <color name="accent_orange">#D4AF37</color>
     <color name="light_gray">#F5F5F5</color>
     <color name="medium_gray">#999999</color>
     <color name="dark_gray">#333333</color>
+
+    <!-- Colores adicionales para el tema -->
+    <color name="dark_blue_light">#1B2E45</color>
+    <color name="gold_dark">#B8860B</color>
+    <color name="gold_light">#FFD700</color>
 </resources>

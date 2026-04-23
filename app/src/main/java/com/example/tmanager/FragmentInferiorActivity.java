@@ -80,8 +80,8 @@ public class FragmentInferiorActivity extends Fragment {
     }
 
     private void resetButtons() {
-        // Colores por defecto
-        int colorDefault = 0xFF0D0D0D;
+        // Colores por defecto - Azul oscuro
+        int colorDefault = 0xFF0D1B2A;
 
         txtEventos.setTextColor(colorDefault);
         txtEquipo.setTextColor(colorDefault);
@@ -93,7 +93,8 @@ public class FragmentInferiorActivity extends Fragment {
     }
 
     private void selectButton(LinearLayout btn, ImageView icon, TextView txt) {
-        txt.setTextColor(0xFF3F51B5);
+        // Color dorado para elementos seleccionados
+        txt.setTextColor(0xFFD4AF37);
         icon.setAlpha(1f);
     }
 }
