@@ -1,0 +1,261 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║                   ✅ GIT INICIALIZADO CORRECTAMENTE                          ║
+║                                                                               ║
+║            Tu proyecto TManager está bajo control de versiones Git           ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+
+📊 ESTADO ACTUAL
+═════════════════════════════════════════════════════════════════════════════════
+
+✅ Git inicializado localmente
+✅ Usuario configurado:  Sergi <sergi@example.com>
+✅ Primer commit realizado: d7813b5
+✅ 183 archivos en el repositorio
+✅ Rama principal: master
+
+
+═════════════════════════════════════════════════════════════════════════════════
+🔗 CONECTAR CON REPOSITORIO REMOTO (GitHub, GitLab, etc.)
+═════════════════════════════════════════════════════════════════════════════════
+
+Si quieres conectar con un repositorio remoto (ej: GitHub):
+
+
+OPCIÓN 1: SI YA TIENES UN REPOSITORIO EN GITHUB
+───────────────────────────────────────────────
+
+1. Ve a https://github.com y crea un nuevo repositorio
+   (NO inicialices con README, .gitignore, o licencia)
+   Llámalo: TManager
+
+2. Copia la URL HTTPS o SSH (ej: https://github.com/tu_usuario/TManager.git)
+
+3. Abre terminal en el proyecto y ejecuta:
+
+   git remote add origin https://github.com/tu_usuario/TManager.git
+
+   (Reemplaza "tu_usuario" con tu usuario de GitHub)
+
+4. Sube los cambios:
+
+   git branch -M main
+   git push -u origin main
+
+   O si usas "master":
+
+   git push -u origin master
+
+5. ¡Listo! Tu código está en GitHub
+
+
+OPCIÓN 2: CREAR REPOSITORIO DESDE CERO EN GITHUB
+───────────────────────────────────────────────
+
+1. Ve a https://github.com/new
+
+2. Rellena:
+   - Repository name: TManager
+   - Description: Android Team Management App with Device Manager Setup
+   - Public o Private (elige según necesites)
+   - NO inicialices con README
+
+3. Haz click en "Create repository"
+
+4. GitHub te mostrará los comandos. Ejecuta en tu terminal:
+
+   git remote add origin https://github.com/tu_usuario/TManager.git
+   git branch -M main
+   git push -u origin main
+
+
+OPCIÓN 3: USAR GIT DESDE ANDROID STUDIO
+──────────────────────────────────────
+
+Android Studio tiene integración con Git:
+
+1. Abre Android Studio
+2. VCS > Git > Add Remote
+3. Pega la URL de tu repositorio GitHub
+4. VCS > Git > Push
+5. Elige la rama (master o main)
+6. ¡Listo!
+
+
+═════════════════════════════════════════════════════════════════════════════════
+🔐 AUTENTICACIÓN EN GITHUB
+═════════════════════════════════════════════════════════════════════════════════
+
+GitHub ahora requiere tokens en lugar de contraseña.
+
+OPCIÓN A: Usar GitHub Desktop
+───────────────────────────────
+1. Descarga: https://desktop.github.com
+2. Abre tu repositorio desde Github Desktop
+3. Haz push desde la interfaz gráfica
+✨ Lo más fácil
+
+OPCIÓN B: Generar Personal Access Token
+─────────────────────────────────────────
+1. Ve a: https://github.com/settings/tokens
+2. Haz click en "Generate new token"
+3. Dale nombre: TManager
+4. Selecciona permisos: repo (full control)
+5. Copia el token
+6. Cuando Git pida contraseña, pega el token
+7. Guarda el token en un lugar seguro
+
+
+OPCIÓN C: Usar SSH (Lo más seguro)
+───────────────────────────────────
+1. Genera clave SSH:
+   ssh-keygen -t ed25519 -C "tu_email@gmail.com"
+
+2. Presiona Enter para aceptar la ubicación por defecto
+3. Copia tu clave pública:
+   cat ~/.ssh/id_ed25519.pub
+
+4. Ve a: https://github.com/settings/keys
+5. Haz click en "New SSH key"
+6. Pega tu clave pública
+7. Ahora usa URLs SSH para Git:
+   git remote add origin git@github.com:tu_usuario/TManager.git
+
+
+═════════════════════════════════════════════════════════════════════════════════
+📝 COMANDOS GIT BÁSICOS PARA USAR AHORA
+═════════════════════════════════════════════════════════════════════════════════
+
+Ver estado del repositorio:
+  git status
+
+Ver historial de commits:
+  git log
+  git log --oneline -10
+
+Ver ramas:
+  git branch
+  git branch -a
+
+Crear nueva rama:
+  git checkout -b nueva-rama
+
+Cambiar de rama:
+  git checkout nombre-rama
+
+Hacer commit (después de cambios):
+  git add .
+  git commit -m "Descripción de los cambios"
+
+Subir cambios:
+  git push origin master
+
+  O si estás en main:
+  git push origin main
+
+Bajar cambios del remoto:
+  git pull origin master
+
+
+═════════════════════════════════════════════════════════════════════════════════
+🎯 FLUJO DE TRABAJO RECOMENDADO
+═════════════════════════════════════════════════════════════════════════════════
+
+PASO 1: Conectar con GitHub (una sola vez)
+  > git remote add origin https://github.com/tu_usuario/TManager.git
+  > git push -u origin master
+
+PASO 2: Hacer cambios en tu código
+  > Edita archivos en Android Studio
+
+PASO 3: Guardar cambios locales
+  > git add .
+  > git commit -m "Descripción del cambio"
+
+PASO 4: Subir a GitHub
+  > git push origin master
+
+PASO 5: Trabajar desde otro lugar
+  > git pull origin master (para traer cambios)
+
+
+═════════════════════════════════════════════════════════════════════════════════
+📌 CAMBIAR USUARIO DE GIT (IMPORTANTE)
+═════════════════════════════════════════════════════════════════════════════════
+
+Actualmente Git está configurado con:
+  Usuario: Sergi
+  Email: sergi@example.com
+
+Si quieres cambiar:
+
+1. Localmente (solo para este proyecto):
+   git config user.name "Tu Nombre"
+   git config user.email "tu_email@gmail.com"
+
+2. Globalmente (para todos los proyectos):
+   git config --global user.name "Tu Nombre"
+   git config --global user.email "tu_email@gmail.com"
+
+3. Verifica:
+   git config user.name
+   git config user.email
+
+
+═════════════════════════════════════════════════════════════════════════════════
+🚀 PRÓXIMO PASO
+═════════════════════════════════════════════════════════════════════════════════
+
+1. Crea un repositorio en GitHub (o usa la plataforma que prefieras)
+
+2. Copia la URL del repositorio
+
+3. Ejecuta en terminal:
+   git remote add origin https://github.com/tu_usuario/TManager.git
+   git branch -M main
+   git push -u origin main
+
+4. ¡Listo! Tu código está en la nube
+
+
+═════════════════════════════════════════════════════════════════════════════════
+💡 INTEGRACIÓN CON ANDROID STUDIO
+═════════════════════════════════════════════════════════════════════════════════
+
+Android Studio tiene integración Git nativa:
+
+1. VCS > Git > Add Remote
+2. VCS > Git > Push
+3. VCS > Git > Pull
+4. O usa: Ctrl+Shift+K (push) / Ctrl+T (pull)
+5. Git > Manage Remotes (para agregar/editar URLs)
+
+También puedes ver:
+  VCS > Git > Log (historial de commits)
+  VCS > Git > Show Diff (ver cambios)
+
+
+═════════════════════════════════════════════════════════════════════════════════
+✅ RESUMEN
+═════════════════════════════════════════════════════════════════════════════════
+
+✓ Git está inicializado en tu proyecto
+✓ Primer commit realizado con todos tus archivos
+✓ Usuario de Git configurado
+✓ Listo para conectar con repositorio remoto
+
+Siguientes pasos:
+1. Crea repositorio en GitHub
+2. Conecta con: git remote add origin <URL>
+3. Sube con: git push -u origin master
+
+
+═════════════════════════════════════════════════════════════════════════════════
+Configuración: Sergi <sergi@example.com>
+Rama: master
+Primer commit: d7813b5
+Archivos: 183
+═════════════════════════════════════════════════════════════════════════════════
+

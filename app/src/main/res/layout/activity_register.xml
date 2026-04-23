@@ -160,7 +160,7 @@
         android:background="@drawable/btn_verde_selector"
         android:padding="15dp"
         android:text="Registrarme"
-        android:textColor="#87CEEB"
+        android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold" />
 
