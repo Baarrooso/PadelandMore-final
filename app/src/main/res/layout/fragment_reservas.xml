@@ -58,397 +58,399 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-    <!-- Botones Sorteos y Torneos -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/btnSorteosReserva"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="8dp"
-            android:text="Sorteos"
-            android:backgroundTint="@color/accent_orange"
-            android:textColor="#FFFFFF" />
-
-        <Button
-            android:id="@+id/btnTorneosReserva"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            android:text="Torneos"
-            android:backgroundTint="@color/primary_blue"
-            android:textColor="#FFFFFF" />
-
-    </LinearLayout>
-
-    <!-- Pistas Disponibles -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pistas Disponibles"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="12dp" />
-
-        <!-- Pista 1 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/bg_evento_card"
-            android:padding="12dp"
-            android:layout_marginBottom="8dp">
-
+            <!-- Botones Sorteos y Torneos -->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:gravity="center">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/btnSorteosReserva"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Pista 1 - Central"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="Sorteos"
+                    android:backgroundTint="@color/accent_orange"
+                    android:textColor="#FFFFFF" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/btnTorneosReserva"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Club Padel Madrid"
-                    android:textSize="12sp"
-                    android:textColor="#666666" />
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:text="Torneos"
+                    android:backgroundTint="@color/primary_blue"
+                    android:textColor="#FFFFFF" />
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btnReservarPista1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reservar"
-                android:backgroundTint="@color/accent_orange"
-                android:textColor="#FFFFFF" />
-
-        </LinearLayout>
-
-        <!-- Pista 2 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/bg_evento_card"
-            android:padding="12dp"
-            android:layout_marginBottom="8dp">
-
+            <!-- Pistas Disponibles -->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pista 2 - Lateral"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:text="Pistas Disponibles"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <!-- Pista 1 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Club Padel Madrid"
-                    android:textSize="12sp"
-                    android:textColor="#666666" />
+                    android:orientation="horizontal"
+                    android:background="@drawable/bg_evento_card"
+                    android:padding="12dp"
+                    android:layout_marginBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pista 1 - Central"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Club Padel Madrid"
+                            android:textSize="12sp"
+                            android:textColor="#666666" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnReservarPista1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reservar"
+                        android:backgroundTint="@color/accent_orange"
+                        android:textColor="#FFFFFF" />
+
+                </LinearLayout>
+
+                <!-- Pista 2 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/bg_evento_card"
+                    android:padding="12dp"
+                    android:layout_marginBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pista 2 - Lateral"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Club Padel Madrid"
+                            android:textSize="12sp"
+                            android:textColor="#666666" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnReservarPista2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reservar"
+                        android:backgroundTint="#00C853"
+                        android:textColor="#FFFFFF" />
+
+                </LinearLayout>
+
+                <!-- Pista 3 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/bg_evento_card"
+                    android:padding="12dp"
+                    android:layout_marginBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pista 3 - Premium"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Club Padel Alcalá"
+                            android:textSize="12sp"
+                            android:textColor="#666666" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnReservarPista3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reservar"
+                        android:backgroundTint="#00C853"
+                        android:textColor="#FFFFFF" />
+
+                </LinearLayout>
+
+                <!-- Pista 4 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/bg_evento_card"
+                    android:padding="12dp"
+                    android:layout_marginBottom="12dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pista 4 - Indoor"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Club Padel Getafe"
+                            android:textSize="12sp"
+                            android:textColor="#666666" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnReservarPista4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reservar"
+                        android:backgroundTint="@color/accent_orange"
+                        android:textColor="#FFFFFF" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btnReservarPista2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reservar"
-                android:backgroundTint="#00C853"
-                android:textColor="#FFFFFF" />
-
-        </LinearLayout>
-
-        <!-- Pista 3 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/bg_evento_card"
-            android:padding="12dp"
-            android:layout_marginBottom="8dp">
-
+            <!-- Clases Disponibles -->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pista 3 - Premium"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:text="Clases Disponibles"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <!-- Clase 1 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Club Padel Alcalá"
-                    android:textSize="12sp"
-                    android:textColor="#666666" />
+                    android:orientation="horizontal"
+                    android:background="@drawable/bg_evento_card"
+                    android:padding="12dp"
+                    android:layout_marginBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Clase de Iniciación"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Lunes y Miércoles - 10:00"
+                            android:textSize="12sp"
+                            android:textColor="#666666" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnReservarClase1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reservar"
+                        android:backgroundTint="@color/accent_orange"
+                        android:textColor="#FFFFFF" />
+
+                </LinearLayout>
+
+                <!-- Clase 2 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/bg_evento_card"
+                    android:padding="12dp"
+                    android:layout_marginBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Clase de Nivel Intermedio"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Martes y Jueves - 14:00"
+                            android:textSize="12sp"
+                            android:textColor="#666666" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnReservarClase2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reservar"
+                        android:backgroundTint="#00C853"
+                        android:textColor="#FFFFFF" />
+
+                </LinearLayout>
+
+                <!-- Clase 3 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/bg_evento_card"
+                    android:padding="12dp"
+                    android:layout_marginBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Clase de Avanzado"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Miércoles y Viernes - 18:00"
+                            android:textSize="12sp"
+                            android:textColor="#666666" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnReservarClase3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reservar"
+                        android:backgroundTint="#00C853"
+                        android:textColor="#FFFFFF" />
+
+                </LinearLayout>
+
+                <!-- Clase 4 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/bg_evento_card"
+                    android:padding="12dp"
+                    android:layout_marginBottom="12dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Taller de Técnica"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sábados - 11:00"
+                            android:textSize="12sp"
+                            android:textColor="#666666" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnReservarClase4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reservar"
+                        android:backgroundTint="@color/accent_orange"
+                        android:textColor="#FFFFFF" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btnReservarPista3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reservar"
-                android:backgroundTint="#00C853"
-                android:textColor="#FFFFFF" />
-
         </LinearLayout>
-
-        <!-- Pista 4 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/bg_evento_card"
-            android:padding="12dp"
-            android:layout_marginBottom="12dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pista 4 - Indoor"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Club Padel Getafe"
-                    android:textSize="12sp"
-                    android:textColor="#666666" />
-
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btnReservarPista4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reservar"
-                android:backgroundTint="@color/accent_orange"
-                android:textColor="#FFFFFF" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <!-- Clases Disponibles -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Clases Disponibles"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="12dp" />
-
-        <!-- Clase 1 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/bg_evento_card"
-            android:padding="12dp"
-            android:layout_marginBottom="8dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Clase de Iniciación"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Lunes y Miércoles - 10:00"
-                    android:textSize="12sp"
-                    android:textColor="#666666" />
-
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btnReservarClase1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reservar"
-                android:backgroundTint="@color/accent_orange"
-                android:textColor="#FFFFFF" />
-
-        </LinearLayout>
-
-        <!-- Clase 2 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/bg_evento_card"
-            android:padding="12dp"
-            android:layout_marginBottom="8dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Clase de Nivel Intermedio"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Martes y Jueves - 14:00"
-                    android:textSize="12sp"
-                    android:textColor="#666666" />
-
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btnReservarClase2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reservar"
-                android:backgroundTint="#00C853"
-                android:textColor="#FFFFFF" />
-
-        </LinearLayout>
-
-        <!-- Clase 3 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/bg_evento_card"
-            android:padding="12dp"
-            android:layout_marginBottom="8dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Clase de Avanzado"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Miércoles y Viernes - 18:00"
-                    android:textSize="12sp"
-                    android:textColor="#666666" />
-
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btnReservarClase3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reservar"
-                android:backgroundTint="#00C853"
-                android:textColor="#FFFFFF" />
-
-        </LinearLayout>
-
-        <!-- Clase 4 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/bg_evento_card"
-            android:padding="12dp"
-            android:layout_marginBottom="12dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Taller de Técnica"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sábados - 11:00"
-                    android:textSize="12sp"
-                    android:textColor="#666666" />
-
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btnReservarClase4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reservar"
-                android:backgroundTint="@color/accent_orange"
-                android:textColor="#FFFFFF" />
-
-        </LinearLayout>
-
-    </LinearLayout>
 
     </ScrollView>
 
