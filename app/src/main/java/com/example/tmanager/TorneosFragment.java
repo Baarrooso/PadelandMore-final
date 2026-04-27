@@ -49,7 +49,16 @@ public class TorneosFragment extends Fragment {
 
         cargarTorneos();
 
-        btnCrearTorneo.setOnClickListener(v -> mostrarDialogoTorneo());
+        // Si el usuario es jugador, no debe poder crear torneos: ocultamos el FAB.
+        AuthUtil.isJugador(requireContext(), isJugador -> {
+            if (isJugador) {
+                btnCrearTorneo.setVisibility(View.GONE);
+            } else {
+                btnCrearTorneo.setVisibility(View.VISIBLE);
+                btnCrearTorneo.setOnClickListener(v -> mostrarDialogoTorneo());
+            }
+        });
+
         listTorneos.setOnItemClickListener((parent, v, position, id) -> apuntarseATorneo(position));
 
         return view;
