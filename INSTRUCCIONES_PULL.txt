@@ -1,0 +1,170 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║                  INSTRUCCIONES PARA PULL DE CAMBIOS                          ║
+║                                                                               ║
+║            Tu compañero va a hacer push - Aquí está cómo traer sus cambios   ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+
+📝 INSTRUCCIONES PASO A PASO
+═════════════════════════════════════════════════════════════════════════════════
+
+PASO 1: Cuando tu compañero diga "ya hice push"
+────────────────────────────────────────────────────
+
+Abre una terminal en el proyecto y ejecuta:
+  git pull origin main
+
+
+PASO 2: Verifica que todo se sincronizó correctamente
+──────────────────────────────────────────────────────
+
+Ejecuta:
+  git status
+
+Debería mostrar:
+  On branch main
+  Your branch is up to date with 'origin/main'.
+
+
+PASO 3: Ver qué cambios trajo
+──────────────────────────────
+
+Ejecuta:
+  git log --oneline -5
+
+Verás los commits nuevos de tu compañero
+
+
+═════════════════════════════════════════════════════════════════════════════════
+⚡ COMANDO RÁPIDO
+═════════════════════════════════════════════════════════════════════════════════
+
+Solo ejecuta esto en terminal (en la carpeta del proyecto):
+
+  git pull origin main
+
+
+═════════════════════════════════════════════════════════════════════════════════
+📌 ESTADO ACTUAL
+═════════════════════════════════════════════════════════════════════════════════
+
+Rama actual:              main
+Remoto configurado:       https://github.com/Baarrooso/TFG.git
+Commits que tienes:       5
+Estado:                   Listo para pull
+
+
+═════════════════════════════════════════════════════════════════════════════════
+💡 POSIBLES ESCENARIOS
+═════════════════════════════════════════════════════════════════════════════════
+
+ESCENARIO 1: Tu compañero hace push sin cambios en los mismos archivos
+──────────────────────────────────────────────────────────────────────
+  git pull origin main
+  → Trae los cambios sin problemas
+  → Listo para usar
+
+
+ESCENARIO 2: Tu compañero y tú editaron los mismos archivos
+────────────────────────────────────────────────────────────
+  git pull origin main
+  → Puede haber conflictos
+  → Git te mostrará qué archivos tienen conflictos
+  → Abre esos archivos y resuelve manualmente
+  → Luego: git add . && git commit -m "Resuelto merge"
+
+
+ESCENARIO 3: Quieres VER qué cambios trae antes de aplicarlos
+──────────────────────────────────────────────────────────────
+  git fetch origin main        (trae sin aplicar)
+  git diff HEAD origin/main    (ve diferencias)
+  git pull origin main         (cuando estés listo)
+
+
+═════════════════════════════════════════════════════════════════════════════════
+🔍 COMANDOS ÚTILES
+═════════════════════════════════════════════════════════════════════════════════
+
+Ver qué cambios hay en GitHub sin descargar:
+  git fetch origin main
+  git log --oneline origin/main
+
+Ver diferencias entre tu código y el de GitHub:
+  git diff HEAD origin/main
+
+Descargar y aplicar los cambios:
+  git pull origin main
+
+Ver estado sincronización:
+  git status
+
+
+═════════════════════════════════════════════════════════════════════════════════
+⚠️  IMPORTANTE
+═════════════════════════════════════════════════════════════════════════════════
+
+• Antes de hacer pull, asegúrate de haber guardado (commit) tus cambios locales
+  Si tienes cambios sin hacer commit:
+    git add .
+    git commit -m "Descripción de tus cambios"
+
+• Luego sí, haces:
+    git pull origin main
+
+
+═════════════════════════════════════════════════════════════════════════════════
+✅ CHECKLIST ANTES DE PULL
+═════════════════════════════════════════════════════════════════════════════════
+
+☐ Mi compañero dice "ya hice push"
+☐ Abro terminal en la carpeta del proyecto
+☐ Verifico: git status (todo debe estar limpio)
+☐ Ejecuto: git pull origin main
+☐ Verifico: git log --oneline (veo los nuevos commits)
+☐ Abro Android Studio para ver los cambios
+
+
+═════════════════════════════════════════════════════════════════════════════════
+FLUJO DE TRABAJO EN EQUIPO
+═════════════════════════════════════════════════════════════════════════════════
+
+Tú haces cambios:
+  1. Editas código
+  2. git add .
+  3. git commit -m "Tu cambio"
+  4. git push origin main
+  ↓
+Tu compañero hace pull:
+  1. git pull origin main       (trae tus cambios)
+  2. Android Studio recarga
+  3. Ve los cambios
+  ↓
+Tu compañero hace cambios:
+  1. Edita código
+  2. git add .
+  3. git commit -m "Su cambio"
+  4. git push origin main
+  ↓
+Tú haces pull:
+  1. git pull origin main       (traes sus cambios)
+  2. Android Studio recarga
+  3. Ves los cambios
+
+
+═════════════════════════════════════════════════════════════════════════════════
+🎯 RESUMEN
+═════════════════════════════════════════════════════════════════════════════════
+
+CUANDO TU COMPAÑERO HAGA PUSH:
+  Ejecuta: git pull origin main
+
+YA ESTÁ. Los cambios estarán en tu máquina.
+
+
+═════════════════════════════════════════════════════════════════════════════════
+Fecha: 31 de Marzo de 2026
+Estado: ✅ LISTO PARA RECIBIR CAMBIOS
+═════════════════════════════════════════════════════════════════════════════════
+

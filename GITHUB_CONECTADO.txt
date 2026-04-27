@@ -1,0 +1,214 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║               ✅ PROYECTO CONECTADO EXITOSAMENTE CON GITHUB                  ║
+║                                                                               ║
+║              Tu repositorio local está sincronizado con GitHub               ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+
+✅ CONEXIÓN COMPLETADA
+═════════════════════════════════════════════════════════════════════════════════
+
+Repositorio Remoto:    https://github.com/Baarrooso/TFG.git
+Rama Principal:        main
+Usuario:               Sergi <sergi@example.com>
+
+Estado:                ✅ Sincronizado
+Último Commit:         1a82c1d (Merge con repositorio remoto)
+Historial:             5 commits disponibles
+
+
+═════════════════════════════════════════════════════════════════════════════════
+📊 QUÉ PASÓ
+═════════════════════════════════════════════════════════════════════════════════
+
+1. ✅ Se agregó el repositorio remoto (origin)
+2. ✅ Se cambió la rama a "main"
+3. ✅ Se descargaron los cambios del repositorio remoto
+4. ✅ Se resolvieron conflictos de merge automáticamente
+5. ✅ Se hizo commit del merge
+6. ✅ Se subieron todos los cambios a GitHub
+
+
+═════════════════════════════════════════════════════════════════════════════════
+🔄 HISTORIAL DE COMMITS
+═════════════════════════════════════════════════════════════════════════════════
+
+1a82c1d - (HEAD -> main, origin/main)
+          Merge with remote TFG repository - keeping remote changes
+
+57e3c70 - Merge remote changes
+
+3a49ac1 - Initial commit
+
+d7813b5 - Initial commit: TManager project with Device Manager setup,
+          optimized AndroidManifest, and automation scripts
+
+9786f00 - Initial commit: Padel Manager application
+
+
+═════════════════════════════════════════════════════════════════════════════════
+📝 COMANDOS PARA TRABAJAR DESDE AHORA
+═════════════════════════════════════════════════════════════════════════════════
+
+Ver estado del repositorio:
+  git status
+
+Ver cambios locales:
+  git diff
+
+Hacer commit de cambios:
+  git add .
+  git commit -m "Descripción del cambio"
+
+Subir cambios a GitHub:
+  git push origin main
+
+Bajar cambios de GitHub:
+  git pull origin main
+
+Ver historial:
+  git log --oneline -10
+
+
+═════════════════════════════════════════════════════════════════════════════════
+🌐 ACCESO A TU REPOSITORIO
+═════════════════════════════════════════════════════════════════════════════════
+
+URL del repositorio:     https://github.com/Baarrooso/TFG
+Rama principal:          main
+Propietario:             Baarrooso
+
+Puedes ver tu código en GitHub visitando la URL arriba.
+
+
+═════════════════════════════════════════════════════════════════════════════════
+💡 PRÓXIMOS PASOS
+═════════════════════════════════════════════════════════════════════════════════
+
+1. EJECUTAR LA APP (Opcional)
+   • Abre Android Studio
+   • Presiona Shift + F10
+
+2. DESARROLLAR
+   • Haz cambios en tu código
+   • Usa: git add . && git commit -m "cambios"
+   • Sube: git push origin main
+
+3. MANTENER SINCRONIZADO
+   • Antes de trabajar: git pull origin main
+   • Después de terminar: git push origin main
+
+
+═════════════════════════════════════════════════════════════════════════════════
+✨ INTEGRACIÓN CON ANDROID STUDIO
+═════════════════════════════════════════════════════════════════════════════════
+
+Android Studio puede hacer push/pull directamente:
+
+1. VCS > Git > Commit
+   (ve cambios, escribe mensaje, haz commit)
+
+2. VCS > Git > Push
+   (sube cambios a GitHub)
+
+3. VCS > Git > Pull
+   (trae cambios de GitHub)
+
+Atajos:
+  Commit:    Ctrl + K
+  Push:      Ctrl + Shift + K
+  Pull:      Ctrl + T
+
+
+═════════════════════════════════════════════════════════════════════════════════
+🔐 AUTENTICACIÓN
+═════════════════════════════════════════════════════════════════════════════════
+
+IMPORTANTE: Si Git te pide contraseña al hacer push/pull:
+
+OPCIÓN 1: Personal Access Token (Recomendado)
+  1. Ve a: https://github.com/settings/tokens
+  2. Crea nuevo token
+  3. Dale permisos: repo (full control)
+  4. Copia el token
+  5. Úsalo como contraseña
+
+OPCIÓN 2: GitHub CLI
+  1. Descarga: https://cli.github.com
+  2. Ejecuta: gh auth login
+  3. Sigue los pasos
+
+OPCIÓN 3: SSH (Lo más seguro)
+  1. Genera clave: ssh-keygen -t ed25519
+  2. Agrega en GitHub: https://github.com/settings/keys
+  3. Usa URL SSH: git@github.com:Baarrooso/TFG.git
+
+
+═════════════════════════════════════════════════════════════════════════════════
+📌 ARCHIVOS ÚTILES EN TU PROYECTO
+═════════════════════════════════════════════════════════════════════════════════
+
+Para ejecutar:        LISTO_PARA_EJECUTAR.txt
+Para Device Manager:  DEVICE_MANAGER_GUIDE.md
+Para desarrollo:      PROYECTO_COMPLETO.md
+Para scripts:         run_on_device.bat / run_on_device.ps1
+
+
+═════════════════════════════════════════════════════════════════════════════════
+✅ VERIFICACIÓN FINAL
+═════════════════════════════════════════════════════════════════════════════════
+
+Local:
+  ✓ Código en tu computadora
+  ✓ Git inicializado
+  ✓ Historial de commits
+
+Remoto:
+  ✓ Código en GitHub
+  ✓ Sincronizado con local
+  ✓ Rama main actualizada
+
+Flujo:
+  ✓ Puedes hacer commits locales
+  ✓ Puedes hacer push a GitHub
+  ✓ Puedes hacer pull desde GitHub
+
+
+═════════════════════════════════════════════════════════════════════════════════
+🎊 ¡TODO ESTÁ LISTO!
+═════════════════════════════════════════════════════════════════════════════════
+
+Tu proyecto TManager está ahora:
+  ✅ Compilado y funcionando
+  ✅ Bajo control de versiones con Git
+  ✅ Sincronizado con GitHub
+  ✅ Listo para desarrollo colaborativo
+
+Puedes:
+  • Ejecutar en emulador: Shift + F10
+  • Hacer cambios: Editar código
+  • Guardar: git commit
+  • Subir: git push
+
+
+═════════════════════════════════════════════════════════════════════════════════
+💬 COMANDOS QUICK REFERENCE
+═════════════════════════════════════════════════════════════════════════════════
+
+git status               Ver cambios
+git log -5              Ver últimos 5 commits
+git add .               Preparar cambios
+git commit -m "msg"     Guardar cambios
+git push origin main    Subir a GitHub
+git pull origin main    Bajar de GitHub
+git branch              Ver ramas
+git diff                Ver diferencias
+
+
+═════════════════════════════════════════════════════════════════════════════════
+Fecha de conexión: 31 de Marzo de 2026
+Estado: ✅ COMPLETAMENTE CONECTADO Y SINCRONIZADO
+═════════════════════════════════════════════════════════════════════════════════
+
