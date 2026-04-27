@@ -39,6 +39,32 @@ public class SorteosFragment extends Fragment {
 
         cargarSorteos();
 
+        // Al pulsar un sorteo, el usuario puede apuntarse (si está logueado)
+        listSorteos.setOnItemClickListener((parent, v, position, id) -> {
+            if (sorteos.isEmpty()) return;
+
+            com.google.firebase.auth.FirebaseUser user = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
+            if (user == null) {
+                android.widget.Toast.makeText(requireContext(), "Debes iniciar sesión para apuntarte", android.widget.Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String seleccionado = sorteos.get(position);
+
+            FirebaseFirestore.getInstance()
+                    .collection("inscripciones_sorteos")
+                    .add(new java.util.HashMap<String, Object>() {{
+                        put("userUid", user.getUid());
+                        put("sorteoResumen", seleccionado);
+                    }})
+                    .addOnSuccessListener(ref ->
+                            android.widget.Toast.makeText(requireContext(), "Inscripción enviada al sorteo", android.widget.Toast.LENGTH_SHORT).show()
+                    )
+                    .addOnFailureListener(e ->
+                            android.widget.Toast.makeText(requireContext(), "No se pudo inscribir", android.widget.Toast.LENGTH_SHORT).show()
+                    );
+        });
+
         return view;
     }
 

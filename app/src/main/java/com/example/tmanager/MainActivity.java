@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     FragmentManager fragmentManager;
+    private boolean isJugador = false;
 
     private static final int REQ_NOTIF = 1001;
 
@@ -36,10 +37,20 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
+        // Determinar rol del usuario y ajustar comportamiento de navegación
+        AuthUtil.isJugador(this, isJ -> {
+            isJugador = isJ;
+        });
+
         bottomNavigationView.setSelectedItemId(R.id.btnInicio);
         loadFragment(new ReservasFragment());
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
+            // Si es jugador, restringir acceso a pantallas ajenas a reservas/torneos/sorteos
+            if (isJugador && item.getItemId() == R.id.btnComunidad) {
+                android.widget.Toast.makeText(this, "Acceso restringido en modo jugador", android.widget.Toast.LENGTH_SHORT).show();
+                return false;
+            }
             Fragment fragment = null;
 
             if (item.getItemId() == R.id.btnInicio) {

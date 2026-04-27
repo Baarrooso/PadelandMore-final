@@ -49,57 +49,82 @@ public class TorneosFragment extends Fragment {
 
         cargarTorneos();
 
-        btnCrearTorneo.setOnClickListener(v -> mostrarDialogoTorneo());
+        // Si el usuario es jugador, no debe poder crear torneos: ocultamos el FAB.
+        AuthUtil.isJugador(requireContext(), isJugador -> {
+            if (isJugador) {
+                btnCrearTorneo.setVisibility(View.GONE);
+            } else {
+                btnCrearTorneo.setVisibility(View.VISIBLE);
+                btnCrearTorneo.setOnClickListener(v -> mostrarDialogoTorneo());
+            }
+        });
+
         listTorneos.setOnItemClickListener((parent, v, position, id) -> apuntarseATorneo(position));
 
         return view;
     }
 
     private void mostrarDialogoTorneo() {
-        View form = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_torneo_padel, null, false);
+        // Antes de mostrar el diálogo, comprobar rol del usuario
+        AuthUtil.isJugador(requireContext(), isJugador -> {
+            if (isJugador) {
+                android.widget.Toast.makeText(requireContext(), "No tienes permiso para crear torneos", android.widget.Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        EditText edtNombre = form.findViewById(R.id.edtNombreTorneo);
-        EditText edtCiudad = form.findViewById(R.id.edtCiudadTorneo);
-        EditText edtFecha = form.findViewById(R.id.edtFechaTorneo);
-        EditText edtNivel = form.findViewById(R.id.edtNivelTorneo);
+            View form = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_torneo_padel, null, false);
 
-        new AlertDialog.Builder(requireContext())
-                .setTitle("Nuevo torneo")
-                .setView(form)
-                .setPositiveButton("Crear", (dialog, which) -> {
-                    String nombre = edtNombre.getText().toString().trim();
-                    String ciudad = edtCiudad.getText().toString().trim();
-                    String fecha = edtFecha.getText().toString().trim();
-                    String nivel = edtNivel.getText().toString().trim();
+            EditText edtNombre = form.findViewById(R.id.edtNombreTorneo);
+            EditText edtCiudad = form.findViewById(R.id.edtCiudadTorneo);
+            EditText edtFecha = form.findViewById(R.id.edtFechaTorneo);
+            EditText edtNivel = form.findViewById(R.id.edtNivelTorneo);
 
-                    if (nombre.isEmpty() || ciudad.isEmpty() || fecha.isEmpty() || nivel.isEmpty()) {
-                        Toast.makeText(requireContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Nuevo torneo")
+                    .setView(form)
+                    .setPositiveButton("Crear", (dialog, which) -> {
+                        String nombre = edtNombre.getText().toString().trim();
+                        String ciudad = edtCiudad.getText().toString().trim();
+                        String fecha = edtFecha.getText().toString().trim();
+                        String nivel = edtNivel.getText().toString().trim();
 
-                    crearTorneo(nombre, ciudad, fecha, nivel);
-                })
-                .setNegativeButton("Cancelar", null)
-                .show();
+                        if (nombre.isEmpty() || ciudad.isEmpty() || fecha.isEmpty() || nivel.isEmpty()) {
+                            Toast.makeText(requireContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        crearTorneo(nombre, ciudad, fecha, nivel);
+                    })
+                    .setNegativeButton("Cancelar", null)
+                    .show();
+        });
     }
 
     private void crearTorneo(String nombre, String ciudad, String fecha, String nivel) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("nombre", nombre);
-        data.put("ciudad", ciudad);
-        data.put("fecha", fecha);
-        data.put("nivel", nivel);
-        data.put("inscritos", new ArrayList<String>());
+        // Comprobar rol antes de crear en la base de datos
+        AuthUtil.isJugador(requireContext(), isJugador -> {
+            if (isJugador) {
+                Toast.makeText(requireContext(), "No tienes permiso para crear torneos", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        db.collection("torneos_padel")
-                .add(data)
-                .addOnSuccessListener(ref -> {
-                    Toast.makeText(requireContext(), "Torneo creado", Toast.LENGTH_SHORT).show();
-                    cargarTorneos();
-                })
-                .addOnFailureListener(e ->
-                        Toast.makeText(requireContext(), "No se pudo crear", Toast.LENGTH_SHORT).show()
-                );
+            Map<String, Object> data = new HashMap<>();
+            data.put("nombre", nombre);
+            data.put("ciudad", ciudad);
+            data.put("fecha", fecha);
+            data.put("nivel", nivel);
+            data.put("inscritos", new ArrayList<String>());
+
+            db.collection("torneos_padel")
+                    .add(data)
+                    .addOnSuccessListener(ref -> {
+                        Toast.makeText(requireContext(), "Torneo creado", Toast.LENGTH_SHORT).show();
+                        cargarTorneos();
+                    })
+                    .addOnFailureListener(e ->
+                            Toast.makeText(requireContext(), "No se pudo crear", Toast.LENGTH_SHORT).show()
+                    );
+        });
     }
 
     private void cargarTorneos() {
