@@ -174,35 +174,40 @@ public class MensajesActivity extends AppCompatActivity {
 
                     if (!doc.exists()) return;
 
+                    @SuppressWarnings("unchecked")
                     List<Map<String, Object>> jugadores =
                             (List<Map<String, Object>>) doc.get("jugadores");
 
                     if (jugadores != null) {
                         for (Map<String, Object> j : jugadores) {
                             String uidJugador = (String) j.get("uid");
-                            if (uidJugador == null || uidJugador.equals(uid)) continue;
+                            if (uidJugador == null || uidJugador.equals(uid)) {
+                                continue;
+                            }
 
-                            NotificacionUtil.crear(
-                                    uidJugador,
-                                    equipoId,
-                                    "mensaje",
-                                    "Nuevo mensaje",
-                                    nombre + " ha enviado un mensaje",
-                                    null
-                            );
+                            // ⚠️ NotificacionUtil no existe - comentado temporalmente
+                            // NotificacionUtil.crear(
+                            //         uidJugador,
+                            //         equipoId,
+                            //         "mensaje",
+                            //         "Nuevo mensaje",
+                            //         nombre + " ha enviado un mensaje",
+                            //         null
+                            // );
                         }
                     }
 
                     String entrenadorUid = doc.getString("entrenadorUid");
                     if (entrenadorUid != null && !entrenadorUid.equals(uid)) {
-                        NotificacionUtil.crear(
-                                entrenadorUid,
-                                equipoId,
-                                "mensaje",
-                                "Nuevo mensaje",
-                                nombre + " ha enviado un mensaje",
-                                null
-                        );
+                         // ⚠️ NotificacionUtil no existe - comentado temporalmente
+                         // NotificacionUtil.crear(
+                         //         entrenadorUid,
+                         //         equipoId,
+                         //         "mensaje",
+                         //         "Nuevo mensaje",
+                         //         nombre + " ha enviado un mensaje",
+                         //         null
+                         // );
                     }
                 });
     }

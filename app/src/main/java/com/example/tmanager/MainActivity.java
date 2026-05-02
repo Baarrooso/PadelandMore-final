@@ -32,15 +32,13 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
 
         fragmentManager.beginTransaction()
-                .replace(R.id.fragmentSuperior, new FragmentSuperiorActivity())
+                .replace(R.id.fragmentSuperior, new ReservasFragment())
                 .commit();
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         // Determinar rol del usuario y ajustar comportamiento de navegación
-        AuthUtil.isJugador(this, isJ -> {
-            isJugador = isJ;
-        });
+        AuthUtil.isJugador(this, isJ -> isJugador = isJ);
 
         bottomNavigationView.setSelectedItemId(R.id.btnInicio);
         loadFragment(new ReservasFragment());

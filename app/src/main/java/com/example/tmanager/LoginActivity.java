@@ -138,20 +138,21 @@ public class LoginActivity extends AppCompatActivity {
 
                                         if (!doc.exists()) {
                                             // 🔴 USUARIO GOOGLE NO REGISTRADO
-                                            auth.signOut();
-                                            GoogleSignIn.getClient(
+                                            GoogleSignInClient client = GoogleSignIn.getClient(
                                                     this,
                                                     GoogleSignInOptions.DEFAULT_SIGN_IN
-                                            ).signOut();
+                                            );
 
                                             Toast.makeText(this,
                                                     "Esta cuenta no está registrada. Regístrate primero.",
                                                     Toast.LENGTH_LONG).show();
 
-                                            Intent i = new Intent(this, RegisterActivity.class);
-                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            startActivity(i);
-                                            finish();
+                                            SessionNavigator.signOutGoogleAndGoTo(
+                                                    this,
+                                                    auth,
+                                                    client,
+                                                    RegisterActivity.class
+                                            );
                                             return;
                                         }
 
@@ -175,9 +176,15 @@ public class LoginActivity extends AppCompatActivity {
     private void comprobarEquipoYRedirigir() {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+
+        if (user == null) {
+            Toast.makeText(this, "Sesión no válida", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         db.collection("usuarios")
-                .document(auth.getUid())
+                .document(user.getUid())
                 .get()
                 .addOnSuccessListener(doc -> {
 

@@ -24,7 +24,6 @@ public class ResultadosActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
 
-    private ResultadosAdapter adapter;
     private List<EventModel> partidos = new ArrayList<>();
 
     private String equipoId;
@@ -63,8 +62,6 @@ public class ResultadosActivity extends AppCompatActivity {
         recycler = findViewById(R.id.recyclerResultados);
 
         recycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ResultadosAdapter(this, partidos);
-        recycler.setAdapter(adapter);
 
         db = FirebaseFirestore.getInstance();
 
@@ -98,9 +95,6 @@ public class ResultadosActivity extends AppCompatActivity {
                             uidToAlias.put(uid, alias);
                         }
                     }
-
-                    adapter.setUidToName(uidToAlias);
-                    adapter.notifyDataSetChanged();
                 });
     }
 
@@ -148,8 +142,6 @@ public class ResultadosActivity extends AppCompatActivity {
                     txtVictorias.setText(String.valueOf(victorias));
                     txtEmpates.setText(String.valueOf(empates));
                     txtDerrotas.setText(String.valueOf(derrotas));
-
-                    adapter.notifyDataSetChanged();
                 });
     }
     private void activarSwipeEliminar() {

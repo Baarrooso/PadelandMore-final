@@ -30,8 +30,6 @@ public class MiPerfilFragment extends Fragment {
 
     private EditText edtEdad;
     private Spinner spinnerNivel, spinnerMano;
-    private Button btnGuardarPerfil;
-    private ListView listResultados, listTorneosApuntados, listMisReservas;
     private ArrayAdapter<String> adapterResultados, adapterTorneos, adapterReservas;
     private List<String> resultados, torneos, reservas;
     private FirebaseFirestore db;
@@ -53,10 +51,11 @@ public class MiPerfilFragment extends Fragment {
         edtEdad = v.findViewById(R.id.edtEdad);
         spinnerNivel = v.findViewById(R.id.spinnerNivel);
         spinnerMano = v.findViewById(R.id.spinnerMano);
-        btnGuardarPerfil = v.findViewById(R.id.btnGuardarPerfil);
-        listResultados = v.findViewById(R.id.listResultados);
-        listTorneosApuntados = v.findViewById(R.id.listTorneosApuntados);
-        listMisReservas = v.findViewById(R.id.listMisReservas);
+        Button btnGuardarPerfil = v.findViewById(R.id.btnGuardarPerfil);
+        Button btnCerrarSesion = v.findViewById(R.id.btnCerrarSesion);
+        ListView listResultados = v.findViewById(R.id.listResultados);
+        ListView listTorneosApuntados = v.findViewById(R.id.listTorneosApuntados);
+        ListView listMisReservas = v.findViewById(R.id.listMisReservas);
 
         // Inicializar listas
         resultados = new ArrayList<>();
@@ -92,6 +91,7 @@ public class MiPerfilFragment extends Fragment {
 
         // Botón guardar
         btnGuardarPerfil.setOnClickListener(v1 -> guardarCambios());
+        btnCerrarSesion.setOnClickListener(v1 -> cerrarSesion());
 
         // Cargar resultados, torneos y reservas
         cargarResultados();
@@ -177,6 +177,10 @@ public class MiPerfilFragment extends Fragment {
                 );
     }
 
+    private void cerrarSesion() {
+        SessionNavigator.signOutToLogin(requireContext(), FirebaseAuth.getInstance());
+    }
+
     private void cargarResultados() {
         if (user == null) return;
 
@@ -234,7 +238,6 @@ public class MiPerfilFragment extends Fragment {
                 .addOnSuccessListener(snapshot -> {
                     reservas.clear();
                     for (QueryDocumentSnapshot doc : snapshot) {
-                        String club = doc.getString("club");
                         String pista = doc.getString("pista");
                         String fecha = doc.getString("fecha");
                         String hora = doc.getString("hora");
