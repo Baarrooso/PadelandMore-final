@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -16,7 +15,7 @@
             android:id="@+id/txtTituloPerfil"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mi Perfil"
+            android:text="@string/mi_perfil"
             android:textSize="30sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
@@ -48,7 +47,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Datos Personales"
+                    android:text="@string/datos_personales"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
@@ -64,7 +63,7 @@
                     <TextView
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="Edad:"
+                        android:text="@string/edad_label"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         android:textColor="@color/white" />
@@ -75,7 +74,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:inputType="number"
-                        android:hint="Introduce tu edad"
+                        android:importantForAutofill="no"
+                        android:autofillHints="birthDate"
+                        android:hint="@string/introduce_tu_edad"
                         android:textSize="14sp" />
 
                 </LinearLayout>
@@ -90,7 +91,7 @@
                     <TextView
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="Nivel:"
+                        android:text="@string/nivel_label"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         android:textColor="@color/white" />
@@ -113,7 +114,7 @@
                     <TextView
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="Mano:"
+                        android:text="@string/mano_label"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         android:textColor="@color/white" />
@@ -134,8 +135,17 @@
                 android:id="@+id/btnGuardarPerfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Guardar Cambios"
+                android:text="@string/guardar_cambios"
                 android:backgroundTint="@color/accent_orange"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="16dp" />
+
+            <Button
+                android:id="@+id/btnCerrarSesion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cerrar_sesion"
+                android:backgroundTint="#D32F2F"
                 android:textColor="#FFFFFF"
                 android:layout_marginBottom="16dp" />
 
@@ -149,7 +159,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mis Reservas"
+                    android:text="@string/mis_reservas"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
@@ -172,7 +182,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Últimos Resultados"
+                    android:text="@string/ultimos_resultados"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
@@ -194,7 +204,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Torneos Apuntados"
+                    android:text="@string/torneos_apuntados"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"

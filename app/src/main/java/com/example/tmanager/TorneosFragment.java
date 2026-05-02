@@ -13,8 +13,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -42,22 +40,11 @@ public class TorneosFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         ListView listTorneos = view.findViewById(R.id.listTorneos);
-        FloatingActionButton btnCrearTorneo = view.findViewById(R.id.btnCrearTorneo);
 
         adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, torneos);
         listTorneos.setAdapter(adapter);
 
         cargarTorneos();
-
-        // Si el usuario es jugador, no debe poder crear torneos: ocultamos el FAB.
-        AuthUtil.isJugador(requireContext(), isJugador -> {
-            if (isJugador) {
-                btnCrearTorneo.setVisibility(View.GONE);
-            } else {
-                btnCrearTorneo.setVisibility(View.VISIBLE);
-                btnCrearTorneo.setOnClickListener(v -> mostrarDialogoTorneo());
-            }
-        });
 
         listTorneos.setOnItemClickListener((parent, v, position, id) -> apuntarseATorneo(position));
 
@@ -146,7 +133,7 @@ public class TorneosFragment extends Fragment {
                     }
 
                     if (torneos.isEmpty()) {
-                        torneos.add("No hay torneos todavia. Pulsa + para publicar uno.");
+                        torneos.add("No hay torneos todavia.");
                     }
 
                     adapter.notifyDataSetChanged();

@@ -15,11 +15,8 @@ import java.util.List;
 
 public class NotificacionesActivity extends AppCompatActivity {
 
-    private RecyclerView recycler;
     private NotificacionesAdapter adapter;
-    private List<NotificacionModel> lista = new ArrayList<>();
-    private boolean primeraCarga = true;
-
+    private final List<NotificacionModel> lista = new ArrayList<>();
 
     private FirebaseFirestore db;
 
@@ -28,7 +25,7 @@ public class NotificacionesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notificaciones);
 
-        recycler = findViewById(R.id.recyclerNotificaciones);
+        RecyclerView recycler = findViewById(R.id.recyclerNotificaciones);
         recycler.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new NotificacionesAdapter(this, lista);
@@ -44,7 +41,10 @@ public class NotificacionesActivity extends AppCompatActivity {
 
     private void cargarNotificaciones() {
 
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String uid = (auth.getCurrentUser() != null) ? auth.getCurrentUser().getUid() : null;
+
+        if (uid == null) return;
 
         db.collection("notificaciones")
                 .whereEqualTo("userUid", uid)
@@ -57,8 +57,10 @@ public class NotificacionesActivity extends AppCompatActivity {
 
                     for (DocumentSnapshot d : snap) {
                         NotificacionModel n = d.toObject(NotificacionModel.class);
-                        n.id = d.getId();
-                        lista.add(n);
+                        if (n != null) {
+                            n.id = d.getId();
+                            lista.add(n);
+                        }
                     }
 
                     // 1️⃣ Pintar según estado actual
@@ -82,8 +84,9 @@ public class NotificacionesActivity extends AppCompatActivity {
 
             // ✅ ASISTENCIA
             case "asistencia":
-                i = new Intent(this, RegistroAsistenciaActivity.class);
-                startActivity(i);
+                // ⚠️ RegistroAsistenciaActivity no existe - comentado temporalmente
+                // i = new Intent(this, RegistroAsistenciaActivity.class);
+                // startActivity(i);
                 break;
 
             // ⚽ CONVOCATORIAS
@@ -100,8 +103,9 @@ public class NotificacionesActivity extends AppCompatActivity {
 
             // 👥 NUEVO JUGADOR
             case "union_equipo":
-                i = new Intent(this, MiembrosActivity.class);
-                startActivity(i);
+                // ⚠️ MiembrosActivity no existe - comentado temporalmente
+                // i = new Intent(this, MiembrosActivity.class);
+                // startActivity(i);
                 break;
         }
 

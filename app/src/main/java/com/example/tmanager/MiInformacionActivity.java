@@ -331,9 +331,7 @@ public class MiInformacionActivity extends AppCompatActivity {
 
 
     private void cerrarSesion() {
-        auth.signOut();
-        startActivity(new Intent(this, LoginActivity.class));
-        finishAffinity();
+        SessionNavigator.signOutToLogin(this, auth);
     }
 
     private void confirmarEliminarCuenta() {
@@ -360,8 +358,7 @@ public class MiInformacionActivity extends AppCompatActivity {
                     // BORRAR USUARIO DE FIREBASE AUTH
                     u.delete()
                             .addOnSuccessListener(a -> {
-                                auth.signOut();
-                                irALoginLimpio();
+                                SessionNavigator.signOutToLogin(this, auth);
                             })
                             .addOnFailureListener(e ->
                                     Toast.makeText(this,
@@ -411,12 +408,6 @@ public class MiInformacionActivity extends AppCompatActivity {
                 .addOnFailureListener(e ->
                         imgPerfil.setImageResource(R.drawable.userlogo)
                 );
-    }
-    private void irALoginLimpio() {
-        Intent i = new Intent(this, LoginActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(i);
-        finish();
     }
 
     private void confirmarGuardarAlias() {

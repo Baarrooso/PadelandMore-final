@@ -12,7 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * Utilitario sencillo para obtener el rol del usuario y cachearlo localmente.
- * Usa la colección "users" y el campo "rol" (string) por convención.
+ * Usa la colección "usuarios" y el campo "rol" (string) por convención.
  */
 public class AuthUtil {
 
@@ -42,7 +42,7 @@ public class AuthUtil {
 
         // No cache -> fetch from Firestore
         FirebaseFirestore.getInstance()
-                .collection("users")
+                .collection("usuarios")
                 .document(user.getUid())
                 .get()
                 .addOnSuccessListener((DocumentSnapshot doc) -> {
@@ -60,7 +60,7 @@ public class AuthUtil {
 
     private static void refreshRoleFromServer(String uid, SharedPreferences prefs, @NonNull RoleCallback callback) {
         FirebaseFirestore.getInstance()
-                .collection("users")
+                .collection("usuarios")
                 .document(uid)
                 .get()
                 .addOnSuccessListener((DocumentSnapshot doc) -> {

@@ -235,7 +235,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .document(uid)
                 .set(user, SetOptions.merge())
                 .addOnSuccessListener(a -> {
-                    startActivity(new Intent(this, WelcomeActivity.class));
+                    startActivity(new Intent(this, MainActivity.class));
                     finish();
                 })
                 .addOnFailureListener(e ->
@@ -244,7 +244,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void irALogin() {
-        startActivity(new Intent(this, LoginActivity.class));
-        finish();
+        SessionNavigator.goToLoginClean(this);
     }
 }
