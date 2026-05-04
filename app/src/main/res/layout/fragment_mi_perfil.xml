@@ -1,29 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/dark_blue_light">
 
-    <!-- Header -->
+    <!-- Header con botón cerrar sesión -->
     <RelativeLayout
-        android:id="@+id/headerPerfil"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/primary_blue">
+        android:layout_height="60dp"
+        android:background="@color/primary_blue"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
         <TextView
-            android:id="@+id/txtTituloPerfil"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mi_perfil"
-            android:textSize="30sp"
+            android:text="Mi Perfil"
+            android:textSize="28sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"/>
+            android:layout_centerVertical="true" />
+
+        <Button
+            android:id="@+id/btnCerrarSesion"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Cerrar sesión"
+            android:backgroundTint="#D32F2F"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true" />
     </RelativeLayout>
 
-    <!-- ScrollView para todo el contenido -->
+    <!-- ScrollView con todo el contenido -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -33,91 +45,452 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="12dp">
 
-            <!-- Datos Personales -->
+            <!-- ========== SECCIÓN 1: FOTO Y ESTADÍSTICAS BÁSICAS ========== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_evento_card"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp">
+
+                <!-- Foto de perfil circular -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/imgFotoPerfil"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/circle_background"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_usuario"
+                        android:contentDescription="Foto de perfil" />
+
+                    <ImageButton
+                        android:id="@+id/btnCambiarFoto"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_alignEnd="@id/imgFotoPerfil"
+                        android:layout_alignBottom="@id/imgFotoPerfil"
+                        android:scaleType="centerInside"
+                        android:background="@drawable/circle_background_orange"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="Cambiar foto"
+                        android:tint="@color/white" />
+
+                </RelativeLayout>
+
+                <!-- Nombre del usuario -->
+                <TextView
+                    android:id="@+id/txtNombreUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Usuario"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Tres contadores: Partidos, Seguidores, Seguidos -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
+                    <!-- Partidos Jugados -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@color/primary_blue"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/txtPartidosCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/accent_orange" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Partidos"
+                            android:textSize="12sp"
+                            android:textColor="@color/white" />
+
+                    </LinearLayout>
+
+                    <!-- Separador -->
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/white" />
+
+                    <!-- Seguidores -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@color/primary_blue"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/txtSeguidoresCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/accent_orange" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Seguidores"
+                            android:textSize="12sp"
+                            android:textColor="@color/white" />
+
+                    </LinearLayout>
+
+                    <!-- Separador -->
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/white" />
+
+                    <!-- Seguidos -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@color/primary_blue"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/txtSeguidosCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/accent_orange" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Seguidos"
+                            android:textSize="12sp"
+                            android:textColor="@color/white" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Nivel y fiabilidad -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/imgNivelPadel"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/ic_level_badge"
+                        android:scaleType="centerInside"
+                        android:contentDescription="Nivel de pádel"
+                        android:layout_marginBottom="8dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Fiabilidad: "
+                            android:textSize="14sp"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:id="@+id/txtFiabilidadPorcentaje"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="95%"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/accent_orange" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- ========== SECCIÓN 2: EVOLUCIÓN DE NIVEL ========== -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/bg_evento_card"
                 android:padding="12dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/datos_personales"
+                    android:text="Evolución de Nivel"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_marginBottom="12dp" />
 
-                <!-- Edad -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
-
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/edad_label"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/white" />
-
-                    <EditText
-                        android:id="@+id/edtEdad"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:inputType="number"
-                        android:importantForAutofill="no"
-                        android:autofillHints="birthDate"
-                        android:hint="@string/introduce_tu_edad"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-                <!-- Nivel de Juego -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
-
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/nivel_label"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/white" />
-
-                    <Spinner
-                        android:id="@+id/spinnerNivel"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:entries="@array/niveles_padel" />
-
-                </LinearLayout>
-
-                <!-- Mano de Juego -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="100dp"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/mano_label"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@color/primary_blue"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nivel Actual"
+                            android:textSize="12sp"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:id="@+id/txtNivelActual"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="3.5"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/accent_orange" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@color/primary_blue"
+                        android:padding="8dp"
+                        android:layout_marginStart="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Puntos en Juego"
+                            android:textSize="12sp"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:id="@+id/txtPuntosJuego"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+2.1 / -1.8"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/accent_orange" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- ========== SECCIÓN 3: ÚLTIMOS PARTIDOS ========== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Últimos Partidos"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:layout_marginBottom="8dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerUltimosPartidos"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scrollbars="none" />
+
+            </LinearLayout>
+
+            <!-- ========== SECCIÓN 4: ESTADÍSTICAS ========== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_evento_card"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Estadísticas"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:layout_marginBottom="12dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- Ganados -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@color/primary_blue"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/txtPartidosGanados"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="#4CAF50" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ganados"
+                            android:textSize="12sp"
+                            android:textColor="@color/white" />
+
+                    </LinearLayout>
+
+                    <!-- Perdidos -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@color/primary_blue"
+                        android:padding="8dp"
+                        android:layout_marginStart="8dp">
+
+                        <TextView
+                            android:id="@+id/txtPartidosPerdidos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="#F44336" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Perdidos"
+                            android:textSize="12sp"
+                            android:textColor="@color/white" />
+
+                    </LinearLayout>
+
+                    <!-- Efectividad -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@color/primary_blue"
+                        android:padding="8dp"
+                        android:layout_marginStart="8dp">
+
+                        <TextView
+                            android:id="@+id/txtEfectividadPorcentaje"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0%"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/accent_orange" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Efectividad"
+                            android:textSize="12sp"
+                            android:textColor="@color/white" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- ========== SECCIÓN 5: PREFERENCIAS ========== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_evento_card"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Preferencias"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:layout_marginBottom="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="Mano:"
                         android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
 
                     <Spinner
                         android:id="@+id/spinnerMano"
@@ -128,92 +501,75 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="Nivel:"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spinnerNivel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:entries="@array/niveles_padel" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
-            <!-- Botón Guardar -->
-            <Button
-                android:id="@+id/btnGuardarPerfil"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/guardar_cambios"
-                android:backgroundTint="@color/accent_orange"
-                android:textColor="#FFFFFF"
-                android:layout_marginBottom="16dp" />
-
-            <Button
-                android:id="@+id/btnCerrarSesion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/cerrar_sesion"
-                android:backgroundTint="#D32F2F"
-                android:textColor="#FFFFFF"
-                android:layout_marginBottom="16dp" />
-
-            <!-- Mis Reservas -->
+            <!-- ========== SECCIÓN 6: COMPAÑEROS HABITUALES ========== -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/mis_reservas"
+                    android:text="Compañeros Habituales"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:layout_marginBottom="8dp" />
 
-                <ListView
-                    android:id="@+id/listMisReservas"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerCompaneros"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp" />
+                    android:layout_height="120dp"
+                    android:scrollbars="horizontal" />
 
             </LinearLayout>
 
-            <!-- Últimos Resultados -->
+            <!-- ========== SECCIÓN 7: CLUBES HABITUALES ========== -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/ultimos_resultados"
+                    android:text="Clubes Habituales"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:layout_marginBottom="8dp" />
 
-                <ListView
-                    android:id="@+id/listResultados"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerClubes"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp" />
-
-            </LinearLayout>
-
-            <!-- Torneos Apuntados -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/torneos_apuntados"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:layout_marginBottom="8dp" />
-
-                <ListView
-                    android:id="@+id/listTorneosApuntados"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp" />
+                    android:layout_height="120dp"
+                    android:scrollbars="horizontal" />
 
             </LinearLayout>
 

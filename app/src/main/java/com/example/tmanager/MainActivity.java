@@ -31,46 +31,54 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
 
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragmentSuperior, new ReservasFragment())
-                .commit();
-
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         // Determinar rol del usuario y ajustar comportamiento de navegación
         AuthUtil.isJugador(this, isJ -> isJugador = isJ);
 
-        bottomNavigationView.setSelectedItemId(R.id.btnInicio);
-        loadFragment(new ReservasFragment());
-
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            // Si es jugador, restringir acceso a pantallas ajenas a reservas/torneos/sorteos
             if (isJugador && item.getItemId() == R.id.btnComunidad) {
                 android.widget.Toast.makeText(this, "Acceso restringido en modo jugador", android.widget.Toast.LENGTH_SHORT).show();
                 return false;
             }
-            Fragment fragment = null;
-
-            if (item.getItemId() == R.id.btnInicio) {
-                fragment = new ReservasFragment();
-            } else if (item.getItemId() == R.id.btnComunidad) {
-                fragment = new MatchNivelFragment();
-            } else if (item.getItemId() == R.id.btnPerfil) {
-                fragment = new MiPerfilFragment();
-            }
-
-            if (fragment != null) {
-                loadFragment(fragment);
-                return true;
-            }
-            return false;
+            return loadFragmentForItem(item.getItemId());
         });
+
+        int initialItem = getInitialMenuItem();
+        bottomNavigationView.setSelectedItemId(initialItem);
+        loadFragmentForItem(initialItem);
     }
 
-    private void loadFragment(Fragment fragment) {
+    private boolean loadFragmentForItem(int itemId) {
+        Fragment fragment = null;
+
+        if (itemId == R.id.btnInicio) {
+            fragment = new ReservasFragment();
+        } else if (itemId == R.id.btnComunidad) {
+            fragment = new MatchNivelFragment();
+        } else if (itemId == R.id.btnPerfil) {
+            fragment = new MiPerfilFragment();
+        }
+
+        if (fragment == null) {
+            return false;
+        }
+
         fragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, fragment)
                 .commit();
+        return true;
+    }
+
+    private int getInitialMenuItem() {
+        String open = getIntent().getStringExtra("open");
+        if ("perfil".equalsIgnoreCase(open)) {
+            return R.id.btnPerfil;
+        }
+        if ("comunidad".equalsIgnoreCase(open)) {
+            return R.id.btnComunidad;
+        }
+        return R.id.btnInicio;
     }
 
     private void pedirPermisoNotificaciones() {
