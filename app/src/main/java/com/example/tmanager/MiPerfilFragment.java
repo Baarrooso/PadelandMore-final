@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.AdapterView;
@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Locale;
 
 public class MiPerfilFragment extends Fragment {
 
@@ -56,11 +57,14 @@ public class MiPerfilFragment extends Fragment {
         inicializarVistas(v);
 
         // Cargar datos del usuario
-        cargarDatosUsuario();
-        cargarEstadisticas();
-        cargarUltimosPartidos();
-        cargarCompanerosHabituales();
-        cargarClubesHabituales();
+        // Cargar datos una vez la vista ya está lista
+        if (isAdded()) {
+            cargarDatosUsuario();
+            cargarEstadisticas();
+            cargarUltimosPartidos();
+            cargarCompanerosHabituales();
+            cargarClubesHabituales();
+        }
 
         return v;
     }
@@ -110,10 +114,8 @@ public class MiPerfilFragment extends Fragment {
         });
 
         // Botones
-        Button btnCerrarSesion = v.findViewById(R.id.btnCerrarSesion);
-        Button btnCambiarFoto = v.findViewById(R.id.btnCambiarFoto);
+        ImageButton btnCambiarFoto = v.findViewById(R.id.btnCambiarFoto);
 
-        btnCerrarSesion.setOnClickListener(v1 -> cerrarSesion());
         btnCambiarFoto.setOnClickListener(v1 -> Toast.makeText(requireContext(), "Funcionalidad próximamente", Toast.LENGTH_SHORT).show());
     }
 
@@ -151,13 +153,13 @@ public class MiPerfilFragment extends Fragment {
                         // Nivel numérico
                         Double nivelNumerico = doc.getDouble("nivelNumerico");
                         if (nivelNumerico != null) {
-                            txtNivelActual.setText(String.format("%.1f", nivelNumerico));
+                            txtNivelActual.setText(String.format(Locale.getDefault(), "%.1f", nivelNumerico));
                         }
 
                         // Fiabilidad
                         Double fiabilidad = doc.getDouble("fiabilidad");
                         if (fiabilidad != null) {
-                            txtFiabilidadPorcentaje.setText(String.format("%.0f%%", fiabilidad * 100));
+                            txtFiabilidadPorcentaje.setText(String.format(Locale.getDefault(), "%.0f%%", fiabilidad * 100));
                         }
                     }
                 })
@@ -190,7 +192,7 @@ public class MiPerfilFragment extends Fragment {
                     txtPartidosCount.setText(String.valueOf(total));
                     txtPartidosGanados.setText(String.valueOf(ganados));
                     txtPartidosPerdidos.setText(String.valueOf(perdidos));
-                    txtEfectividadPorcentaje.setText(String.format("%d%%", efectividad));
+                    txtEfectividadPorcentaje.setText(String.format(Locale.getDefault(), "%d%%", efectividad));
 
                     // Valores por defecto para puntos en juego
                     txtPuntosJuego.setText("+2.1 / -1.8");
@@ -231,17 +233,17 @@ public class MiPerfilFragment extends Fragment {
                 .whereEqualTo("jugador1Uid", user.getUid())
                 .get()
                 .addOnSuccessListener(snapshot -> {
-                    Map<String, Integer> compañeros = new HashMap<>();
+                    Map<String, Integer> companeros = new HashMap<>();
 
                     for (QueryDocumentSnapshot doc : snapshot) {
                         String rival = doc.getString("jugador2Nombre");
                         if (rival != null) {
-                            compañeros.put(rival, compañeros.getOrDefault(rival, 0) + 1);
+                            companeros.put(rival, companeros.getOrDefault(rival, 0) + 1);
                         }
                     }
 
                     List<String> top5 = new ArrayList<>();
-                    compañeros.entrySet().stream()
+                    companeros.entrySet().stream()
                             .sorted((a, b) -> b.getValue() - a.getValue())
                             .limit(5)
                             .forEach(e -> top5.add(e.getKey()));
@@ -292,7 +294,4 @@ public class MiPerfilFragment extends Fragment {
         return 0;
     }
 
-    private void cerrarSesion() {
-        SessionNavigator.signOutToLogin(requireContext(), FirebaseAuth.getInstance());
-    }
 }

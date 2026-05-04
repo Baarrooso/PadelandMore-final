@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="@color/dark_blue_light">
 
-    <!-- Header con botón cerrar sesión -->
+    <!-- Header del perfil -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -21,17 +21,6 @@
             android:textSize="28sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
-            android:layout_centerVertical="true" />
-
-        <Button
-            android:id="@+id/btnCerrarSesion"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="Cerrar sesión"
-            android:backgroundTint="#D32F2F"
-            android:textColor="#FFFFFF"
-            android:textSize="10sp"
-            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true" />
     </RelativeLayout>
 

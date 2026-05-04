@@ -6,15 +6,52 @@
     android:layout_height="match_parent"
     android:background="@color/light_gray">
 
-    <!-- Cabecera superior decorativa -->
-    <FrameLayout
+    <!-- Cabecera superior compartida -->
+    <RelativeLayout
         android:id="@+id/fragmentSuperior"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@color/primary_blue"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/txtTopBarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:text="Inicio"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/btnMenuTop"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="Menú"
+            android:src="@drawable/ic_menu_hamburger"
+            android:tint="@color/white" />
+
+        <ImageButton
+            android:id="@+id/btnNotificacionesTop"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_toStartOf="@id/btnMenuTop"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="Notificaciones"
+            android:src="@drawable/ic_notifications"
+            android:tint="@color/white" />
+
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/fragmentContainer"
