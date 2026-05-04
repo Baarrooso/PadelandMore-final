@@ -4,17 +4,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,13 +29,17 @@ import java.util.Map;
 
 public class MiPerfilFragment extends Fragment {
 
-    private EditText edtEdad;
     private Spinner spinnerNivel, spinnerMano;
-    private ArrayAdapter<String> adapterResultados, adapterTorneos, adapterReservas;
-    private List<String> resultados, torneos, reservas;
     private FirebaseFirestore db;
     private FirebaseUser user;
     private static final int NIVEL_MAXIMO = 5;
+
+    // Vistas de datos
+    private TextView txtNombreUsuario, txtPartidosCount, txtSeguidoresCount, txtSeguidosCount;
+    private TextView txtFiabilidadPorcentaje, txtNivelActual, txtPuntosJuego;
+    private TextView txtPartidosGanados, txtPartidosPerdidos, txtEfectividadPorcentaje;
+    private ImageView imgFotoPerfil, imgNivelPadel;
+    private RecyclerView recyclerUltimosPartidos, recyclerCompaneros, recyclerClubes;
 
     @Nullable
     @Override
@@ -47,34 +52,49 @@ public class MiPerfilFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        // Inicializar vistas
-        edtEdad = v.findViewById(R.id.edtEdad);
-        spinnerNivel = v.findViewById(R.id.spinnerNivel);
-        spinnerMano = v.findViewById(R.id.spinnerMano);
-        Button btnGuardarPerfil = v.findViewById(R.id.btnGuardarPerfil);
-        Button btnCerrarSesion = v.findViewById(R.id.btnCerrarSesion);
-        ListView listResultados = v.findViewById(R.id.listResultados);
-        ListView listTorneosApuntados = v.findViewById(R.id.listTorneosApuntados);
-        ListView listMisReservas = v.findViewById(R.id.listMisReservas);
-
-        // Inicializar listas
-        resultados = new ArrayList<>();
-        torneos = new ArrayList<>();
-        reservas = new ArrayList<>();
-
-        // Configurar adapters
-        adapterResultados = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, resultados);
-        adapterTorneos = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, torneos);
-        adapterReservas = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, reservas);
-
-        listResultados.setAdapter(adapterResultados);
-        listTorneosApuntados.setAdapter(adapterTorneos);
-        listMisReservas.setAdapter(adapterReservas);
+        // Inicializar todas las vistas
+        inicializarVistas(v);
 
         // Cargar datos del usuario
         cargarDatosUsuario();
+        cargarEstadisticas();
+        cargarUltimosPartidos();
+        cargarCompanerosHabituales();
+        cargarClubesHabituales();
 
-        // Agregar listener al spinner de nivel para validar nivel máximo
+        return v;
+    }
+
+    private void inicializarVistas(View v) {
+        // Textos
+        txtNombreUsuario = v.findViewById(R.id.txtNombreUsuario);
+        txtPartidosCount = v.findViewById(R.id.txtPartidosCount);
+        txtSeguidoresCount = v.findViewById(R.id.txtSeguidoresCount);
+        txtSeguidosCount = v.findViewById(R.id.txtSeguidosCount);
+        txtFiabilidadPorcentaje = v.findViewById(R.id.txtFiabilidadPorcentaje);
+        txtNivelActual = v.findViewById(R.id.txtNivelActual);
+        txtPuntosJuego = v.findViewById(R.id.txtPuntosJuego);
+        txtPartidosGanados = v.findViewById(R.id.txtPartidosGanados);
+        txtPartidosPerdidos = v.findViewById(R.id.txtPartidosPerdidos);
+        txtEfectividadPorcentaje = v.findViewById(R.id.txtEfectividadPorcentaje);
+
+        // Imágenes
+        imgFotoPerfil = v.findViewById(R.id.imgFotoPerfil);
+        imgNivelPadel = v.findViewById(R.id.imgNivelPadel);
+
+        // RecyclerViews
+        recyclerUltimosPartidos = v.findViewById(R.id.recyclerUltimosPartidos);
+        recyclerCompaneros = v.findViewById(R.id.recyclerCompaneros);
+        recyclerClubes = v.findViewById(R.id.recyclerClubes);
+
+        recyclerUltimosPartidos.setLayoutManager(new LinearLayoutManager(requireContext()));
+        recyclerCompaneros.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerClubes.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        // Spinners
+        spinnerNivel = v.findViewById(R.id.spinnerNivel);
+        spinnerMano = v.findViewById(R.id.spinnerMano);
+
         spinnerNivel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -89,16 +109,12 @@ public class MiPerfilFragment extends Fragment {
             }
         });
 
-        // Botón guardar
-        btnGuardarPerfil.setOnClickListener(v1 -> guardarCambios());
+        // Botones
+        Button btnCerrarSesion = v.findViewById(R.id.btnCerrarSesion);
+        Button btnCambiarFoto = v.findViewById(R.id.btnCambiarFoto);
+
         btnCerrarSesion.setOnClickListener(v1 -> cerrarSesion());
-
-        // Cargar resultados, torneos y reservas
-        cargarResultados();
-        cargarTorneos();
-        cargarReservas();
-
-        return v;
+        btnCambiarFoto.setOnClickListener(v1 -> Toast.makeText(requireContext(), "Funcionalidad próximamente", Toast.LENGTH_SHORT).show());
     }
 
     private void cargarDatosUsuario() {
@@ -112,28 +128,158 @@ public class MiPerfilFragment extends Fragment {
                 .get()
                 .addOnSuccessListener(doc -> {
                     if (doc.exists()) {
-                        String edad = doc.getString("edad");
-                        String nivel = doc.getString("nivel");
-                        String mano = doc.getString("mano");
-
-                        if (edad != null) {
-                            edtEdad.setText(edad);
+                        // Nombre
+                        String nombre = doc.getString("nombre");
+                        if (nombre != null) {
+                            txtNombreUsuario.setText(nombre);
                         }
 
+                        // Nivel
+                        String nivel = doc.getString("nivel");
                         if (nivel != null) {
                             int posicion = getIndexInArray(R.array.niveles_padel, nivel);
                             spinnerNivel.setSelection(posicion);
                         }
 
+                        // Mano
+                        String mano = doc.getString("mano");
                         if (mano != null) {
                             int posicion = getIndexInArray(R.array.mano_juego, mano);
                             spinnerMano.setSelection(posicion);
+                        }
+
+                        // Nivel numérico
+                        Double nivelNumerico = doc.getDouble("nivelNumerico");
+                        if (nivelNumerico != null) {
+                            txtNivelActual.setText(String.format("%.1f", nivelNumerico));
+                        }
+
+                        // Fiabilidad
+                        Double fiabilidad = doc.getDouble("fiabilidad");
+                        if (fiabilidad != null) {
+                            txtFiabilidadPorcentaje.setText(String.format("%.0f%%", fiabilidad * 100));
                         }
                     }
                 })
                 .addOnFailureListener(e ->
                         Toast.makeText(requireContext(), "Error cargando perfil", Toast.LENGTH_SHORT).show()
                 );
+    }
+
+    private void cargarEstadisticas() {
+        if (user == null) return;
+
+        db.collection("partidos")
+                .whereEqualTo("jugador1Uid", user.getUid())
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    int ganados = 0, perdidos = 0;
+
+                    for (QueryDocumentSnapshot doc : snapshot) {
+                        String resultado = doc.getString("resultado");
+                        if ("victoria".equalsIgnoreCase(resultado)) {
+                            ganados++;
+                        } else if ("derrota".equalsIgnoreCase(resultado)) {
+                            perdidos++;
+                        }
+                    }
+
+                    int total = ganados + perdidos;
+                    int efectividad = total > 0 ? (ganados * 100) / total : 0;
+
+                    txtPartidosCount.setText(String.valueOf(total));
+                    txtPartidosGanados.setText(String.valueOf(ganados));
+                    txtPartidosPerdidos.setText(String.valueOf(perdidos));
+                    txtEfectividadPorcentaje.setText(String.format("%d%%", efectividad));
+
+                    // Valores por defecto para puntos en juego
+                    txtPuntosJuego.setText("+2.1 / -1.8");
+                });
+    }
+
+    private void cargarUltimosPartidos() {
+        if (user == null) return;
+
+        db.collection("partidos")
+                .whereEqualTo("jugador1Uid", user.getUid())
+                .orderBy("fecha")
+                .limit(5)
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    List<Map<String, String>> partidos = new ArrayList<>();
+
+                    for (QueryDocumentSnapshot doc : snapshot) {
+                        Map<String, String> partido = new HashMap<>();
+                        partido.put("rival", doc.getString("jugador2Nombre"));
+                        partido.put("resultado", doc.getString("resultado"));
+                        partido.put("fecha", doc.getString("fecha"));
+                        partidos.add(partido);
+                    }
+
+                    if (!partidos.isEmpty()) {
+                        PartidosAdapter adapter = new PartidosAdapter(partidos);
+                        recyclerUltimosPartidos.setAdapter(adapter);
+                    }
+                });
+    }
+
+    private void cargarCompanerosHabituales() {
+        if (user == null) return;
+
+        // Consulta los compañeros con los que más ha jugado
+        db.collection("partidos")
+                .whereEqualTo("jugador1Uid", user.getUid())
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    Map<String, Integer> compañeros = new HashMap<>();
+
+                    for (QueryDocumentSnapshot doc : snapshot) {
+                        String rival = doc.getString("jugador2Nombre");
+                        if (rival != null) {
+                            compañeros.put(rival, compañeros.getOrDefault(rival, 0) + 1);
+                        }
+                    }
+
+                    List<String> top5 = new ArrayList<>();
+                    compañeros.entrySet().stream()
+                            .sorted((a, b) -> b.getValue() - a.getValue())
+                            .limit(5)
+                            .forEach(e -> top5.add(e.getKey()));
+
+                    if (!top5.isEmpty()) {
+                        CompanerosAdapter adapter = new CompanerosAdapter(top5);
+                        recyclerCompaneros.setAdapter(adapter);
+                    }
+                });
+    }
+
+    private void cargarClubesHabituales() {
+        if (user == null) return;
+
+        db.collection("reservas_padel")
+                .whereEqualTo("userUid", user.getUid())
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    Map<String, Integer> clubes = new HashMap<>();
+
+                    for (QueryDocumentSnapshot doc : snapshot) {
+                        String club = doc.getString("club");
+                        if (club != null) {
+                            clubes.put(club, clubes.getOrDefault(club, 0) + 1);
+                        }
+                    }
+
+                    List<String> top5 = new ArrayList<>();
+                    clubes.entrySet().stream()
+                            .sorted((a, b) -> b.getValue() - a.getValue())
+                            .limit(5)
+                            .forEach(e -> top5.add(e.getKey()));
+
+                    if (!top5.isEmpty()) {
+                        ClubesAdapter adapter = new ClubesAdapter(top5);
+                        recyclerClubes.setAdapter(adapter);
+                    }
+                });
     }
 
     private int getIndexInArray(int arrayId, String value) {
@@ -146,110 +292,7 @@ public class MiPerfilFragment extends Fragment {
         return 0;
     }
 
-    private void guardarCambios() {
-        if (user == null) {
-            Toast.makeText(requireContext(), "Debes iniciar sesión", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String edad = edtEdad.getText().toString().trim();
-        String nivel = spinnerNivel.getSelectedItem().toString();
-        String mano = spinnerMano.getSelectedItem().toString();
-
-        if (edad.isEmpty()) {
-            Toast.makeText(requireContext(), "Introduce tu edad", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("edad", edad);
-        data.put("nivel", nivel);
-        data.put("mano", mano);
-
-        db.collection("usuarios")
-                .document(user.getUid())
-                .update(data)
-                .addOnSuccessListener(v ->
-                        Toast.makeText(requireContext(), "Perfil actualizado", Toast.LENGTH_SHORT).show()
-                )
-                .addOnFailureListener(e ->
-                        Toast.makeText(requireContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show()
-                );
-    }
-
     private void cerrarSesion() {
         SessionNavigator.signOutToLogin(requireContext(), FirebaseAuth.getInstance());
-    }
-
-    private void cargarResultados() {
-        if (user == null) return;
-
-        db.collection("resultados")
-                .whereEqualTo("userUid", user.getUid())
-                .limit(5)
-                .get()
-                .addOnSuccessListener(snapshot -> {
-                    resultados.clear();
-                    for (QueryDocumentSnapshot doc : snapshot) {
-                        String equipo1 = doc.getString("equipo1");
-                        String equipo2 = doc.getString("equipo2");
-                        String marcador = doc.getString("marcador");
-                        String resultado = equipo1 + " vs " + equipo2 + " - " + marcador;
-                        resultados.add(resultado);
-                    }
-
-                    if (resultados.isEmpty()) {
-                        resultados.add("Sin resultados aún");
-                    }
-
-                    adapterResultados.notifyDataSetChanged();
-                });
-    }
-
-    private void cargarTorneos() {
-        if (user == null) return;
-
-        db.collection("torneos_inscritos")
-                .whereEqualTo("userUid", user.getUid())
-                .get()
-                .addOnSuccessListener(snapshot -> {
-                    torneos.clear();
-                    for (QueryDocumentSnapshot doc : snapshot) {
-                        String nombreTorneo = doc.getString("nombre");
-                        String fecha = doc.getString("fecha");
-                        String torneo = nombreTorneo + " - " + fecha;
-                        torneos.add(torneo);
-                    }
-
-                    if (torneos.isEmpty()) {
-                        torneos.add("No estás inscrito en torneos");
-                    }
-
-                    adapterTorneos.notifyDataSetChanged();
-                });
-    }
-
-    private void cargarReservas() {
-        if (user == null) return;
-
-        db.collection("reservas_padel")
-                .whereEqualTo("userUid", user.getUid())
-                .get()
-                .addOnSuccessListener(snapshot -> {
-                    reservas.clear();
-                    for (QueryDocumentSnapshot doc : snapshot) {
-                        String pista = doc.getString("pista");
-                        String fecha = doc.getString("fecha");
-                        String hora = doc.getString("hora");
-                        String reserva = pista + " - " + fecha + " " + hora;
-                        reservas.add(reserva);
-                    }
-
-                    if (reservas.isEmpty()) {
-                        reservas.add("No tienes reservas");
-                    }
-
-                    adapterReservas.notifyDataSetChanged();
-                });
     }
 }

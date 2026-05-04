@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:background="@color/light_gray">
 
-    <!-- Fragment Superior -->
-    <fragment
+    <!-- Cabecera superior decorativa -->
+    <FrameLayout
         android:id="@+id/fragmentSuperior"
-        android:name="com.example.tmanager.FragmentSuperiorActivity"
         android:layout_width="match_parent"
         android:layout_height="70dp"
+        android:background="@color/primary_blue"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
