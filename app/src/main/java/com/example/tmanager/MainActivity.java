@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     FragmentManager fragmentManager;
     private boolean isJugador = false;
-    private TextView txtTopBarTitle;
     private ImageButton btnNotificacionesTop;
     private ImageButton btnMenuTop;
 
@@ -43,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
 
-        txtTopBarTitle = findViewById(R.id.txtTopBarTitle);
         btnNotificacionesTop = findViewById(R.id.btnNotificacionesTop);
         btnMenuTop = findViewById(R.id.btnMenuTop);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -62,16 +60,12 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
             boolean loaded = loadFragmentForItem(item.getItemId());
-            if (loaded) {
-                actualizarTitulo(item.getItemId());
-            }
             return loaded;
         });
 
         int initialItem = getInitialMenuItem();
         bottomNavigationView.setSelectedItemId(initialItem);
         loadFragmentForItem(initialItem);
-        actualizarTitulo(initialItem);
     }
 
     private boolean loadFragmentForItem(int itemId) {
@@ -95,16 +89,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void actualizarTitulo(int itemId) {
-        if (txtTopBarTitle == null) return;
-        if (itemId == R.id.btnInicio) {
-            txtTopBarTitle.setText("Inicio");
-        } else if (itemId == R.id.btnComunidad) {
-            txtTopBarTitle.setText("Comunidad");
-        } else if (itemId == R.id.btnPerfil) {
-            txtTopBarTitle.setText("Perfil");
-        }
-    }
 
     private void mostrarMenuSuperior(android.view.View anchor) {
         PopupMenu popupMenu = new PopupMenu(this, anchor);
