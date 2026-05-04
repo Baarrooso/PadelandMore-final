@@ -16,28 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageButton
-            android:id="@+id/btnNotificacionesTop"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="56dp"
-            android:background="@android:color/transparent"
-            android:contentDescription="Notificaciones"
-            android:src="@drawable/ic_notifications"
-            android:tint="@color/white" />
-
-        <ImageButton
-            android:id="@+id/btnMenuTop"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="8dp"
-            android:background="@android:color/transparent"
-            android:contentDescription="Menú"
-            android:src="@drawable/ic_menu_hamburger"
-            android:tint="@color/white" />
-
     </FrameLayout>
 
     <FrameLayout
@@ -49,6 +27,33 @@
         app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Botones flotantes a la altura del fragmentContainer -->
+    <ImageButton
+        android:id="@+id/btnNotificacionesTop"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="56dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="Notificaciones"
+        android:src="@drawable/ic_notifications"
+        android:tint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragmentSuperior" />
+
+    <ImageButton
+        android:id="@+id/btnMenuTop"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="Menú"
+        android:src="@drawable/ic_menu_hamburger"
+        android:tint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragmentSuperior" />
 
     <!-- Bottom Navigation View - Estilo Playtomic -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
