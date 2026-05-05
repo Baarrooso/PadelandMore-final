@@ -2,35 +2,73 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/dark_blue_light">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/primary_blue">
+        android:layout_height="70dp"
+        android:background="@color/primary_blue"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:layout_marginBottom="24dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:text="Buscar Jugadores"
-            android:textColor="#FFFFFF"
-            android:textSize="28sp"
+            android:text="@string/comunidad"
+            android:textColor="@color/accent_orange"
+            android:textSize="20sp"
             android:textStyle="bold" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <TextView
+            android:id="@+id/txtFiltroComunidad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buscar_comunidad"
+            android:textStyle="bold"
+            android:textColor="@color/white" />
+
+        <EditText
+            android:id="@+id/edtBuscarNombreComunidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/busqueda_nombre_alias_club"
+            android:autofillHints="name"
+            android:inputType="textPersonName"
+            android:textColor="@color/white"
+            android:textColorHint="@color/light_gray"
+            android:backgroundTint="@color/accent_orange" />
+
+        <EditText
+            android:id="@+id/edtCiudadBuscada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/ciudad_opcional"
+            android:autofillHints="addressLocality"
+            android:inputType="textPostalAddress"
+            android:textColor="@color/white"
+            android:textColorHint="@color/light_gray"
+            android:backgroundTint="@color/accent_orange" />
 
         <TextView
             android:id="@+id/txtNivelBuscado"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nivel buscado: 3"
+            android:layout_marginTop="14dp"
+            android:text="@string/nivel_buscado"
             android:textStyle="bold"
             android:textColor="@color/white" />
 
@@ -41,30 +79,37 @@
             android:max="6"
             android:progress="2" />
 
-        <EditText
-            android:id="@+id/edtCiudadBuscada"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Ciudad (opcional)" />
-
         <Button
             android:id="@+id/btnBuscarNivel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Buscar"
+            android:text="@string/buscar"
             android:backgroundTint="@color/accent_orange"
             android:textColor="@color/white"
             android:textStyle="bold" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/listJugadoresNivel"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/resultados_comunidad"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerComunidad"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="16dp" />
+        android:paddingBottom="16dp"
+        android:clipToPadding="false" />
 
 </LinearLayout>
 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_editar_perfil"
+        android:title="Editar perfil" />
+    <item
+        android:id="@+id/menu_cambiar_idioma"
+        android:title="Cambiar idioma" />
+    <item
+        android:id="@+id/menu_ajustes_basicos"
+        android:title="Ajustes básicos" />
+    <item
+        android:id="@+id/menu_soporte"
+        android:title="Soporte" />
+    <item
+        android:id="@+id/menu_cerrar_sesion"
+        android:title="Cerrar sesión" />
+</menu>
+
