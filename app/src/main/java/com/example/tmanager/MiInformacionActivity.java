@@ -22,11 +22,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.UUID;
-
 public class MiInformacionActivity extends AppCompatActivity {
 
     ImageView imgPerfil;
+    ImageButton btnRetroceso;
     EditText edtNombre, edtPassActual, edtPassNueva, edtPassConfirmar;
     ImageView btnSaveNombre, btnSavePassword;
     ImageView eyeActual, eyeNueva, eyeConfirmar;
@@ -55,6 +54,7 @@ public class MiInformacionActivity extends AppCompatActivity {
         super.onCreate(b);
         setContentView(R.layout.activity_mi_informacion);
 
+        btnRetroceso = findViewById(R.id.btnRetroceso);
         imgPerfil = findViewById(R.id.imgPerfil);
         edtNombre = findViewById(R.id.edtNombre);
         txtEmail = findViewById(R.id.txtEmail);
@@ -93,6 +93,7 @@ public class MiInformacionActivity extends AppCompatActivity {
         cargarFotoPerfil();
         configurarGoogle();
 
+        btnRetroceso.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
         imgPerfil.setOnClickListener(v -> seleccionarFoto());
         btnSaveNombre.setOnClickListener(v -> confirmarGuardarNombre());
         btnSaveAlias.setOnClickListener(v -> confirmarGuardarAlias());
@@ -101,10 +102,6 @@ public class MiInformacionActivity extends AppCompatActivity {
         btnEliminarCuenta.setOnClickListener(v -> confirmarEliminarCuenta());
     }
 
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
 
     private void seleccionarFoto() {
         Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

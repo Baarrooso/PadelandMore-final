@@ -27,7 +27,7 @@ public class NotificacionesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notificaciones);
 
         ImageButton btnRetroceso = findViewById(R.id.btnRetroceso);
-        btnRetroceso.setOnClickListener(v -> finish());
+        btnRetroceso.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
 
         RecyclerView recycler = findViewById(R.id.recyclerNotificaciones);
         recycler.setLayoutManager(new LinearLayoutManager(this));

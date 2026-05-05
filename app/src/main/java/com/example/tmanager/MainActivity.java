@@ -55,10 +55,6 @@ public class MainActivity extends AppCompatActivity {
         btnMenuTop.setOnClickListener(v -> mostrarMenuSuperior(v));
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (isJugador && item.getItemId() == R.id.btnComunidad) {
-                android.widget.Toast.makeText(this, "Acceso restringido en modo jugador", android.widget.Toast.LENGTH_SHORT).show();
-                return false;
-            }
             boolean loaded = loadFragmentForItem(item.getItemId());
             return loaded;
         });

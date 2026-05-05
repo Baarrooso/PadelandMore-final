@@ -1,6 +1,7 @@
 package com.example.tmanager;
 
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -19,9 +20,12 @@ public class AjustesBasicosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ajustes_basicos);
 
+        ImageButton btnRetroceso = findViewById(R.id.btnRetroceso);
         switchNotificaciones = findViewById(R.id.switchNotificaciones);
         switchModoOscuro = findViewById(R.id.switchModoOscuro);
         Button btnGuardar = findViewById(R.id.btnGuardarAjustes);
+
+        btnRetroceso.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
 
         btnGuardar.setOnClickListener(v -> {
             boolean modoOscuro = switchModoOscuro.isChecked();
