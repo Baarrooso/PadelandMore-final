@@ -1,5 +1,6 @@
 package com.example.tmanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -152,11 +153,15 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
             return;
         }
 
-        // Aquí iría la pasarela de pago
-        Toast.makeText(requireContext(), 
-            "Reserva: " + pista.getNombre() + " - " + selectedDay + " a " + selectedHour + 
-            " por " + selectedDuration + " min - €" + pista.getPrecio(), 
-            Toast.LENGTH_SHORT).show();
+        // Ir a pasarela de pago
+        Intent intent = new Intent(requireContext(), PaymentActivity.class);
+        intent.putExtra("clubNombre", clubSeleccionado.getNombre());
+        intent.putExtra("pistaNombre", pista.getNombre());
+        intent.putExtra("dia", selectedDay);
+        intent.putExtra("hora", selectedHour);
+        intent.putExtra("duracion", selectedDuration);
+        intent.putExtra("precio", pista.getPrecio());
+        startActivity(intent);
     }
 
     private void configurarDias() {
