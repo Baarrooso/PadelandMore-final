@@ -99,6 +99,24 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
         btnReservarPista = view.findViewById(R.id.btnReservarPista);
         btnReservarPista.setOnClickListener(v -> procesarReserva());
 
+        // Botón Sorteos
+        Button btnSorteos = view.findViewById(R.id.btnSorteos);
+        btnSorteos.setOnClickListener(v -> {
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContainer, new SorteosFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        // Botón Torneos
+        Button btnTorneos = view.findViewById(R.id.btnTorneos);
+        btnTorneos.setOnClickListener(v -> {
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContainer, new TorneosFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         // Botón atrás
         view.findViewById(R.id.btnBackReservarPista).setOnClickListener(v -> {
             getParentFragmentManager().popBackStack();
