@@ -33,6 +33,13 @@ public class ReservasFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
+        // Botón para abrir Reservar Pista con nueva interfaz
+        view.findViewById(R.id.btnReservarPistaMain).setOnClickListener(v ->
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContainer, new ReservarPistaFragment())
+                    .addToBackStack(null)
+                    .commit());
+
         // Botones de las 4 pistas
         view.findViewById(R.id.btnReservarPista1).setOnClickListener(v ->
             mostrarDialogoReserva("Pista 1 - Central", "Club Padel Madrid", "1", "pista"));
