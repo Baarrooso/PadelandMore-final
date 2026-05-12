@@ -48,9 +48,19 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
     private LinearLayout containerReserva;
     private TextView tvClubSeleccionado;
     private Club clubSeleccionado;
+    private Pista pistaSeleccionada;
     
     private Button btnDuracionSeleccionado;
     private Button btnHoraSeleccionado;
+    private Button btnReservarPista;
+    
+    // TextViews del resumen
+    private TextView tvResumenClub;
+    private TextView tvResumenPista;
+    private TextView tvResumenDia;
+    private TextView tvResumenHora;
+    private TextView tvResumenDuracion;
+    private TextView tvResumenPrecio;
 
 
     @Nullable
@@ -76,6 +86,18 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
         recyclerPistas = view.findViewById(R.id.recyclerPistas);
         containerReserva = view.findViewById(R.id.containerReserva);
         tvClubSeleccionado = view.findViewById(R.id.tvClubSeleccionado);
+        
+        // Inicializar TextViews del resumen
+        tvResumenClub = view.findViewById(R.id.tvResumenClub);
+        tvResumenPista = view.findViewById(R.id.tvResumenPista);
+        tvResumenDia = view.findViewById(R.id.tvResumenDia);
+        tvResumenHora = view.findViewById(R.id.tvResumenHora);
+        tvResumenDuracion = view.findViewById(R.id.tvResumenDuracion);
+        tvResumenPrecio = view.findViewById(R.id.tvResumenPrecio);
+        
+        // Botón Reservar Principal
+        btnReservarPista = view.findViewById(R.id.btnReservarPista);
+        btnReservarPista.setOnClickListener(v -> procesarReserva());
 
         // Botón atrás
         view.findViewById(R.id.btnBackReservarPista).setOnClickListener(v -> {
@@ -120,6 +142,7 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
     public void onClubClick(Club club) {
         clubSeleccionado = club;
         tvClubSeleccionado.setText("Club seleccionado: " + club.getNombre());
+        tvResumenClub.setText(club.getNombre());
         cargarPistasPorClub(club.getId());
     }
 
@@ -141,28 +164,15 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
         }
 
         PistasAdapter adapter = new PistasAdapter(pistas, pista -> {
-            irAPasarelaPago(pista);
+            pistaSeleccionada = pista;
+            tvResumenPista.setText(pista.getNombre());
+            tvResumenPrecio.setText(String.format("€%.2f", pista.getPrecio()));
+            Toast.makeText(requireContext(), "Pista seleccionada: " + pista.getNombre(), Toast.LENGTH_SHORT).show();
         });
         recyclerPistas.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerPistas.setAdapter(adapter);
     }
 
-    private void irAPasarelaPago(Pista pista) {
-        if (selectedDay.isEmpty() || selectedHour.isEmpty()) {
-            Toast.makeText(requireContext(), "Selecciona día y hora", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Ir a pasarela de pago
-        Intent intent = new Intent(requireContext(), PaymentActivity.class);
-        intent.putExtra("clubNombre", clubSeleccionado.getNombre());
-        intent.putExtra("pistaNombre", pista.getNombre());
-        intent.putExtra("dia", selectedDay);
-        intent.putExtra("hora", selectedHour);
-        intent.putExtra("duracion", selectedDuration);
-        intent.putExtra("precio", pista.getPrecio());
-        startActivity(intent);
-    }
 
     private void configurarDias() {
         containerDias.removeAllViews();
@@ -218,6 +228,7 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
                 selectedDay = fecha + " " + mes;
                 // Cambiar color del día seleccionado
                 cambiarColorDiaSeleccionado(diaDia);
+                tvResumenDia.setText(selectedDay);
                 Toast.makeText(requireContext(), "Día seleccionado: " + selectedDay, Toast.LENGTH_SHORT).show();
             });
 
@@ -277,6 +288,7 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
                 btnHoraSeleccionado = btnHora;
                 btnHora.setBackgroundColor(getResources().getColor(R.color.accent_orange));
                 btnHora.setTextColor(getResources().getColor(android.R.color.white));
+                tvResumenHora.setText(selectedHour);
                 Toast.makeText(requireContext(), "Hora seleccionada: " + selectedHour, Toast.LENGTH_SHORT).show();
             });
 
@@ -299,7 +311,41 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
         button.setBackgroundColor(getResources().getColor(R.color.accent_orange));
         btnDuracionSeleccionado = button;
         selectedDuration = duracion;
+        tvResumenDuracion.setText(duracion + " min");
         Toast.makeText(requireContext(), "Duración: " + duracion + " min", Toast.LENGTH_SHORT).show();
+    }
+
+    private void procesarReserva() {
+        // Validar que todos los datos estén seleccionados
+        if (clubSeleccionado == null) {
+            Toast.makeText(requireContext(), "Selecciona un club", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (pistaSeleccionada == null) {
+            Toast.makeText(requireContext(), "Selecciona una pista", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (selectedDay.isEmpty()) {
+            Toast.makeText(requireContext(), "Selecciona un día", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (selectedHour.isEmpty()) {
+            Toast.makeText(requireContext(), "Selecciona una hora", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Ir a pasarela de pago
+        Intent intent = new Intent(requireContext(), PaymentActivity.class);
+        intent.putExtra("clubNombre", clubSeleccionado.getNombre());
+        intent.putExtra("pistaNombre", pistaSeleccionada.getNombre());
+        intent.putExtra("dia", selectedDay);
+        intent.putExtra("hora", selectedHour);
+        intent.putExtra("duracion", selectedDuration);
+        intent.putExtra("precio", pistaSeleccionada.getPrecio());
+        startActivity(intent);
     }
 
 }
