@@ -12,22 +12,17 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.auth.api.signin.*;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.*;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.tmanager.network.Backend;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
     EditText edtEmail, edtPassword;
     Button btnEntrar;
-    ImageView btnGoogle, btnVerPassword;
+    ImageView btnVerPassword;
     TextView txtIrRegistro;
-
-    FirebaseAuth auth;
-    GoogleSignInClient googleClient;
-    private static final int RC_GOOGLE = 3000;
 
     boolean passwordVisible = false;
 
@@ -39,34 +34,12 @@ public class LoginActivity extends AppCompatActivity {
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
         btnEntrar = findViewById(R.id.btnEntrar);
-        btnGoogle = findViewById(R.id.btnGoogleLogin);
         btnVerPassword = findViewById(R.id.btnVerPassword);
         txtIrRegistro = findViewById(R.id.txtIrRegistro);
 
-        auth = FirebaseAuth.getInstance();
-
-        configurarGoogle();
-
         btnEntrar.setOnClickListener(v -> loginManual());
-        btnGoogle.setOnClickListener(v -> iniciarGoogle());
         btnVerPassword.setOnClickListener(v -> togglePassword());
         txtIrRegistro.setOnClickListener(v -> irARegistro());
-
-    }
-
-    private void configurarGoogle() {
-        GoogleSignInOptions gso =
-                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.default_web_client_id))
-                        .requestEmail()
-                        .build();
-
-        googleClient = GoogleSignIn.getClient(this, gso);
-    }
-
-    private void iniciarGoogle() {
-        Intent intent = googleClient.getSignInIntent();
-        startActivityForResult(intent, RC_GOOGLE);
     }
 
     private void loginManual() {
@@ -78,14 +51,20 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        auth.signInWithEmailAndPassword(mail, pass)
-                .addOnSuccessListener(authResult -> {
-                    comprobarEquipoYRedirigir();
-                })
+        Map<String, Object> body = new HashMap<>();
+        body.put("email", mail);
+        body.put("password", pass);
 
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, "Error login: " + e.getMessage(), Toast.LENGTH_SHORT).show()
-                );
+        Backend.login(this, body,
+            resp -> {
+                // Login OK → ir a MainActivity
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            },
+            t -> Toast.makeText(this,
+                    "Error al iniciar sesión: " + t.getMessage(),
+                    Toast.LENGTH_LONG).show()
+        );
     }
 
     private void togglePassword() {
@@ -96,7 +75,6 @@ public class LoginActivity extends AppCompatActivity {
             edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
             btnVerPassword.setImageResource(R.drawable.ic_eye_open);
         }
-
         edtPassword.setSelection(edtPassword.getText().length());
         passwordVisible = !passwordVisible;
     }
@@ -104,104 +82,4 @@ public class LoginActivity extends AppCompatActivity {
     private void irARegistro() {
         startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_GOOGLE) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-
-            try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-
-                if (account == null) {
-                    Toast.makeText(this, "Google cancelado", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-
-                auth.signInWithCredential(credential)
-                        .addOnSuccessListener(authResult -> {
-
-                            FirebaseUser user = auth.getCurrentUser();
-                            if (user == null) return;
-
-                            String uid = user.getUid();
-
-                            FirebaseFirestore.getInstance()
-                                    .collection("usuarios")
-                                    .document(uid)
-                                    .get()
-                                    .addOnSuccessListener(doc -> {
-
-                                        if (!doc.exists()) {
-                                            // 🔴 USUARIO GOOGLE NO REGISTRADO
-                                            GoogleSignInClient client = GoogleSignIn.getClient(
-                                                    this,
-                                                    GoogleSignInOptions.DEFAULT_SIGN_IN
-                                            );
-
-                                            Toast.makeText(this,
-                                                    "Esta cuenta no está registrada. Regístrate primero.",
-                                                    Toast.LENGTH_LONG).show();
-
-                                            SessionNavigator.signOutGoogleAndGoTo(
-                                                    this,
-                                                    auth,
-                                                    client,
-                                                    RegisterActivity.class
-                                            );
-                                            return;
-                                        }
-
-                                        // ✅ USUARIO EXISTE → LOGIN OK
-                                        startActivity(new Intent(this, MainActivity.class));
-                                        finish();
-                                    });
-                        })
-                        .addOnFailureListener(e ->
-                                Toast.makeText(this,
-                                        "Error auth Google: " + e.getMessage(),
-                                        Toast.LENGTH_SHORT).show()
-                        );
-
-
-            } catch (ApiException e) {
-                Toast.makeText(this, "Google sign in error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-    private void comprobarEquipoYRedirigir() {
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        FirebaseUser user = auth.getCurrentUser();
-
-        if (user == null) {
-            Toast.makeText(this, "Sesión no válida", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        db.collection("usuarios")
-                .document(user.getUid())
-                .get()
-                .addOnSuccessListener(doc -> {
-
-                    String equipoId = doc.getString("equipoId");
-                    String rol = doc.getString("rol");
-
-                    if (equipoId == null && "none".equals(rol)) {
-
-                        // ExpulsadoActivity fue eliminada, redirigir a MainActivity
-                        startActivity(new Intent(this, MainActivity.class));
-                        finish();
-
-                    } else {
-                        startActivity(new Intent(this, MainActivity.class));
-                        finish();
-                    }
-                });
-    }
-
 }

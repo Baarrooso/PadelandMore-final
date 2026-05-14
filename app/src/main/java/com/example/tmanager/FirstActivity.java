@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.tmanager.network.Backend;
 
 public class FirstActivity extends AppCompatActivity {
 
@@ -14,12 +14,14 @@ public class FirstActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+        // ✅ IMPORTANTE: Cargar el layout SIEMPRE primero para evitar pantalla negra
+        setContentView(R.layout.activity_first);
+
+        // Comprobar sesión activa DESPUÉS de inflar el layout
+        if (Backend.getCurrentUid(this) != null) {
             irAMainEventos();
             return;
         }
-
-        setContentView(R.layout.activity_first);
 
         TextView iniciar = findViewById(R.id.txtIniciar);
         TextView registrar = findViewById(R.id.txtRegistrar);

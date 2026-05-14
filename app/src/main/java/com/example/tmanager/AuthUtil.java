@@ -5,14 +5,11 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.tmanager.network.Backend;
 
 /**
- * Utilitario sencillo para obtener el rol del usuario y cachearlo localmente.
- * Usa la colección "usuarios" y el campo "rol" (string) por convención.
+ * Utilitario para obtener el rol del usuario desde SharedPreferences.
+ * Migrado de Firebase Firestore → Backend REST / caché local.
  */
 public class AuthUtil {
 
@@ -20,57 +17,33 @@ public class AuthUtil {
         void onResult(boolean isJugador);
     }
 
-    private static final String PREFS = "auth_prefs";
+    private static final String PREFS    = "auth_prefs";
     private static final String KEY_ROLE = "user_role";
 
     public static void isJugador(final Context context, @NonNull final RoleCallback callback) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) {
-            // No logged user -> not jugador by default
+        // El UID se guarda localmente en SharedPreferences cuando el usuario hace login/registro
+        String uid = Backend.getCurrentUid(context);
+        if (uid == null) {
             callback.onResult(false);
             return;
         }
 
         SharedPreferences prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-        String cached = prefs.getString(KEY_ROLE + "_" + user.getUid(), null);
+        String cached = prefs.getString(KEY_ROLE + "_" + uid, null);
+
         if (cached != null) {
             callback.onResult("jugador".equalsIgnoreCase(cached));
-            // Also refresh in background
-            refreshRoleFromServer(user.getUid(), prefs, callback);
-            return;
+        } else {
+            // Por defecto se asigna rol "jugador" hasta que se obtenga el perfil completo
+            callback.onResult(true);
         }
-
-        // No cache -> fetch from Firestore
-        FirebaseFirestore.getInstance()
-                .collection("usuarios")
-                .document(user.getUid())
-                .get()
-                .addOnSuccessListener((DocumentSnapshot doc) -> {
-                    if (doc != null && doc.exists()) {
-                        String role = doc.getString("rol");
-                        if (role == null) role = doc.getString("role");
-                        prefs.edit().putString(KEY_ROLE + "_" + user.getUid(), role == null ? "" : role).apply();
-                        callback.onResult("jugador".equalsIgnoreCase(role));
-                    } else {
-                        callback.onResult(false);
-                    }
-                })
-                .addOnFailureListener(e -> callback.onResult(false));
     }
 
-    private static void refreshRoleFromServer(String uid, SharedPreferences prefs, @NonNull RoleCallback callback) {
-        FirebaseFirestore.getInstance()
-                .collection("usuarios")
-                .document(uid)
-                .get()
-                .addOnSuccessListener((DocumentSnapshot doc) -> {
-                    if (doc != null && doc.exists()) {
-                        String role = doc.getString("rol");
-                        if (role == null) role = doc.getString("role");
-                        prefs.edit().putString(KEY_ROLE + "_" + uid, role == null ? "" : role).apply();
-                        callback.onResult("jugador".equalsIgnoreCase(role));
-                    }
-                });
+    /**
+     * Guarda el rol del usuario en caché local para consultas rápidas.
+     */
+    public static void saveRole(Context context, String uid, String role) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        prefs.edit().putString(KEY_ROLE + "_" + uid, role == null ? "jugador" : role).apply();
     }
 }
-

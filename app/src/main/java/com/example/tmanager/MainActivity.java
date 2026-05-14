@@ -108,7 +108,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, SoporteActivity.class));
             return true;
         } else if (id == R.id.menu_cerrar_sesion) {
-            SessionNavigator.signOutToLogin(this, com.google.firebase.auth.FirebaseAuth.getInstance());
+            com.example.tmanager.network.Backend.logout(this);
+            SessionNavigator.goToLoginClean(this);
             return true;
         }
         return false;
