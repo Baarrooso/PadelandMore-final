@@ -60,7 +60,7 @@ Para VERIFICAR que todo está sincronizado:
 ═════════════════════════════════════════════════════════════════════════════════
 
 Tu repositorio local tiene commits que no están en GitHub:
-  • d7813b5 - TManager project setup
+  • d7813b5 - Pádel&More project setup
   • 1a82c1d - Merge (ya revertido del remoto)
 
 Esto está BIEN. Solo significa que tienes código local que aún no has subido.
@@ -93,7 +93,7 @@ LOCAL (Tu máquina):
   1a82c1d - Merge with remote TFG repository
   57e3c70 - Merge remote changes           ← (igual que GitHub)
   3a49ac1 - Initial commit
-  d7813b5 - TManager project setup
+  d7813b5 - Pádel&More project setup
   9786f00 - Initial commit
 
 GITHUB (Remoto):
@@ -102,7 +102,7 @@ GITHUB (Remoto):
   9786f00 - Initial commit
 
 Lo que tienes de más localmente es d7813b5 y 1a82c1d
-(Estos son los cambios del TManager setup)
+(Estos son los cambios del Pádel&More setup)
 
 
 ═════════════════════════════════════════════════════════════════════════════════

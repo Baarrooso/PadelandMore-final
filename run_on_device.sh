@@ -1,11 +1,11 @@
 #!/bin/bash
-# Script para ejecutar TManager en dispositivo/emulador (Linux/Mac)
+# Script para ejecutar Pádel&More en dispositivo/emulador (Linux/Mac)
 
 set -e
 
 echo ""
 echo "========================================"
-echo " TManager - Device Manager Launcher"
+echo " Pádel&More - Device Manager Launcher"
 echo "========================================"
 echo ""
 

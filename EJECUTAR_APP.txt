@@ -1,6 +1,6 @@
 ╔═══════════════════════════════════════════════════════════════════════════════╗
 ║                                                                               ║
-║                   ✅ TManager LISTO PARA EJECUTAR                            ║
+║                 ✅ Pádel&More LISTO PARA EJECUTAR                            ║
 ║                                                                               ║
 ║                        El proyecto está compilado                            ║
 ║                     Elige una de las 3 opciones para ejecutar                ║
@@ -171,7 +171,7 @@ adb uninstall com.example.tmanager
 📊 INFORMACIÓN DEL PROYECTO
 ═══════════════════════════════════════════════════════════════════════════════
 
-Nombre:          TManager
+Nombre:          Pádel&More
 Paquete:         com.example.tmanager
 versión compileSdk: 35 (Android 15)
 versión minSdk:   24 (Android 7.0)

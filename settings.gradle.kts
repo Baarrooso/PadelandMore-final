@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "TManager"
+rootProject.name = "PadelMore"
 include(":app")
  

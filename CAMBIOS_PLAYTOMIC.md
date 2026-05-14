@@ -1,4 +1,4 @@
-# Cambios de Diseño Playtomic - TManager
+# Cambios de Diseño Playtomic - Pádel&More
 
 ## Resumen de cambios
 Se ha rediseñado la aplicación para que se asemeje más a Playtomic, con una paleta de colores moderna y profesional.

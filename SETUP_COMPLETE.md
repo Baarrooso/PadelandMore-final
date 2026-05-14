@@ -1,4 +1,4 @@
-# ✅ TManager - Configuración completada para Device Manager
+# ✅ Pádel&More - Configuración completada para Device Manager
 
 ## 📋 Resumen de cambios realizados
 
@@ -114,14 +114,14 @@ La app iniciará con **FirstActivity** que:
 | "ADB not found" | Agrega `%ANDROID_HOME%\platform-tools` al PATH |
 | "Unable to delete directory" | Cierra Android Studio, espera 5 segundos y vuelve a intentar |
 | "Error compilando" | Ejecuta `.\gradlew clean` y luego `.\gradlew assembleDebug` |
-| App se cierra al iniciar | Revisa logcat: `adb logcat \| grep tmanager` |
+| App se cierra al iniciar | Revisa logcat: `adb logcat \| grep padelmore` |
 
 ---
 
 ## 📚 Archivos importantes
 
 ```
-TManager-main/
+PadelMore/
 ├── run_on_device.bat        ← Script automático (Windows CMD)
 ├── run_on_device.ps1        ← Script automático (Windows PowerShell)
 ├── run_on_device.sh         ← Script automático (Linux/Mac)

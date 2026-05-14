@@ -3,7 +3,7 @@ REM Verificador rápido de que todo está listo para ejecutar
 cls
 echo.
 echo ════════════════════════════════════════════════════════════
-echo   VERIFICACIÓN RÁPIDA - TManager
+echo   VERIFICACIÓN RÁPIDA - Pádel&More
 echo ════════════════════════════════════════════════════════════
 echo.
 

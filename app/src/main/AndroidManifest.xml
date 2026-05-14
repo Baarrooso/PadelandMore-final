@@ -10,15 +10,16 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TManager"
+        android:theme="@style/Theme.PadelMore"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
         <!-- FirstActivity como LAUNCHER -->
         <activity
-            android:name="com.example.tmanager.FirstActivity"
+            android:name="com.example.padelandmore.FirstActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.TManager">
+            android:theme="@style/Theme.PadelMore">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -26,30 +27,30 @@
         </activity>
 
         <activity
-            android:name="com.example.tmanager.MainActivity"
+            android:name="com.example.padelandmore.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.TManager" />
+            android:theme="@style/Theme.PadelMore" />
 
-        <activity android:name="com.example.tmanager.LoginActivity" android:exported="true" />
-        <activity android:name="com.example.tmanager.RegisterActivity" android:exported="true" />
-        <activity android:name="com.example.tmanager.WelcomeActivity" android:exported="true" />
-        <activity android:name="com.example.tmanager.ResultadosActivity" android:exported="true" />
-        <activity android:name="com.example.tmanager.EstadisticasJugadoresActivity" android:exported="true" />
-        <activity android:name="com.example.tmanager.RegistroAsistenciaActivity" android:exported="true" />
-        <activity android:name="com.example.tmanager.MiInformacionActivity" android:exported="true" />
-        <activity android:name="com.example.tmanager.MiembrosActivity" android:exported="true" />
-        <activity android:name="com.example.tmanager.NotificacionesActivity" android:exported="true" />
-        <activity android:name="com.example.tmanager.MensajesActivity" android:exported="true" />
-        <activity android:name="com.example.tmanager.PadelNivelActivity" android:exported="true" />
-        <activity android:name="com.example.tmanager.AjustesBasicosActivity" android:exported="true" />
-        <activity android:name="com.example.tmanager.SoporteActivity" android:exported="true" />
-        <activity android:name="com.example.tmanager.PerfilPublicoActivity" android:exported="true" />
-        <activity android:name="com.example.tmanager.PaymentActivity" android:exported="true" />
-        <activity android:name="com.example.tmanager.PartidoDetalleActivity" android:exported="true" />
+        <activity android:name="com.example.padelandmore.LoginActivity" android:exported="true" />
+        <activity android:name="com.example.padelandmore.RegisterActivity" android:exported="true" />
+        <activity android:name="com.example.padelandmore.WelcomeActivity" android:exported="true" />
+        <activity android:name="com.example.padelandmore.ResultadosActivity" android:exported="true" />
+        <activity android:name="com.example.padelandmore.EstadisticasJugadoresActivity" android:exported="true" />
+        <activity android:name="com.example.padelandmore.RegistroAsistenciaActivity" android:exported="true" />
+        <activity android:name="com.example.padelandmore.MiInformacionActivity" android:exported="true" />
+        <activity android:name="com.example.padelandmore.MiembrosActivity" android:exported="true" />
+        <activity android:name="com.example.padelandmore.NotificacionesActivity" android:exported="true" />
+        <activity android:name="com.example.padelandmore.MensajesActivity" android:exported="true" />
+        <activity android:name="com.example.padelandmore.PadelNivelActivity" android:exported="true" />
+        <activity android:name="com.example.padelandmore.AjustesBasicosActivity" android:exported="true" />
+        <activity android:name="com.example.padelandmore.SoporteActivity" android:exported="true" />
+        <activity android:name="com.example.padelandmore.PerfilPublicoActivity" android:exported="true" />
+        <activity android:name="com.example.padelandmore.PaymentActivity" android:exported="true" />
+        <activity android:name="com.example.padelandmore.PartidoDetalleActivity" android:exported="true" />
 
         <service
-            android:name="com.example.tmanager.MyFirebaseMessagingService"
+            android:name="com.example.padelandmore.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

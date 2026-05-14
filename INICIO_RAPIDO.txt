@@ -1,5 +1,5 @@
 ═══════════════════════════════════════════════════════════════════════════════
-                    ✅ TMANAGER - PROYECTO COMPLETADO
+                    ✅ PÁDEL&MORE - PROYECTO COMPLETADO
 ═══════════════════════════════════════════════════════════════════════════════
 
 
@@ -32,13 +32,13 @@ OPCIÓN 2️⃣  CONECTAR CON GITHUB
 
 PASO 1: Crear repositorio (5 minutos)
   1. Ve a: https://github.com/new
-  2. Nombre: TManager
+  2. Nombre: Pádel&More
   3. Click "Create repository"
 
 PASO 2: Conectar tu proyecto (2 minutos)
   Abre terminal en tu proyecto y ejecuta:
 
-  git remote add origin https://github.com/tu_usuario/TManager.git
+  git remote add origin https://github.com/tu_usuario/PadelMore.git
   git branch -M main
   git push -u origin main
 

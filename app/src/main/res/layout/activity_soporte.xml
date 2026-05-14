@@ -54,7 +54,7 @@
         android:id="@+id/txtSoporteEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="soporte@tmanager.com"
+        android:text="soporte@padelmore.com"
         android:textStyle="bold"
         android:textColor="@color/accent_orange"
         android:layout_marginBottom="24dp" />
@@ -66,4 +66,3 @@
         android:text="Contactar por correo" />
 
 </LinearLayout>
-

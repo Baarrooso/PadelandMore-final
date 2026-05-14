@@ -1,5 +1,5 @@
 @echo off
-REM Script para ejecutar TManager en dispositivo/emulador
+REM Script para ejecutar Pádel&More en dispositivo/emulador
 REM Limpia procesos bloqueados, compila e instala la app
 
 setlocal enabledelayedexpansion
@@ -7,7 +7,7 @@ setlocal enabledelayedexpansion
 cls
 echo.
 echo ════════════════════════════════════════════════════════════
-echo   TManager - Device Manager Launcher
+echo   Pádel&More - Device Manager Launcher
 echo ════════════════════════════════════════════════════════════
 echo.
 

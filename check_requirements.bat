@@ -5,7 +5,7 @@ setlocal enabledelayedexpansion
 cls
 echo.
 echo ╔════════════════════════════════════════════════════════════╗
-echo ║     TManager - Verificador de Requisitos y Setup          ║
+echo ║   Pádel&More - Verificador de Requisitos y Setup          ║
 echo ╚════════════════════════════════════════════════════════════╝
 echo.
 

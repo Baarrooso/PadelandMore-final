@@ -1,13 +1,13 @@
 ╔═══════════════════════════════════════════════════════════════════════════════╗
 ║                                                                               ║
-║                    ✅ TMANAGER - DEVICE MANAGER READY                        ║
+║                  ✅ PÁDEL&MORE - DEVICE MANAGER READY                       ║
 ║                                                                               ║
 ║                  Tu proyecto está 100% configurado para ejecutarse           ║
 ║                                                                               ║
 ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 
-📍 LOCALIZACIÓN: C:\Users\sergi\Escritorio\PADELYMORE\TManager-main\TManager-main
+📍 LOCALIZACIÓN: C:\Users\sergi\Escritorio\PADELYMORE\PadelMore-main\PadelMore-main
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

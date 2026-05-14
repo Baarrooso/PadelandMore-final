@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.TManager" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.PadelMore" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:statusBarColor">@color/dark_blue</item>
         <item name="colorPrimary">@color/primary_blue</item>
         <item name="colorPrimaryDark">@color/dark_blue</item>

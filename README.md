@@ -1,4 +1,4 @@
-# PadelManager (Android)
+# Pádel&More (Android)
 
 Proyecto Android Studio basado en el antiguo flujo de futbol, adaptado a padel con un MVP funcional.
 

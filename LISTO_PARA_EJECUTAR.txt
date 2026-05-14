@@ -2,7 +2,7 @@
 ║                                                                               ║
 ║                   🎉 ¡TODO ESTÁ FUNCIONANDO!                                ║
 ║                                                                               ║
-║                  Tu proyecto TManager está 100% listo                       ║
+║               Tu proyecto Pádel&More está 100% listo                       ║
 ║                                                                               ║
 ╚═══════════════════════════════════════════════════════════════════════════════╝
 

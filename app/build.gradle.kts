@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.tmanager"
+    namespace = "com.example.padelandmore"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.tmanager"
+        applicationId = "com.example.padelandmore"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

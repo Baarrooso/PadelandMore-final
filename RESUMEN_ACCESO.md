@@ -21,7 +21,7 @@
 
 ### Opción 2: Desde terminal
 ```bash
-cd C:\Users\sergi\Escritorio\PADELYMORE\TManager-main\TManager-main
+cd C:\Users\sergi\Escritorio\PADELYMORE\PadelMore-main\PadelMore-main
 .\gradlew installDebug
 adb shell am start -n com.example.tmanager/.FirstActivity
 ```
@@ -80,7 +80,7 @@ Con 3 opciones principales:
 ## 📁 Estructura del Proyecto
 
 ```
-TManager-main/
+PadelMore-main/
 ├── app/
 │   ├── src/main/
 │   │   ├── java/com/example/tmanager/

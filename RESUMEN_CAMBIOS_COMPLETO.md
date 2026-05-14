@@ -2,7 +2,7 @@
 
 ## Estado: COMPLETADO Y COMPILADO EXITOSAMENTE ✅
 
-La aplicación TManager ha sido rediseñada completamente para asemejarse a **Playtomic** con una paleta de colores moderna y profesional.
+La aplicación Pádel&More ha sido rediseñada completamente para asemejarse a **Playtomic** con una paleta de colores moderna y profesional.
 
 ---
 

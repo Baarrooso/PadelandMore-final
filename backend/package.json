@@ -1,7 +1,7 @@
 {
-  "name": "tmanager-backend",
+  "name": "padelandmore-backend",
   "version": "1.0.0",
-  "description": "Minimal backend for TManager using MySQL (for local testing)",
+  "description": "Minimal backend for PadelAndMore using MySQL (for local testing)",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

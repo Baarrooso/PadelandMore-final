@@ -1,4 +1,4 @@
-# Guía: Ejecutar TManager en Device Manager
+# Guía: Ejecutar Pádel&More en Device Manager
 
 ## Pasos para ejecutar la aplicación en un dispositivo/emulador
 

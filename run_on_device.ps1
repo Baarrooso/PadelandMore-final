@@ -1,9 +1,9 @@
-# Script para ejecutar TManager en dispositivo/emulador
+# Script para ejecutar Pádel&More en dispositivo/emulador
 # Requiere: Android SDK, ADB y un dispositivo conectado o emulador ejecutándose
 
 Write-Host ""
 Write-Host "╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║     TManager - Device Manager Launcher                    ║" -ForegroundColor Cyan
+Write-Host "║   Pádel&More - Device Manager Launcher                    ║" -ForegroundColor Cyan
 Write-Host "╚════════════════════════════════════════════════════════════╝" -ForegroundColor Cyan
 Write-Host ""
 

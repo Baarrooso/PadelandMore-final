@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1050464516326:android:4dcc3b1bce65ca6de62327",
         "android_client_info": {
-          "package_name": "com.example.tmanager"
+          "package_name": "com.example.padelandmore"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "1050464516326-rpvsmphdsqc9rk4me6kiqv4skoetgrt1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.tmanager",
+            "package_name": "com.example.padelandmore",
             "certificate_hash": "dadf94e242d8fec06ace4fca9bebd526fa927341"
           }
         },

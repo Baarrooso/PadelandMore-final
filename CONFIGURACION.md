@@ -1,4 +1,4 @@
-# Guía de Configuración - PadelManager Android Studio
+# Guía de Configuración - Pádel&More Android Studio
 
 ## Cambios Realizados ✅
 
@@ -22,7 +22,7 @@ Se han realizados los siguientes cambios para que el proyecto se abra correctame
 
 1. **Abre Android Studio**
 2. **Selecciona**: File → Open
-3. **Navega a**: `C:\Users\adri_\Downloads\TManager-main\PadelManager_Entrega\PadelManager`
+3. **Navega a**: `C:\Users\adri_\Downloads\PadelMore-main\PadelManager_Entrega\PadelManager`
 4. **Sincroniza Gradle**: Android Studio sincronizará automáticamente
 
 ## Ejecutar en Device Manager

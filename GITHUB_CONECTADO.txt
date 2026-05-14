@@ -42,7 +42,7 @@ Historial:             5 commits disponibles
 
 3a49ac1 - Initial commit
 
-d7813b5 - Initial commit: TManager project with Device Manager setup,
+d7813b5 - Initial commit: Pádel&More project with Device Manager setup,
           optimized AndroidManifest, and automation scripts
 
 9786f00 - Initial commit: Padel Manager application
@@ -180,7 +180,7 @@ Flujo:
 🎊 ¡TODO ESTÁ LISTO!
 ═════════════════════════════════════════════════════════════════════════════════
 
-Tu proyecto TManager está ahora:
+Tu proyecto Pádel&More está ahora:
   ✅ Compilado y funcionando
   ✅ Bajo control de versiones con Git
   ✅ Sincronizado con GitHub

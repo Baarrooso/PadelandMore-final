@@ -2,7 +2,7 @@
 ║                                                                               ║
 ║                   ✅ GIT INICIALIZADO CORRECTAMENTE                          ║
 ║                                                                               ║
-║            Tu proyecto TManager está bajo control de versiones Git           ║
+║           Tu proyecto Pádel&More está bajo control de versiones Git          ║
 ║                                                                               ║
 ╚═══════════════════════════════════════════════════════════════════════════════╝
 
@@ -29,13 +29,13 @@ OPCIÓN 1: SI YA TIENES UN REPOSITORIO EN GITHUB
 
 1. Ve a https://github.com y crea un nuevo repositorio
    (NO inicialices con README, .gitignore, o licencia)
-   Llámalo: TManager
+  Llámalo: Pádel&More
 
-2. Copia la URL HTTPS o SSH (ej: https://github.com/tu_usuario/TManager.git)
+2. Copia la URL HTTPS o SSH (ej: https://github.com/tu_usuario/PadelMore.git)
 
 3. Abre terminal en el proyecto y ejecuta:
 
-   git remote add origin https://github.com/tu_usuario/TManager.git
+  git remote add origin https://github.com/tu_usuario/PadelMore.git
 
    (Reemplaza "tu_usuario" con tu usuario de GitHub)
 
@@ -57,7 +57,7 @@ OPCIÓN 2: CREAR REPOSITORIO DESDE CERO EN GITHUB
 1. Ve a https://github.com/new
 
 2. Rellena:
-   - Repository name: TManager
+  - Repository name: Pádel&More
    - Description: Android Team Management App with Device Manager Setup
    - Public o Private (elige según necesites)
    - NO inicialices con README
@@ -66,7 +66,7 @@ OPCIÓN 2: CREAR REPOSITORIO DESDE CERO EN GITHUB
 
 4. GitHub te mostrará los comandos. Ejecuta en tu terminal:
 
-   git remote add origin https://github.com/tu_usuario/TManager.git
+  git remote add origin https://github.com/tu_usuario/PadelMore.git
    git branch -M main
    git push -u origin main
 
@@ -101,7 +101,7 @@ OPCIÓN B: Generar Personal Access Token
 ─────────────────────────────────────────
 1. Ve a: https://github.com/settings/tokens
 2. Haz click en "Generate new token"
-3. Dale nombre: TManager
+3. Dale nombre: Pádel&More
 4. Selecciona permisos: repo (full control)
 5. Copia el token
 6. Cuando Git pida contraseña, pega el token
@@ -121,7 +121,7 @@ OPCIÓN C: Usar SSH (Lo más seguro)
 5. Haz click en "New SSH key"
 6. Pega tu clave pública
 7. Ahora usa URLs SSH para Git:
-   git remote add origin git@github.com:tu_usuario/TManager.git
+  git remote add origin git@github.com:tu_usuario/PadelMore.git
 
 
 ═════════════════════════════════════════════════════════════════════════════════
@@ -164,7 +164,7 @@ Bajar cambios del remoto:
 ═════════════════════════════════════════════════════════════════════════════════
 
 PASO 1: Conectar con GitHub (una sola vez)
-  > git remote add origin https://github.com/tu_usuario/TManager.git
+  > git remote add origin https://github.com/tu_usuario/PadelMore.git
   > git push -u origin master
 
 PASO 2: Hacer cambios en tu código
@@ -213,7 +213,7 @@ Si quieres cambiar:
 2. Copia la URL del repositorio
 
 3. Ejecuta en terminal:
-   git remote add origin https://github.com/tu_usuario/TManager.git
+  git remote add origin https://github.com/tu_usuario/PadelMore.git
    git branch -M main
    git push -u origin main
 
