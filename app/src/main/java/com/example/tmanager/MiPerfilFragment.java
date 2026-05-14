@@ -215,11 +215,16 @@ public class MiPerfilFragment extends Fragment {
                         partido.put("rival", doc.getString("jugador2Nombre"));
                         partido.put("resultado", doc.getString("resultado"));
                         partido.put("fecha", doc.getString("fecha"));
+                        partido.put("jugadores", doc.getString("jugadores"));
+                        partido.put("lugar", doc.getString("lugar"));
+                        partido.put("pista", doc.getString("pista"));
+                        partido.put("tipo_pista", doc.getString("tipo_pista"));
+                        partido.put("partidoId", doc.getId());
                         partidos.add(partido);
                     }
 
                     if (!partidos.isEmpty()) {
-                        PartidosAdapter adapter = new PartidosAdapter(partidos);
+                        PartidosAdapter adapter = new PartidosAdapter(requireContext(), partidos);
                         recyclerUltimosPartidos.setAdapter(adapter);
                     }
                 });

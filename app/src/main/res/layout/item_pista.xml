@@ -44,27 +44,11 @@
                     android:textColor="#999999"
                     android:layout_marginEnd="8dp" />
 
-                <TextView
-                    android:id="@+id/tvPistaPrecio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="€ 25.00"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/accent_orange" />
-
             </LinearLayout>
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnReservarPista"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Reservar"
-            android:backgroundTint="@color/accent_orange"
-            android:textColor="#FFFFFF"
-            android:layout_marginStart="8dp" />
+        <!-- El botón de reservar por pista se elimina: la selección de la pista actúa como acción de reserva -->
 
     </LinearLayout>
 

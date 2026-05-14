@@ -34,8 +34,11 @@ android {
     }
 
     kotlin {
+        // Use the compilerOptions DSL and set the JVM target via .set()
+        // Also configure a jvmToolchain for Kotlin compilation
+        jvmToolchain(17)
         compilerOptions {
-            jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         }
     }
 
@@ -93,4 +96,9 @@ dependencies {
     // -------------------------------------------------------
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+    // Retrofit / OkHttp for REST API
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 }

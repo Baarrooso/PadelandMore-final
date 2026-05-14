@@ -86,74 +86,49 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="12dp" />
 
-                <!-- Tarjeta de crédito -->
-                <LinearLayout
+                <RadioGroup
+                    android:id="@+id/rgMetodosPago"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="#333333"
-                    android:padding="12dp"
-                    android:layout_marginBottom="8dp">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="0dp"
+                    <RadioButton
+                        android:id="@+id/rbTarjeta"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_marginBottom="8dp"
+                        android:background="#333333"
+                        android:buttonTint="@color/accent_orange"
+                        android:checked="true"
+                        android:padding="12dp"
                         android:text="💳 Tarjeta de Crédito"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
-                    <android.widget.RadioButton
-                        android:layout_width="wrap_content"
+                    <RadioButton
+                        android:id="@+id/rbPaypal"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:checked="true" />
-
-                </LinearLayout>
-
-                <!-- PayPal -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="#333333"
-                    android:padding="12dp"
-                    android:layout_marginBottom="8dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_marginBottom="8dp"
+                        android:background="#333333"
+                        android:buttonTint="@color/accent_orange"
+                        android:padding="12dp"
                         android:text="🅿️ PayPal"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
-                    <android.widget.RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <!-- Apple Pay -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="#333333"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:layout_width="0dp"
+                    <RadioButton
+                        android:id="@+id/rbApplePay"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:background="#333333"
+                        android:buttonTint="@color/accent_orange"
+                        android:padding="12dp"
                         android:text="🍎 Apple Pay"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
-                    <android.widget.RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
+                </RadioGroup>
 
             </LinearLayout>
 

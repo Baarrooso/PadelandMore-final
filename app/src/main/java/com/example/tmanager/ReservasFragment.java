@@ -12,16 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.tmanager.network.Backend;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ReservasFragment extends Fragment {
 
-    private FirebaseFirestore db;
+    // backend client
 
     @Nullable
     @Override
@@ -31,12 +29,12 @@ public class ReservasFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_reservas, container, false);
 
-        db = FirebaseFirestore.getInstance();
+        // no Firestore: use Backend
 
-        // Botón para abrir Reservar Pista con nueva interfaz
+        // Botón para abrir lista de Clubs (luego al seleccionar un club se abre ReservarPistaFragment)
         view.findViewById(R.id.btnReservarPistaMain).setOnClickListener(v ->
             getParentFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer, new ReservarPistaFragment())
+                    .replace(R.id.fragmentContainer, new ClubsFragment())
                     .addToBackStack(null)
                     .commit());
 
@@ -114,14 +112,14 @@ public class ReservasFragment extends Fragment {
     }
 
     private void guardarReserva(String club, String pista, String fecha, String hora, String tipo) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) {
+        String uid = Backend.getCurrentUid(requireContext());
+        if (uid == null) {
             Toast.makeText(requireContext(), "Debes iniciar sesion", Toast.LENGTH_SHORT).show();
             return;
         }
 
         Map<String, Object> data = new HashMap<>();
-        data.put("userUid", user.getUid());
+        data.put("userUid", uid);
         data.put("club", club);
         data.put("pista", pista);
         data.put("fecha", fecha);
@@ -129,14 +127,9 @@ public class ReservasFragment extends Fragment {
 
         String coleccion = "clase".equals(tipo) ? "reservas_clases" : "reservas_padel";
 
-        db.collection(coleccion)
-                .add(data)
-                .addOnSuccessListener(ref -> {
-                    Toast.makeText(requireContext(), "Reserva creada", Toast.LENGTH_SHORT).show();
-                })
-                .addOnFailureListener(e ->
-                        Toast.makeText(requireContext(), "No se pudo guardar", Toast.LENGTH_SHORT).show()
-                );
+        Backend.postToCollection(requireContext(), coleccion, data, resp -> {
+            Toast.makeText(requireContext(), "Reserva creada", Toast.LENGTH_SHORT).show();
+        }, t -> Toast.makeText(requireContext(), "No se pudo guardar: " + t.getMessage(), Toast.LENGTH_SHORT).show());
     }
 }
 

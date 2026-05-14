@@ -325,7 +325,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Últimos Partidos"
+                    android:text="Partidos"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"

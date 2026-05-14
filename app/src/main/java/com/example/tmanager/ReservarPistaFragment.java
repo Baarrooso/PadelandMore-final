@@ -37,15 +37,16 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
     private LinearLayout containerDias;
     private GridLayout gridHoras;
     private SwitchCompat toggleDisponibles;
-    private SwitchCompat toggleAlertas;
     private Button btnDuracion60, btnDuracion90, btnDuracion120;
     private String selectedDay = "";
     private String selectedHour = "";
     private String selectedDuration = "60";
-    private Spinner spinnerClub;
+    // spinnerClub removed because selection is done via recyclerClubes
     private RecyclerView recyclerClubes;
     private RecyclerView recyclerPistas;
     private LinearLayout containerReserva;
+    private LinearLayout containerResumen;
+    private LinearLayout containerAcciones;
     private TextView tvClubSeleccionado;
     private Club clubSeleccionado;
     private Pista pistaSeleccionada;
@@ -53,7 +54,9 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
     private Button btnDuracionSeleccionado;
     private Button btnHoraSeleccionado;
     private Button btnReservarPista;
-    
+
+    private boolean clubSelectionMode = false;
+
     // TextViews del resumen
     private TextView tvResumenClub;
     private TextView tvResumenPista;
@@ -77,11 +80,9 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
         containerDias = view.findViewById(R.id.containerDias);
         gridHoras = view.findViewById(R.id.gridHoras);
         toggleDisponibles = view.findViewById(R.id.toggleDisponibles);
-        toggleAlertas = view.findViewById(R.id.toggleAlertas);
         btnDuracion60 = view.findViewById(R.id.btnDuracion60);
         btnDuracion90 = view.findViewById(R.id.btnDuracion90);
         btnDuracion120 = view.findViewById(R.id.btnDuracion120);
-        spinnerClub = view.findViewById(R.id.spinnerClub);
         recyclerClubes = view.findViewById(R.id.recyclerClubes);
         recyclerPistas = view.findViewById(R.id.recyclerPistas);
         containerReserva = view.findViewById(R.id.containerReserva);
@@ -99,31 +100,28 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
         btnReservarPista = view.findViewById(R.id.btnReservarPista);
         btnReservarPista.setOnClickListener(v -> procesarReserva());
 
-        // Botón Sorteos
-        Button btnSorteos = view.findViewById(R.id.btnSorteos);
-        btnSorteos.setOnClickListener(v -> {
-            getParentFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer, new SorteosFragment())
-                    .addToBackStack(null)
-                    .commit();
-        });
-
-        // Botón Torneos
-        Button btnTorneos = view.findViewById(R.id.btnTorneos);
-        btnTorneos.setOnClickListener(v -> {
-            getParentFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer, new TorneosFragment())
-                    .addToBackStack(null)
-                    .commit();
-        });
+        // Los botones de Sorteos y Torneos se han eliminado de la vista de jugador.
 
         // Botón atrás
         view.findViewById(R.id.btnBackReservarPista).setOnClickListener(v -> {
             getParentFragmentManager().popBackStack();
         });
 
-        // Cargar clubes
-        cargarClubes();
+
+        // obtener referencias a contenedores que añadimos
+        containerResumen = view.findViewById(R.id.containerResumen);
+        containerAcciones = view.findViewById(R.id.containerAcciones);
+
+        // Si este fragment se abrió con un club en los argumentos, cargar sus pistas
+        Bundle args = getArguments();
+        if (args != null && args.containsKey("clubId")) {
+            String clubId = args.getString("clubId");
+            String clubName = args.getString("clubName");
+            clubSeleccionado = new Club(clubId, clubName, "", "");
+            tvClubSeleccionado.setText("Club seleccionado: " + clubName);
+            tvResumenClub.setText(clubName);
+            cargarPistasPorClub(clubId);
+        }
 
         // Configurar días
         configurarDias();
@@ -144,17 +142,9 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
         return view;
     }
 
-    private void cargarClubes() {
-        List<Club> clubes = new ArrayList<>();
-        clubes.add(new Club("1", "Club Padel Madrid", "Madrid, Centro", ""));
-        clubes.add(new Club("2", "Club Padel Alcalá", "Alcalá de Henares", ""));
-        clubes.add(new Club("3", "Club Padel Getafe", "Getafe, Sur", ""));
-        clubes.add(new Club("4", "Club Premium Tenis", "Madrid, Chamberí", ""));
+    // showClubsOnly/showFullReservationView removed: navigation now handled with ClubsFragment -> ReservarPistaFragment
 
-        ClubsAdapter adapter = new ClubsAdapter(clubes, this);
-        recyclerClubes.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerClubes.setAdapter(adapter);
-    }
+    // cargarClubes removed: clubs list is provided by ClubsFragment
 
     @Override
     public void onClubClick(Club club) {
@@ -184,7 +174,7 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
         PistasAdapter adapter = new PistasAdapter(pistas, pista -> {
             pistaSeleccionada = pista;
             tvResumenPista.setText(pista.getNombre());
-            tvResumenPrecio.setText(String.format("€%.2f", pista.getPrecio()));
+            calcularPrecioDinamico();
             Toast.makeText(requireContext(), "Pista seleccionada: " + pista.getNombre(), Toast.LENGTH_SHORT).show();
         });
         recyclerPistas.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -194,75 +184,95 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
 
     private void configurarDias() {
         containerDias.removeAllViews();
+        containerDias.setPadding(24, 12, 24, 12);
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdfDia = new SimpleDateFormat("EEE", Locale.getDefault());
         SimpleDateFormat sdfFecha = new SimpleDateFormat("dd", Locale.getDefault());
         SimpleDateFormat sdfMes = new SimpleDateFormat("MMM", Locale.getDefault());
 
-        for (int i = 0; i < 7; i++) {
-            android.widget.LinearLayout diaDia = new android.widget.LinearLayout(requireContext());
-            diaDia.setOrientation(android.widget.LinearLayout.VERTICAL);
-            diaDia.setLayoutParams(new android.widget.LinearLayout.LayoutParams(90, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
-            diaDia.setGravity(android.view.Gravity.CENTER);
-            diaDia.setPadding(12, 12, 12, 12);
-            diaDia.setBackground(getResources().getDrawable(R.drawable.bg_evento_card));
-            
-            // Configurar márgenes más espaciosos
-            android.widget.LinearLayout.LayoutParams marginParams = new android.widget.LinearLayout.LayoutParams(90, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
-            marginParams.setMargins(8, 8, 8, 8);
-            diaDia.setLayoutParams(marginParams);
+        // Mostrar 30 días con estructura clara: día arriba, número en botón, mes abajo
+        for (int i = 0; i < 30; i++) {
+            // Contenedor vertical para cada fecha
+            android.widget.LinearLayout contenedorFecha = new android.widget.LinearLayout(requireContext());
+            contenedorFecha.setOrientation(android.widget.LinearLayout.VERTICAL);
+            contenedorFecha.setGravity(android.view.Gravity.CENTER);
+            contenedorFecha.setPadding(0, 0, 0, 0);
+
+            android.widget.LinearLayout.LayoutParams contenedorParams = new android.widget.LinearLayout.LayoutParams(
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
+            contenedorParams.setMargins(20, 8, 20, 8);
+            contenedorFecha.setLayoutParams(contenedorParams);
 
             String dia = sdfDia.format(calendar.getTime()).toUpperCase().substring(0, 3);
             String fecha = sdfFecha.format(calendar.getTime());
             String mes = sdfMes.format(calendar.getTime()).toUpperCase();
 
+            // Día de la semana (arriba)
             TextView tvDia = new TextView(requireContext());
             tvDia.setText(dia);
             tvDia.setTextColor(getResources().getColor(android.R.color.white));
-            tvDia.setTextSize(12);
+            tvDia.setTextSize(11);
             tvDia.setGravity(android.view.Gravity.CENTER);
+            tvDia.setAlpha(0.8f);
 
-            TextView tvFecha = new TextView(requireContext());
-            tvFecha.setText(fecha);
-            tvFecha.setTextColor(getResources().getColor(android.R.color.white));
-            tvFecha.setTextSize(16);
-            tvFecha.setTypeface(null, android.graphics.Typeface.BOLD);
-            tvFecha.setGravity(android.view.Gravity.CENTER);
-            tvFecha.setPadding(0, 8, 0, 8);
+            // Botón con solo el número (clickeable)
+            android.widget.Button btnFecha = new android.widget.Button(requireContext());
+            btnFecha.setText(fecha);
+            btnFecha.setTextColor(getResources().getColor(android.R.color.white));
+            btnFecha.setTextSize(18);
+            btnFecha.setTypeface(null, android.graphics.Typeface.BOLD);
+            btnFecha.setBackgroundResource(R.drawable.bg_evento_card);
+            btnFecha.setPadding(16, 12, 16, 12);
+            btnFecha.setMinWidth(60);
+            btnFecha.setMinHeight(60);
 
+            android.widget.LinearLayout.LayoutParams btnParams = new android.widget.LinearLayout.LayoutParams(
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
+            btnParams.setMargins(0, 6, 0, 6);
+            btnFecha.setLayoutParams(btnParams);
+
+            // Mes (abajo)
             TextView tvMes = new TextView(requireContext());
             tvMes.setText(mes);
             tvMes.setTextColor(getResources().getColor(android.R.color.white));
             tvMes.setTextSize(10);
-            tvMes.setAlpha(0.7f);
             tvMes.setGravity(android.view.Gravity.CENTER);
+            tvMes.setAlpha(0.7f);
 
-            diaDia.addView(tvDia);
-            diaDia.addView(tvFecha);
-            diaDia.addView(tvMes);
+            contenedorFecha.addView(tvDia);
+            contenedorFecha.addView(btnFecha);
+            contenedorFecha.addView(tvMes);
 
-            int finalI = i;
-            diaDia.setOnClickListener(v -> {
+            // Click listener en el botón
+            btnFecha.setOnClickListener(v -> {
                 selectedDay = fecha + " " + mes;
-                // Cambiar color del día seleccionado
-                cambiarColorDiaSeleccionado(diaDia);
+                cambiarColorDiaSeleccionado(btnFecha);
                 tvResumenDia.setText(selectedDay);
+                calcularPrecioDinamico();
                 Toast.makeText(requireContext(), "Día seleccionado: " + selectedDay, Toast.LENGTH_SHORT).show();
             });
 
-            containerDias.addView(diaDia);
+            containerDias.addView(contenedorFecha);
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
     }
 
-    private void cambiarColorDiaSeleccionado(android.widget.LinearLayout diaSel) {
+    private void cambiarColorDiaSeleccionado(android.widget.Button btnSeleccionado) {
         for (int i = 0; i < containerDias.getChildCount(); i++) {
             View view = containerDias.getChildAt(i);
             if (view instanceof android.widget.LinearLayout) {
-                view.setBackground(getResources().getDrawable(R.drawable.bg_evento_card));
+                android.widget.LinearLayout contenedor = (android.widget.LinearLayout) view;
+                for (int j = 0; j < contenedor.getChildCount(); j++) {
+                    View child = contenedor.getChildAt(j);
+                    if (child instanceof android.widget.Button) {
+                        ((android.widget.Button) child).setBackgroundResource(R.drawable.bg_evento_card);
+                    }
+                }
             }
         }
-        diaSel.setBackgroundColor(getResources().getColor(R.color.accent_orange));
+        btnSeleccionado.setBackgroundColor(getResources().getColor(R.color.accent_orange));
     }
 
     private void configurarHoras() {
@@ -307,6 +317,7 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
                 btnHora.setBackgroundColor(getResources().getColor(R.color.accent_orange));
                 btnHora.setTextColor(getResources().getColor(android.R.color.white));
                 tvResumenHora.setText(selectedHour);
+                calcularPrecioDinamico();
                 Toast.makeText(requireContext(), "Hora seleccionada: " + selectedHour, Toast.LENGTH_SHORT).show();
             });
 
@@ -330,7 +341,36 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
         btnDuracionSeleccionado = button;
         selectedDuration = duracion;
         tvResumenDuracion.setText(duracion + " min");
+        calcularPrecioDinamico();
         Toast.makeText(requireContext(), "Duración: " + duracion + " min", Toast.LENGTH_SHORT).show();
+    }
+
+    private void calcularPrecioDinamico() {
+        if (pistaSeleccionada == null || selectedHour.isEmpty() || selectedDuration.isEmpty()) {
+            tvResumenPrecio.setText("A calcular según hora");
+            return;
+        }
+
+        // Obtener la hora de inicio (ej: "08:00" -> 8)
+        String[] partes = selectedHour.split(":");
+        int hora = Integer.parseInt(partes[0]);
+        int duracion = Integer.parseInt(selectedDuration);
+
+        // Precio base de la pista
+        double precioBase = pistaSeleccionada.getPrecio();
+
+        // Aplicar multiplicador según hora (horas punta: 18-21, tarifa más alta)
+        double multiplicador = 1.0;
+        if (hora >= 18 && hora <= 21) {
+            multiplicador = 1.5; // +50% en horas punta
+        } else if (hora >= 12 && hora < 18) {
+            multiplicador = 1.2; // +20% en tarde
+        }
+
+        // Calcular precio: (precioBase * multiplicador) * (duracion / 60)
+        double precioTotal = (precioBase * multiplicador) * (duracion / 60.0);
+
+        tvResumenPrecio.setText(String.format("€%.2f", precioTotal));
     }
 
     private void procesarReserva() {

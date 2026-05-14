@@ -25,6 +25,12 @@ public class ClubsFragment extends Fragment implements ClubsAdapter.OnClubClickL
 
         recyclerClubes = view.findViewById(R.id.recyclerClubes);
 
+        // Botón atrás
+        View btnBack = view.findViewById(R.id.btnBackClubs);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> getParentFragmentManager().popBackStack());
+        }
+
         List<Club> clubes = new ArrayList<>();
         clubes.add(new Club("1", "Club Padel Madrid", "Madrid, Centro", ""));
         clubes.add(new Club("2", "Club Padel Alcalá", "Alcalá de Henares", ""));

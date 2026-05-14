@@ -46,6 +46,7 @@
         <activity android:name="com.example.tmanager.SoporteActivity" android:exported="true" />
         <activity android:name="com.example.tmanager.PerfilPublicoActivity" android:exported="true" />
         <activity android:name="com.example.tmanager.PaymentActivity" android:exported="true" />
+        <activity android:name="com.example.tmanager.PartidoDetalleActivity" android:exported="true" />
 
         <service
             android:name="com.example.tmanager.MyFirebaseMessagingService"

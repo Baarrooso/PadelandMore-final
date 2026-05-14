@@ -41,6 +41,7 @@
     <string name="mis_reservas">Mis Reservas</string>
     <string name="ultimos_resultados">Últimos Resultados</string>
     <string name="torneos_apuntados">Torneos Apuntados</string>
+    <string name="clubs">Clubs</string>
     <string name="sorteos">Sorteos</string>
 
     <string-array name="niveles_padel">

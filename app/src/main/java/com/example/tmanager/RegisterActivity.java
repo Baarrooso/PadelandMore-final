@@ -13,9 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.*;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
+import com.example.tmanager.network.Backend;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -33,8 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
     boolean passVisible1 = false;
     boolean passVisible2 = false;
 
-    FirebaseAuth auth;
-    FirebaseFirestore db;
+    // auth and db are handled via Backend REST API
     GoogleSignInClient googleClient;
 
     private static final int RC_GOOGLE = 2000;
@@ -62,8 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
         rule4 = findViewById(R.id.rule4);
         rule5 = findViewById(R.id.rule5);
 
-        auth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+        // no Firebase: use Backend
 
         configurarGoogle();
         configurarPasswordListeners();
@@ -144,31 +140,23 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        auth.createUserWithEmailAndPassword(correo, pass)
-                .addOnSuccessListener(r -> {
+        // Call backend register
+        Map<String, Object> body = new HashMap<>();
+        body.put("nombre", nombre);
+        body.put("email", correo);
+        body.put("password", pass);
 
-                    FirebaseUser user = auth.getCurrentUser();
-                    if (user == null) return;
-
-                    UserProfileChangeRequest profileUpdates =
-                            new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(nombre)
-                                    .build();
-
-                    user.updateProfile(profileUpdates)
-                            .addOnSuccessListener(a -> {
-
-                                guardarUsuarioEnFirestore(
-                                        user.getUid(),
-                                        nombre,
-                                        correo,
-                                        null
-                                );
-                            });
-                })
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show()
-                );
+        Backend.register(this, body, resp -> {
+            // on success, also save user profile to backend 'users' collection
+            Map<String, Object> user = new HashMap<>();
+            user.put("uid", resp.getOrDefault("uid", correo));
+            user.put("nombre", nombre);
+            user.put("email", correo);
+            Backend.postToCollection(this, "users", user, r2 -> {
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+            }, t -> Toast.makeText(this, "Error guardando usuario", Toast.LENGTH_SHORT).show());
+        }, t -> Toast.makeText(this, "Registro fallido: " + t.getMessage(), Toast.LENGTH_SHORT).show());
 
     }
 
@@ -185,27 +173,28 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (account == null) return;
 
-                AuthCredential credential =
-                        GoogleAuthProvider.getCredential(account.getIdToken(), null);
+                // Use Google account info and register/login via backend
+                String name = account.getDisplayName();
+                String email = account.getEmail();
+                String fotoGoogle = account.getPhotoUrl() != null ? account.getPhotoUrl().toString() : null;
 
-                auth.signInWithCredential(credential)
-                        .addOnSuccessListener(r -> {
+                Map<String, Object> body = new HashMap<>();
+                body.put("nombre", name);
+                body.put("email", email);
+                body.put("google", true);
 
-                            FirebaseUser user = auth.getCurrentUser();
-                            if (user == null) return;
-
-                            String fotoGoogle =
-                                    user.getPhotoUrl() != null
-                                            ? user.getPhotoUrl().toString()
-                                            : null;
-
-                            guardarUsuarioEnFirestore(
-                                    user.getUid(),
-                                    user.getDisplayName(),
-                                    user.getEmail(),
-                                    fotoGoogle
-                            );
-                        });
+                Backend.register(this, body, resp -> {
+                    // guardar perfil en backend users
+                    Map<String, Object> user = new HashMap<>();
+                    user.put("uid", resp.getOrDefault("uid", email));
+                    user.put("nombre", name);
+                    user.put("email", email);
+                    if (fotoGoogle != null) user.put("fotoUrl", fotoGoogle);
+                    Backend.postToCollection(this, "users", user, r2 -> {
+                        startActivity(new Intent(this, MainActivity.class));
+                        finish();
+                    }, t -> Toast.makeText(this, "Error guardando usuario", Toast.LENGTH_SHORT).show());
+                }, t -> Toast.makeText(this, "Error Google: " + t.getMessage(), Toast.LENGTH_SHORT).show());
 
             } catch (Exception e) {
                 Toast.makeText(this, "Error Google: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -231,16 +220,10 @@ public class RegisterActivity extends AppCompatActivity {
         if (fotoUrl != null)
             user.put("fotoUrl", fotoUrl);
 
-        db.collection("usuarios")
-                .document(uid)
-                .set(user, SetOptions.merge())
-                .addOnSuccessListener(a -> {
-                    startActivity(new Intent(this, MainActivity.class));
-                    finish();
-                })
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, "Error guardando usuario", Toast.LENGTH_SHORT).show()
-                );
+        Backend.postToCollection(this, "users", user, resp -> {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }, t -> Toast.makeText(this, "Error guardando usuario", Toast.LENGTH_SHORT).show());
     }
 
     private void irALogin() {

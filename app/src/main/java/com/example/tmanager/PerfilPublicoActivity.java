@@ -70,7 +70,7 @@ public class PerfilPublicoActivity extends AppCompatActivity {
         RecyclerView recyclerPublicaciones = findViewById(R.id.recyclerPublicacionesPerfilPublico);
 
         recyclerPartidos.setLayoutManager(new LinearLayoutManager(this));
-        partidosAdapter = new PartidosAdapter(partidos);
+        partidosAdapter = new PartidosAdapter(this, partidos);
         recyclerPartidos.setAdapter(partidosAdapter);
 
         recyclerPublicaciones.setLayoutManager(new LinearLayoutManager(this));

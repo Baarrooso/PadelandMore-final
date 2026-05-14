@@ -3,9 +3,7 @@ package com.example.tmanager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,10 +35,11 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ClubViewHold
     @Override
     public void onBindViewHolder(@NonNull ClubViewHolder holder, int position) {
         Club club = clubes.get(position);
-        holder.tvClubNombre.setText(club.getNombre());
-        holder.tvClubUbicacion.setText(club.getUbicacion());
+        // Mostrar nombre y ubicación en dos líneas dentro del botón
+        String text = club.getNombre() + "\n" + club.getUbicacion();
+        holder.btnClubItem.setText(text);
 
-        holder.container.setOnClickListener(v -> {
+        holder.btnClubItem.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onClubClick(club);
             }
@@ -53,15 +52,11 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.ClubViewHold
     }
 
     public static class ClubViewHolder extends RecyclerView.ViewHolder {
-        TextView tvClubNombre;
-        TextView tvClubUbicacion;
-        LinearLayout container;
+        Button btnClubItem;
 
         public ClubViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvClubNombre = itemView.findViewById(R.id.tvClubNombre);
-            tvClubUbicacion = itemView.findViewById(R.id.tvClubUbicacion);
-            container = itemView.findViewById(R.id.clubContainer);
+            btnClubItem = itemView.findViewById(R.id.btnClubItem);
         }
     }
 }
