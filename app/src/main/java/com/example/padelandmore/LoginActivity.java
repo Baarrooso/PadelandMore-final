@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.padelandmore.network.AWSConnection;
 import com.example.padelandmore.network.Backend;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -76,13 +77,20 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        Map<String, Object> body = new HashMap<>();
+        java.util.Map<String, Object> body = new java.util.HashMap<>();
         body.put("email", mail);
         body.put("password", pass);
 
-        Backend.login(this, body, resp -> comprobarEquipoYRedirigir(),
-                t -> Toast.makeText(this, "Error login: " + t.getMessage(), Toast.LENGTH_SHORT).show());
+        Backend.login(this, body, resp -> {
+            // Login OK via REST: ir directamente a ReservasFragment
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("open", "inicio");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }, t -> Toast.makeText(this, "Email o contraseña incorrectos", Toast.LENGTH_SHORT).show());
     }
+
 
     private void togglePassword() {
         if (passwordVisible) {

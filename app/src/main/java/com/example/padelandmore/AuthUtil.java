@@ -21,39 +21,32 @@ public class AuthUtil {
     private static final String PREFS    = "auth_prefs";
     private static final String KEY_ROLE = "user_role";
 
-    public static void isJugador(final Context context, @NonNull final RoleCallback callback) {// El UID se guarda localmente en SharedPreferences cuando el usuario hace login/registro
+    public static void isJugador(final Context context, @NonNull final RoleCallback callback) {
         String uid = Backend.getCurrentUid(context);
         if (uid == null) {
-            // No logged user -> not jugador by default
             callback.onResult(false);
             return;
         }
 
-        SharedPreferences prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-        String cached = prefs.getString(KEY_ROLE + "_" + uid, null);
-
-        if (cached != null) {
-            callback.onResult("jugador".equalsIgnoreCase(cached));
-            refreshRoleFromServer(context, uid, prefs, callback);
+        // Leer el rol cacheado en Backend
+        String cachedRole = Backend.getCurrentRole(context);
+        if (cachedRole != null) {
+            callback.onResult("jugador".equalsIgnoreCase(cachedRole));
+            // De todos modos, refrescar de fondo
+            refreshRoleFromServer(context, uid, callback);
             return;
         }
 
-        refreshRoleFromServer(context, uid, prefs, callback);
+        refreshRoleFromServer(context, uid, callback);
     }
 
-    /**
-     * Guarda el rol del usuario en caché local para consultas rápidas.
-     */
-    public static void saveRole(Context context, String uid, String role) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-        prefs.edit().putString(KEY_ROLE + "_" + uid, role == null ? "jugador" : role).apply();
-    }
-
-    private static void refreshRoleFromServer(Context context, String uid, SharedPreferences prefs, @NonNull RoleCallback callback) {
+    private static void refreshRoleFromServer(Context context, String uid, @NonNull RoleCallback callback) {
         Backend.getUserRole(context, uid, resp -> {
             Object roleValue = resp.get("rol");
             String role = roleValue == null ? null : roleValue.toString();
-            prefs.edit().putString(KEY_ROLE + "_" + uid, role == null ? "" : role).apply();
+            if (role != null) {
+                Backend.saveCurrentRole(context, role);
+            }
             callback.onResult("jugador".equalsIgnoreCase(role));
         }, t -> callback.onResult(false));
     }

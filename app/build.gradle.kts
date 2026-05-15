@@ -101,4 +101,9 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+
+    // MySQL Connector para conexiones directas JDBC (excluyendo protobuf para evitar conflictos con Firebase)
+    implementation("com.mysql:mysql-connector-j:8.0.33") {
+        exclude(group = "com.google.protobuf", module = "protobuf-java")
+    }
 }

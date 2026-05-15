@@ -39,11 +39,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
 
-    // 🔄 CUANDO CAMBIA EL TOKEN
+    // Token FCM eliminado — notificaciones push no utilizadas
     @Override
     public void onNewToken(String token) {
         super.onNewToken(token);
-        FCMUtil.guardarToken(getApplicationContext());
+        // token no guardado
     }
 
     private void mostrarNotificacion(String title, String body) {

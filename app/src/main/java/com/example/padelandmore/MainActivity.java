@@ -33,35 +33,38 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        try {
+            setContentView(R.layout.activity_main);
 
-        pedirPermisoNotificaciones();
+            pedirPermisoNotificaciones();
 
-        // Guardar token FCM para notificaciones.
-        FCMUtil.guardarToken(this);
+            fragmentManager = getSupportFragmentManager();
 
-        fragmentManager = getSupportFragmentManager();
+            btnNotificacionesTop = findViewById(R.id.btnNotificacionesTop);
+            btnMenuTop = findViewById(R.id.btnMenuTop);
+            bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        btnNotificacionesTop = findViewById(R.id.btnNotificacionesTop);
-        btnMenuTop = findViewById(R.id.btnMenuTop);
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+            // Determinar rol del usuario y ajustar comportamiento de navegación
+            AuthUtil.isJugador(this, isJ -> isJugador = isJ);
 
-        // Determinar rol del usuario y ajustar comportamiento de navegación
-        AuthUtil.isJugador(this, isJ -> isJugador = isJ);
+            btnNotificacionesTop.setOnClickListener(v ->
+                    startActivity(new Intent(this, NotificacionesActivity.class)));
 
-        btnNotificacionesTop.setOnClickListener(v ->
-                startActivity(new Intent(this, NotificacionesActivity.class)));
+            btnMenuTop.setOnClickListener(v -> mostrarMenuSuperior(v));
 
-        btnMenuTop.setOnClickListener(v -> mostrarMenuSuperior(v));
+            bottomNavigationView.setOnItemSelectedListener(item -> {
+                boolean loaded = loadFragmentForItem(item.getItemId());
+                return loaded;
+            });
 
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            boolean loaded = loadFragmentForItem(item.getItemId());
-            return loaded;
-        });
+            int initialItem = getInitialMenuItem();
+            bottomNavigationView.setSelectedItemId(initialItem);
+            loadFragmentForItem(initialItem);
 
-        int initialItem = getInitialMenuItem();
-        bottomNavigationView.setSelectedItemId(initialItem);
-        loadFragmentForItem(initialItem);
+        } catch (Exception e) {
+            android.util.Log.e("MainActivity", "CRASH en onCreate: " + e.getMessage(), e);
+            Toast.makeText(this, "Error al iniciar: " + e.getClass().getSimpleName() + " - " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     private boolean loadFragmentForItem(int itemId) {
@@ -132,6 +135,9 @@ public class MainActivity extends AppCompatActivity {
 
     private int getInitialMenuItem() {
         String open = getIntent().getStringExtra("open");
+        if ("inicio".equalsIgnoreCase(open)) {
+            return R.id.btnInicio;
+        }
         if ("perfil".equalsIgnoreCase(open)) {
             return R.id.btnPerfil;
         }
