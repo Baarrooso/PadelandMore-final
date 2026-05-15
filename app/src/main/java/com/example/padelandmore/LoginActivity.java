@@ -52,6 +52,9 @@ public class LoginActivity extends AppCompatActivity {
         btnEntrar.setOnClickListener(v -> loginManual());
         btnVerPassword.setOnClickListener(v -> togglePassword());
         txtIrRegistro.setOnClickListener(v -> irARegistro());
+
+        // Asegurar que las tablas y columnas existan en AWS
+        java.util.concurrent.Executors.newSingleThreadExecutor().execute(com.example.padelandmore.network.AWSConnection::inicializarTablas);
     }
 
     private void configurarGoogle() {
@@ -77,18 +80,25 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        java.util.Map<String, Object> body = new java.util.HashMap<>();
-        body.put("email", mail);
-        body.put("password", pass);
+        // Login directo en AWS RDS
+        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+            AWSConnection.Usuario user = AWSConnection.loginUsuario(mail, pass);
+            runOnUiThread(() -> {
+                if (user != null) {
+                    // Guardar sesión localmente
+                    Backend.saveCurrentUid(this, user.uid);
+                    Backend.saveCurrentRole(this, user.rol);
 
-        Backend.login(this, body, resp -> {
-            // Login OK via REST: ir directamente a ReservasFragment
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("open", "inicio");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        }, t -> Toast.makeText(this, "Email o contraseña incorrectos", Toast.LENGTH_SHORT).show());
+                    Intent intent = new Intent(this, MainActivity.class);
+                    intent.putExtra("open", "inicio");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(this, "Email o contraseña incorrectos", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 
 

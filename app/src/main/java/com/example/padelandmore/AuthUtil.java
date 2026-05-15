@@ -22,32 +22,43 @@ public class AuthUtil {
     private static final String KEY_ROLE = "user_role";
 
     public static void isJugador(final Context context, @NonNull final RoleCallback callback) {
+        verificarRol(context, "jugador", callback);
+    }
+
+    public static void isAdmin(final Context context, @NonNull final RoleCallback callback) {
+        verificarRol(context, "admin", callback);
+    }
+
+    private static void verificarRol(final Context context, String rolObjetivo, @NonNull final RoleCallback callback) {
         String uid = Backend.getCurrentUid(context);
         if (uid == null) {
             callback.onResult(false);
             return;
         }
 
-        // Leer el rol cacheado en Backend
         String cachedRole = Backend.getCurrentRole(context);
         if (cachedRole != null) {
-            callback.onResult("jugador".equalsIgnoreCase(cachedRole));
-            // De todos modos, refrescar de fondo
-            refreshRoleFromServer(context, uid, callback);
+            callback.onResult(rolObjetivo.equalsIgnoreCase(cachedRole));
+            refreshRoleFromServer(context, uid, callback, rolObjetivo);
             return;
         }
 
-        refreshRoleFromServer(context, uid, callback);
+        refreshRoleFromServer(context, uid, callback, rolObjetivo);
     }
 
-    private static void refreshRoleFromServer(Context context, String uid, @NonNull RoleCallback callback) {
-        Backend.getUserRole(context, uid, resp -> {
-            Object roleValue = resp.get("rol");
-            String role = roleValue == null ? null : roleValue.toString();
+    private static void refreshRoleFromServer(Context context, String uid, @NonNull RoleCallback callback, String rolObjetivo) {
+        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+            String role = com.example.padelandmore.network.AWSConnection.obtenerRolUsuario(uid);
             if (role != null) {
                 Backend.saveCurrentRole(context, role);
             }
-            callback.onResult("jugador".equalsIgnoreCase(role));
-        }, t -> callback.onResult(false));
+            if (context instanceof android.app.Activity) {
+                ((android.app.Activity) context).runOnUiThread(() -> {
+                    callback.onResult(rolObjetivo.equalsIgnoreCase(role));
+                });
+            } else {
+                callback.onResult(rolObjetivo.equalsIgnoreCase(role));
+            }
+        });
     }
 }

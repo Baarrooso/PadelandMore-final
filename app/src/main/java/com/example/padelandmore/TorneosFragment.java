@@ -19,7 +19,6 @@ import com.example.padelandmore.network.AWSConnection;
 import com.example.padelandmore.network.Backend;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,14 +49,14 @@ public class TorneosFragment extends Fragment {
         com.google.android.material.floatingactionbutton.FloatingActionButton fabCrearTorneo =
                 view.findViewById(R.id.fabCrearTorneo);
 
-        AuthUtil.isJugador(requireContext(), isJugador -> {
-            if (isJugador) {
-                fabCrearTorneo.setVisibility(View.GONE);
-                fabCrearTorneo.hide();
-            } else {
+        AuthUtil.isAdmin(requireContext(), isAdmin -> {
+            if (isAdmin) {
                 fabCrearTorneo.setVisibility(View.VISIBLE);
                 fabCrearTorneo.show();
                 fabCrearTorneo.setOnClickListener(v -> mostrarDialogoTorneo());
+            } else {
+                fabCrearTorneo.setVisibility(View.GONE);
+                fabCrearTorneo.hide();
             }
         });
 
@@ -109,43 +108,44 @@ public class TorneosFragment extends Fragment {
     }
 
     private void cargarTorneos() {
-        Backend.getCollection(requireContext(), "torneos_padel", resp -> {
-            torneos.clear();
-            Object data = resp.get("data");
-            if (data instanceof List) {
-                for (Object item : (List<?>) data) {
-                    if (!(item instanceof Map)) continue;
-                    Map<?, ?> doc = (Map<?, ?>) item;
-                    String nombre = valueOf(doc.get("nombre"));
-                    String ciudad = valueOf(doc.get("ciudad"));
-                    String fecha = valueOf(doc.get("fecha"));
-                    String nivel = valueOf(doc.get("nivel"));
-                    String linea = (nombre == null ? "Torneo" : nombre)
-                            + "\n" + (ciudad == null ? "Ciudad" : ciudad)
-                            + " | " + (fecha == null ? "Fecha" : fecha)
-                            + " | Nivel " + (nivel == null ? "N/A" : nivel);
+        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+            java.util.List<AWSConnection.Torneo> lista = AWSConnection.obtenerTorneos();
+            requireActivity().runOnUiThread(() -> {
+                torneos.clear();
+                for (AWSConnection.Torneo t : lista) {
+                    String linea = (t.nombre == null ? "Torneo" : t.nombre)
+                            + "\n" + (t.ciudad == null ? "Ciudad" : t.ciudad)
+                            + " | " + (t.fecha == null ? "Fecha" : t.fecha)
+                            + " | Nivel " + (t.nivel == null ? "N/A" : t.nivel);
                     torneos.add(linea);
                 }
-            }
-            adapter.notifyDataSetChanged();
-        }, t -> Toast.makeText(requireContext(), "Error cargando torneos", Toast.LENGTH_SHORT).show());
+                adapter.notifyDataSetChanged();
+            });
+        });
     }
 
     private void apuntarseATorneo(int position) {
         if (torneos.isEmpty()) return;
+        Toast.makeText(requireContext(), "Inscribiendo...", Toast.LENGTH_SHORT).show();
         String uid = Backend.getCurrentUid(requireContext());
         if (uid == null) {
             Toast.makeText(requireContext(), "Debes iniciar sesion", Toast.LENGTH_SHORT).show();
             return;
         }
         String seleccionado = torneos.get(position);
-        Map<String, Object> data = new HashMap<>();
-        data.put("userUid", uid);
-        data.put("torneoResumen", seleccionado);
-        data.put("creado", System.currentTimeMillis());
-        Backend.postToCollection(requireContext(), "inscripciones_torneo_padel", data,
-                resp -> Toast.makeText(requireContext(), "Inscripcion enviada", Toast.LENGTH_SHORT).show(),
-                t -> Toast.makeText(requireContext(), "No se pudo inscribir", Toast.LENGTH_SHORT).show());
+        long   creado       = System.currentTimeMillis();
+
+        // Inscripción directa a AWS RDS en hilo secundario
+        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+            boolean ok = AWSConnection.inscribirEnTorneo(uid, seleccionado, creado);
+            requireActivity().runOnUiThread(() -> {
+                if (ok) {
+                    Toast.makeText(requireContext(), "¡Inscrito en el torneo!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), "No se pudo inscribir", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 
     private String valueOf(Object value) {

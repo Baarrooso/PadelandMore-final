@@ -90,25 +90,46 @@ public class PartidoDetalleActivity extends AppCompatActivity {
         setContentView(root);
 
         // Leer extras
-        String jugadores = getIntent().getStringExtra("jugadores");
-        String rival = getIntent().getStringExtra("rival");
-        String lugar = getIntent().getStringExtra("lugar");
+        String club = getIntent().getStringExtra("club");
         String pista = getIntent().getStringExtra("pista");
-        String tipoPista = getIntent().getStringExtra("tipo_pista");
         String fecha = getIntent().getStringExtra("fecha");
         String resultado = getIntent().getStringExtra("resultado");
+        String rival = getIntent().getStringExtra("rival");
         String partidoId = getIntent().getStringExtra("partidoId");
 
-        if (jugadores == null && rival != null) {
-            jugadores = "Tú vs " + rival;
-        }
-
-        txtJugadores.setText(jugadores != null ? jugadores : "-");
-        txtLugar.setText(lugar != null ? lugar : "-");
+        txtJugadores.setText("Tú vs " + (rival != null ? rival : "Pendiente"));
+        txtLugar.setText(club != null ? club : "-");
         txtPista.setText(pista != null ? pista : "-");
-        txtTipoPista.setText(tipoPista != null ? tipoPista : "-");
+        txtTipoPista.setText("Pádel");
         txtFecha.setText(fecha != null ? fecha : "-");
-        txtResultado.setText(resultado != null ? resultado : "Pendiente");
+        txtResultado.setText(resultado != null && !resultado.equals("null") ? resultado : "Pendiente");
+
+        // Botón Invitar Rival
+        Button btnInvitar = new Button(this);
+        btnInvitar.setText("Invitar Rival");
+        root.addView(btnInvitar, root.indexOfChild(btnAgregarResultado));
+
+        btnInvitar.setOnClickListener(v -> {
+            EditText input = new EditText(this);
+            input.setHint("Nombre del rival");
+            new AlertDialog.Builder(this)
+                .setTitle("Invitar Rival")
+                .setView(input)
+                .setPositiveButton("Guardar", (dialog, which) -> {
+                    String nombre = input.getText().toString().trim();
+                    if (!nombre.isEmpty()) {
+                        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+                            boolean ok = com.example.padelandmore.network.AWSConnection.actualizarRivalReserva(partidoId, nombre);
+                            runOnUiThread(() -> {
+                                if (ok) {
+                                    txtJugadores.setText("Tú vs " + nombre);
+                                    Toast.makeText(this, "Rival asignado", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        });
+                    }
+                }).show();
+        });
 
         btnAgregarResultado.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -121,25 +142,17 @@ public class PartidoDetalleActivity extends AppCompatActivity {
 
             builder.setPositiveButton("Guardar", (dialog, which) -> {
                 String valor = input.getText().toString().trim();
-                if (valor.isEmpty()) {
-                    Toast.makeText(PartidoDetalleActivity.this, "Introduce un resultado", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                if (valor.isEmpty()) return;
 
-                if (partidoId != null && !partidoId.isEmpty()) {
-                    Map<String, Object> update = new HashMap<>();
-                    update.put("resultado", valor);
-                    update.put("actualizado", System.currentTimeMillis());
-
-                    Backend.updateCollectionItem(PartidoDetalleActivity.this, "partidos", partidoId, update,
-                            resp -> {
-                                txtResultado.setText(valor);
-                                Toast.makeText(PartidoDetalleActivity.this, "Resultado guardado", Toast.LENGTH_SHORT).show();
-                            },
-                            e -> Toast.makeText(PartidoDetalleActivity.this, "Error guardando resultado", Toast.LENGTH_SHORT).show());
-                } else {
-                    Toast.makeText(PartidoDetalleActivity.this, "ID de partido no disponible", Toast.LENGTH_SHORT).show();
-                }
+                java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+                    boolean ok = com.example.padelandmore.network.AWSConnection.actualizarResultadoReserva(partidoId, valor);
+                    runOnUiThread(() -> {
+                        if (ok) {
+                            txtResultado.setText(valor);
+                            Toast.makeText(this, "Resultado guardado", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                });
             });
 
             builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.cancel());

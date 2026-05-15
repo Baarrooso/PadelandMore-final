@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.padelandmore.network.AWSConnection;
 import com.example.padelandmore.network.Backend;
 
 import java.util.ArrayList;
@@ -120,40 +121,36 @@ public class MiPerfilFragment extends Fragment {
             return;
         }
 
-        Backend.getUser(requireContext(), currentUid, resp -> {
-            String nombre = valueOf(resp.get("nombre"));
-            if (nombre != null) {
-                txtNombreUsuario.setText(nombre);
+        // Cargar datos directamente desde AWS RDS
+        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+            // Reutilizamos obtenerRolUsuario o similar, pero mejor traemos el usuario completo
+            AWSConnection.Usuario user = AWSConnection.obtenerUsuarioCompleto(currentUid);
+            if (isAdded() && user != null) {
+                requireActivity().runOnUiThread(() -> {
+                    txtNombreUsuario.setText(user.nombre);
+                    if (user.nivel != null) {
+                        int posicion = getIndexInArray(R.array.niveles_padel, user.nivel);
+                        spinnerNivel.setSelection(posicion);
+                    }
+                    if (user.mano != null) {
+                        int posicion = getIndexInArray(R.array.mano_juego, user.mano);
+                        spinnerMano.setSelection(posicion);
+                    }
+                    if (user.nivelPadel != null) {
+                        txtNivelActual.setText(String.format(Locale.getDefault(), "%.1f", user.nivelPadel));
+                    }
+                    txtSeguidoresCount.setText(String.valueOf(user.seguidoresCount));
+                    txtSeguidosCount.setText(String.valueOf(user.seguidosCount));
+                });
             }
-
-            String nivel = valueOf(resp.get("nivel"));
-            if (nivel != null) {
-                int posicion = getIndexInArray(R.array.niveles_padel, nivel);
-                spinnerNivel.setSelection(posicion);
-            }
-
-            String mano = valueOf(resp.get("mano"));
-            if (mano != null) {
-                int posicion = getIndexInArray(R.array.mano_juego, mano);
-                spinnerMano.setSelection(posicion);
-            }
-
-            Number nivelNumerico = numberValue(resp.get("nivelNumerico"));
-            if (nivelNumerico != null) {
-                txtNivelActual.setText(String.format(Locale.getDefault(), "%.1f", nivelNumerico.doubleValue()));
-            }
-
-            Number fiabilidad = numberValue(resp.get("fiabilidad"));
-            if (fiabilidad != null) {
-                txtFiabilidadPorcentaje.setText(String.format(Locale.getDefault(), "%.0f%%", fiabilidad.doubleValue() * 100));
-            }
-        }, t -> Toast.makeText(requireContext(), "Error cargando perfil", Toast.LENGTH_SHORT).show());
+        });
     }
 
     private void cargarEstadisticas() {
         if (currentUid == null) return;
 
         Backend.getCollection(requireContext(), "partidos", resp -> {
+            if (!isAdded()) return;
             int ganados = 0;
             int perdidos = 0;
 
@@ -184,30 +181,32 @@ public class MiPerfilFragment extends Fragment {
     private void cargarUltimosPartidos() {
         if (currentUid == null) return;
 
-        Backend.getCollection(requireContext(), "partidos", resp -> {
+        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+            List<Map<String, String>> reservas = AWSConnection.obtenerReservasUsuario(currentUid);
             List<Map<String, String>> partidos = new ArrayList<>();
 
-            for (Map<String, Object> doc : collectionData(resp)) {
-                if (!currentUid.equals(valueOf(doc.get("jugador1Uid")))) {
-                    continue;
-                }
-
+            for (Map<String, String> res : reservas) {
                 Map<String, String> partido = new HashMap<>();
-                partido.put("rival", valueOf(doc.get("jugador2Nombre")));
-                partido.put("resultado", valueOf(doc.get("resultado")));
-                partido.put("fecha", valueOf(doc.get("fecha")));
-                partido.put("partidoId", valueOf(doc.get("id")));
+                String rival = res.get("rival");
+                partido.put("rival", (rival != null && !rival.isEmpty()) ? rival : "Pendiente de rival");
+                partido.put("club", res.get("club"));
+                partido.put("pista", res.get("pista"));
+                partido.put("resultado", res.get("resultado"));
+                partido.put("fecha", res.get("dia") + " " + res.get("hora"));
+                partido.put("partidoId", res.get("id"));
                 partidos.add(partido);
             }
 
-            if (!partidos.isEmpty()) {
-                if (partidos.size() > 5) {
-                    partidos = partidos.subList(0, 5);
-                }
-                PartidosAdapter adapter = new PartidosAdapter(requireContext(), partidos);
-                recyclerUltimosPartidos.setAdapter(adapter);
+            if (isAdded()) {
+                requireActivity().runOnUiThread(() -> {
+                    if (!partidos.isEmpty()) {
+                        List<Map<String, String>> displayList = (partidos.size() > 5) ? partidos.subList(0, 5) : partidos;
+                        PartidosAdapter adapter = new PartidosAdapter(requireContext(), displayList);
+                        recyclerUltimosPartidos.setAdapter(adapter);
+                    }
+                });
             }
-        }, t -> {});
+        });
     }
 
     private void cargarCompanerosHabituales() {
@@ -243,31 +242,32 @@ public class MiPerfilFragment extends Fragment {
     private void cargarClubesHabituales() {
         if (currentUid == null) return;
 
-        Backend.getCollection(requireContext(), "reservas_padel", resp -> {
-            Map<String, Integer> clubes = new HashMap<>();
+        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+            List<Map<String, String>> reservas = AWSConnection.obtenerReservasUsuario(currentUid);
+            Map<String, Integer> clubesMap = new HashMap<>();
 
-            for (Map<String, Object> doc : collectionData(resp)) {
-                if (!currentUid.equals(valueOf(doc.get("userUid")))) {
-                    continue;
-                }
-
-                String club = valueOf(doc.get("club"));
+            for (Map<String, String> res : reservas) {
+                String club = res.get("club");
                 if (club != null) {
-                    clubes.put(club, clubes.getOrDefault(club, 0) + 1);
+                    clubesMap.put(club, clubesMap.getOrDefault(club, 0) + 1);
                 }
             }
 
-            List<String> top5 = new ArrayList<>();
-            clubes.entrySet().stream()
+            List<String> topClubes = new ArrayList<>();
+            clubesMap.entrySet().stream()
                     .sorted((a, b) -> b.getValue() - a.getValue())
                     .limit(5)
-                    .forEach(e -> top5.add(e.getKey()));
+                    .forEach(e -> topClubes.add(e.getKey()));
 
-            if (!top5.isEmpty()) {
-                ClubesAdapter adapter = new ClubesAdapter(top5);
-                recyclerClubes.setAdapter(adapter);
+            if (isAdded()) {
+                requireActivity().runOnUiThread(() -> {
+                    if (!topClubes.isEmpty()) {
+                        ClubesAdapter adapter = new ClubesAdapter(topClubes);
+                        recyclerClubes.setAdapter(adapter);
+                    }
+                });
             }
-        }, t -> {});
+        });
     }
 
     private int getIndexInArray(int arrayId, String value) {

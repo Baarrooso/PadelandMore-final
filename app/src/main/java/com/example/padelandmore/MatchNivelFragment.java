@@ -95,6 +95,7 @@ public class MatchNivelFragment extends Fragment {
 
         if (currentUid != null) {
             Backend.getUser(requireContext(), currentUid, resp -> {
+                if (!isAdded()) return;
                 Number seguidos = numberValue(resp.get("seguidosCount"));
                 currentSeguidosCount = seguidos == null ? 0 : seguidos.intValue();
             }, t -> {});
@@ -119,6 +120,7 @@ public class MatchNivelFragment extends Fragment {
         }
 
         Backend.getCollection(requireContext(), "users", resp -> {
+            if (!isAdded()) return;
             usuarios.clear();
             followingIds.clear();
             followDocIds.clear();
@@ -128,7 +130,9 @@ public class MatchNivelFragment extends Fragment {
             } else {
                 filtrarUsuarios(textoBusqueda, ciudadBusqueda, resp);
             }
-        }, t -> Toast.makeText(requireContext(), "No se pudo cargar la comunidad", Toast.LENGTH_SHORT).show());
+        }, t -> {
+            if (isAdded()) Toast.makeText(requireContext(), "No se pudo cargar la comunidad", Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void cargarSiguiendoYFiltrar(String textoBusqueda, String ciudadBusqueda, Map<String, Object> usersResponse) {
@@ -247,13 +251,16 @@ public class MatchNivelFragment extends Fragment {
             }
 
             Backend.deleteCollectionItem(requireContext(), "seguimientos", followId, resp -> {
+                if (!isAdded()) return;
                 usuario.isFollowing = false;
                 usuario.seguidoresCount = Math.max(0, usuario.seguidoresCount - 1);
                 followingIds.remove(usuario.uid);
                 followDocIds.remove(usuario.uid);
                 actualizarContadoresSeguimiento(usuario.uid, false);
                 adapter.notifyDataSetChanged();
-            }, t -> Toast.makeText(requireContext(), "No se pudo dejar de seguir", Toast.LENGTH_SHORT).show());
+            }, t -> {
+                if (isAdded()) Toast.makeText(requireContext(), "No se pudo dejar de seguir", Toast.LENGTH_SHORT).show();
+            });
         } else {
             Map<String, Object> data = new HashMap<>();
             data.put("followerUid", currentUid);
@@ -261,6 +268,7 @@ public class MatchNivelFragment extends Fragment {
             data.put("createdAt", System.currentTimeMillis());
 
             Backend.postToCollection(requireContext(), "seguimientos", data, resp -> {
+                if (!isAdded()) return;
                 Object created = resp.get("data");
                 if (created instanceof Map) {
                     String id = valueOf(((Map<?, ?>) created).get("id"));
@@ -274,7 +282,9 @@ public class MatchNivelFragment extends Fragment {
                 followingIds.add(usuario.uid);
                 actualizarContadoresSeguimiento(usuario.uid, true);
                 adapter.notifyDataSetChanged();
-            }, t -> Toast.makeText(requireContext(), "No se pudo seguir al usuario", Toast.LENGTH_SHORT).show());
+            }, t -> {
+                if (isAdded()) Toast.makeText(requireContext(), "No se pudo seguir al usuario", Toast.LENGTH_SHORT).show();
+            });
         }
     }
 

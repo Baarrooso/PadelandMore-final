@@ -23,13 +23,22 @@
         android:id="@+id/edtFecha"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Fecha (dd/mm/aaaa)" />
+        android:hint="Fecha (dd/mm/aaaa)"
+        android:inputType="date" />
 
-    <EditText
-        android:id="@+id/edtHora"
+    <Button
+        android:id="@+id/btnVerHorarios"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Hora (hh:mm)" />
+        android:text="Ver horarios disponibles"
+        android:layout_marginTop="8dp" />
+
+    <Spinner
+        android:id="@+id/spnHora"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:visibility="gone" />
 
 </LinearLayout>
 

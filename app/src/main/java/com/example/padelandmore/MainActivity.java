@@ -18,7 +18,10 @@ import androidx.fragment.app.FragmentManager;
 
 import android.widget.PopupMenu;
 
+import com.example.padelandmore.network.AWSConnection;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         try {
             setContentView(R.layout.activity_main);
+
+            // Crear tablas en AWS RDS si no existen (hilo secundario)
+            Executors.newSingleThreadExecutor().execute(AWSConnection::inicializarTablas);
 
             pedirPermisoNotificaciones();
 

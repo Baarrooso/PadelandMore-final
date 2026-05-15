@@ -170,6 +170,7 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
             pistaSeleccionada = pista;
             tvResumenPista.setText(pista.getNombre());
             calcularPrecioDinamico();
+            configurarHoras();
             Toast.makeText(requireContext(), "Pista seleccionada: " + pista.getNombre(), Toast.LENGTH_SHORT).show();
         });
         recyclerPistas.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -246,6 +247,7 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
                 cambiarColorDiaSeleccionado(btnFecha);
                 tvResumenDia.setText(selectedDay);
                 calcularPrecioDinamico();
+                configurarHoras();
                 Toast.makeText(requireContext(), "Día seleccionado: " + selectedDay, Toast.LENGTH_SHORT).show();
             });
 
@@ -271,28 +273,58 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
     }
 
     private void configurarHoras() {
-        gridHoras.removeAllViews();
-
-        // Horas de 08:00 a 23:00 en intervalos de 1 hora
-        List<String> horas = new ArrayList<>();
-        for (int h = 8; h <= 23; h++) {
-            horas.add(String.format(Locale.getDefault(), "%02d:00", h));
+        if (clubSeleccionado == null || pistaSeleccionada == null || selectedDay.isEmpty()) {
+            dibujarHorasEnGrid(new java.util.ArrayList<>(), new java.util.ArrayList<>());
+            return;
         }
 
+        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+            java.util.List<String> ocupadas = com.example.padelandmore.network.AWSConnection.obtenerHorasReservadas(
+                "reservas_pistas", clubSeleccionado.getNombre(), pistaSeleccionada.getNombre(), selectedDay
+            );
+            
+            // Generar horas de 08:00 a 23:00
+            java.util.List<String> horas = new java.util.ArrayList<>();
+            for (int h = 8; h <= 23; h++) {
+                horas.add(String.format(Locale.getDefault(), "%02d:00", h));
+            }
+
+            if (isAdded()) {
+                requireActivity().runOnUiThread(() -> {
+                    dibujarHorasEnGrid(horas, ocupadas);
+                });
+            }
+        });
+    }
+
+    private void dibujarHorasEnGrid(java.util.List<String> horas, java.util.List<String> ocupadas) {
+        gridHoras.removeAllViews();
         boolean soloDisponibles = toggleDisponibles.isChecked();
 
         for (String hora : horas) {
-            // Si solo mostrar disponibles, simular algunas horas disponibles
-            if (soloDisponibles && !esHoraDisponible(hora)) {
-                continue;
+            boolean disponible = true;
+            int hMin = convertirAMinutos(hora);
+            for (String o : ocupadas) {
+                if (Math.abs(hMin - convertirAMinutos(o)) < 90) {
+                    disponible = false;
+                    break;
+                }
             }
+
+            if (soloDisponibles && !disponible) continue;
 
             Button btnHora = new Button(requireContext());
             btnHora.setText(hora);
             btnHora.setTextColor(getResources().getColor(android.R.color.white));
             btnHora.setTextSize(12);
             btnHora.setPadding(8, 8, 8, 8);
-            btnHora.setBackgroundResource(R.drawable.bg_evento_card);
+            
+            if (disponible) {
+                btnHora.setBackgroundResource(R.drawable.bg_evento_card);
+                btnHora.setVisibility(View.VISIBLE);
+            } else {
+                btnHora.setVisibility(View.GONE); // OCULTAR TOTALMENTE
+            }
 
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
             params.width = 0;
@@ -303,21 +335,24 @@ public class ReservarPistaFragment extends Fragment implements ClubsAdapter.OnCl
 
             btnHora.setOnClickListener(v -> {
                 selectedHour = hora;
-                // Cambiar color de la hora seleccionada
                 if (btnHoraSeleccionado != null) {
                     btnHoraSeleccionado.setBackgroundResource(R.drawable.bg_evento_card);
-                    btnHoraSeleccionado.setTextColor(getResources().getColor(android.R.color.white));
                 }
                 btnHoraSeleccionado = btnHora;
                 btnHora.setBackgroundColor(getResources().getColor(R.color.accent_orange));
-                btnHora.setTextColor(getResources().getColor(android.R.color.white));
                 tvResumenHora.setText(selectedHour);
                 calcularPrecioDinamico();
-                Toast.makeText(requireContext(), "Hora seleccionada: " + selectedHour, Toast.LENGTH_SHORT).show();
             });
 
             gridHoras.addView(btnHora);
         }
+    }
+
+    private int convertirAMinutos(String h) {
+        try {
+            String[] p = h.split(":");
+            return Integer.parseInt(p[0]) * 60 + Integer.parseInt(p[1]);
+        } catch(Exception e) { return 0; }
     }
 
     private boolean esHoraDisponible(String hora) {

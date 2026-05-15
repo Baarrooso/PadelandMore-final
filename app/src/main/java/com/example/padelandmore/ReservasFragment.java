@@ -77,38 +77,101 @@ public class ReservasFragment extends Fragment {
     private void mostrarDialogoReserva(String nombre, String detalle, String numero, String tipo) {
         View form = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_reserva_pista, null, false);
 
-        EditText edtClub = form.findViewById(R.id.edtClub);
-        EditText edtPista = form.findViewById(R.id.edtPista);
-        EditText edtFecha = form.findViewById(R.id.edtFecha);
-        EditText edtHora = form.findViewById(R.id.edtHora);
+        android.widget.EditText edtClub = form.findViewById(R.id.edtClub);
+        android.widget.EditText edtPista = form.findViewById(R.id.edtPista);
+        android.widget.EditText edtFecha = form.findViewById(R.id.edtFecha);
+        android.widget.Spinner spnHora = form.findViewById(R.id.spnHora);
+        android.widget.Button btnVer = form.findViewById(R.id.btnVerHorarios);
 
-        // Pre-rellenar los campos según el tipo
         if ("pista".equals(tipo)) {
             edtClub.setText(detalle);
             edtPista.setText(nombre);
-        } else if ("clase".equals(tipo)) {
+        } else {
             edtClub.setText(detalle);
             edtPista.setText(nombre);
         }
+
+        btnVer.setOnClickListener(v -> {
+            String club = edtClub.getText().toString().trim();
+            String pista = edtPista.getText().toString().trim();
+            String fecha = edtFecha.getText().toString().trim();
+
+            if (fecha.isEmpty()) {
+                Toast.makeText(requireContext(), "Introduce una fecha primero", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            cargarHorariosDisponibles(tipo, club, pista, fecha, spnHora);
+        });
 
         new AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
                 .setTitle("Reservar " + nombre)
                 .setView(form)
                 .setPositiveButton("Reservar", (dialog, which) -> {
+                    if (spnHora.getVisibility() != View.VISIBLE || spnHora.getSelectedItem() == null) {
+                        Toast.makeText(requireContext(), "Primero consulta y selecciona un horario", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     String clubText = edtClub.getText().toString().trim();
                     String pistaText = edtPista.getText().toString().trim();
                     String fecha = edtFecha.getText().toString().trim();
-                    String hora = edtHora.getText().toString().trim();
-
-                    if (clubText.isEmpty() || pistaText.isEmpty() || fecha.isEmpty() || hora.isEmpty()) {
-                        Toast.makeText(requireContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                    String hora = spnHora.getSelectedItem().toString();
 
                     guardarReserva(clubText, pistaText, fecha, hora, tipo);
                 })
                 .setNegativeButton("Cancelar", null)
                 .show();
+    }
+
+    private void cargarHorariosDisponibles(String tipo, String club, String pista, String fecha, android.widget.Spinner spinner) {
+        String tabla = "clase".equals(tipo) ? "reservas_clases" : "reservas_pistas";
+        
+        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+            java.util.List<String> ocupadas = com.example.padelandmore.network.AWSConnection.obtenerHorasReservadas(tabla, club, pista, fecha);
+            
+            // Generar todos los slots posibles (de 08:00 a 22:00 cada 30 min)
+            java.util.List<String> disponibles = new java.util.ArrayList<>();
+            for (int h = 8; h <= 22; h++) {
+                for (int m : new int[]{0, 30}) {
+                    String slot = String.format("%02d:%02d", h, m);
+                    if (isSlotLibre(slot, ocupadas)) {
+                        disponibles.add(slot);
+                    }
+                }
+            }
+
+            if (isAdded()) {
+                requireActivity().runOnUiThread(() -> {
+                    android.widget.ArrayAdapter<String> adapter = new android.widget.ArrayAdapter<>(requireContext(),
+                            android.R.layout.simple_spinner_dropdown_item, disponibles);
+                    spinner.setAdapter(adapter);
+                    spinner.setVisibility(View.VISIBLE);
+                    if (disponibles.isEmpty()) {
+                        Toast.makeText(requireContext(), "No hay horarios libres para este día", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+    }
+
+    private boolean isSlotLibre(String slot, java.util.List<String> ocupadas) {
+        int slotMinutos = convertirAMinutos(slot);
+        for (String ocupada : ocupadas) {
+            int ocupadaMinutos = convertirAMinutos(ocupada);
+            // Si el slot está dentro del rango de 90 min de una reserva existente
+            // O si la reserva existente empieza dentro del rango de 90 min de nuestro slot
+            if (Math.abs(slotMinutos - ocupadaMinutos) < 90) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private int convertirAMinutos(String hora) {
+        try {
+            String[] parts = hora.split(":");
+            return Integer.parseInt(parts[0]) * 60 + Integer.parseInt(parts[1]);
+        } catch (Exception e) { return 0; }
     }
 
     private void guardarReserva(String club, String pista, String fecha, String hora, String tipo) {
@@ -118,18 +181,21 @@ public class ReservasFragment extends Fragment {
             return;
         }
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("userUid", uid);
-        data.put("club", club);
-        data.put("pista", pista);
-        data.put("fecha", fecha);
-        data.put("hora", hora);
+        String tabla = "clase".equals(tipo) ? "reservas_clases" : "reservas_pistas";
 
-        String coleccion = "clase".equals(tipo) ? "reservas_clases" : "reservas_padel";
-
-        Backend.postToCollection(requireContext(), coleccion, data, resp -> {
-            Toast.makeText(requireContext(), "Reserva creada", Toast.LENGTH_SHORT).show();
-        }, t -> Toast.makeText(requireContext(), "No se pudo guardar: " + t.getMessage(), Toast.LENGTH_SHORT).show());
+        // Inserción directa en AWS RDS
+        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+            boolean ok = com.example.padelandmore.network.AWSConnection.insertarReserva(tabla, uid, club, pista, fecha, hora);
+            if (isAdded()) {
+                requireActivity().runOnUiThread(() -> {
+                    if (ok) {
+                        Toast.makeText(requireContext(), "Reserva creada en AWS", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(requireContext(), "Error al guardar reserva", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 }
 

@@ -83,25 +83,24 @@ public class PaymentActivity extends AppCompatActivity {
             return;
         }
 
-        // Guardar reserva en Firestore
-        Map<String, Object> reserva = new HashMap<>();
-        reserva.put("userUid", uid);
-        reserva.put("club", clubNombre);
-        reserva.put("pista", pistaNombre);
-        reserva.put("dia", dia);
-        reserva.put("hora", hora);
-        reserva.put("duracion", duracion);
-        reserva.put("precio", precio);
-        reserva.put("metodoPago", metodoPagoSeleccionado);
-        reserva.put("estado", "confirmada");
-        reserva.put("timestamp", System.currentTimeMillis());
+        // Inserción directa en AWS RDS (hilo secundario)
+        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+            boolean ok = com.example.padelandmore.network.AWSConnection.insertarReservaPagada(
+                uid, clubNombre, pistaNombre, dia, hora, duracion, precio, metodoPagoSeleccionado
+            );
 
-        Backend.postToCollection(PaymentActivity.this, "reservas_pagadas", reserva, resp -> {
-            Toast.makeText(PaymentActivity.this, "¡Pago realizado exitosamente!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }, t -> Toast.makeText(PaymentActivity.this, "Error al procesar pago: " + t.getMessage(), Toast.LENGTH_SHORT).show());
+            runOnUiThread(() -> {
+                if (ok) {
+                    Toast.makeText(PaymentActivity.this, "¡Pago realizado exitosamente!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(PaymentActivity.this, "Error al procesar pago en AWS", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 }
 

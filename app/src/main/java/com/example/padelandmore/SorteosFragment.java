@@ -15,11 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.padelandmore.network.AWSConnection;
 import com.example.padelandmore.network.Backend;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 public class SorteosFragment extends Fragment {
 
@@ -44,37 +46,42 @@ public class SorteosFragment extends Fragment {
         cargarSorteos();
 
         com.google.android.material.floatingactionbutton.FloatingActionButton fabCrearSorteo = view.findViewById(R.id.fabCrearSorteo);
-        AuthUtil.isJugador(requireContext(), isJugador -> {
-            if (isJugador) {
-                fabCrearSorteo.setVisibility(View.GONE);
-                fabCrearSorteo.hide();
-            } else {
+        AuthUtil.isAdmin(requireContext(), isAdmin -> {
+            if (isAdmin) {
                 fabCrearSorteo.setVisibility(View.VISIBLE);
                 fabCrearSorteo.show();
                 fabCrearSorteo.setOnClickListener(v -> mostrarDialogoSorteo());
+            } else {
+                fabCrearSorteo.setVisibility(View.GONE);
+                fabCrearSorteo.hide();
             }
         });
 
         // Al pulsar un sorteo, el usuario puede apuntarse (si está logueado)
         listSorteos.setOnItemClickListener((parent, v, position, id) -> {
             if (sorteos.isEmpty()) return;
+            Toast.makeText(requireContext(), "Inscribiendo...", Toast.LENGTH_SHORT).show();
 
             String userUid = Backend.getCurrentUid(requireContext());
             if (userUid == null) {
-                android.widget.Toast.makeText(requireContext(), "Debes iniciar sesión para apuntarte", android.widget.Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Debes iniciar sesión para apuntarte", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             String seleccionado = sorteos.get(position);
+            long   creado       = System.currentTimeMillis();
 
-            java.util.HashMap<String, Object> data = new java.util.HashMap<>();
-            data.put("userUid", userUid);
-            data.put("sorteoResumen", seleccionado);
-            data.put("creado", System.currentTimeMillis());
-
-            Backend.postToCollection(requireContext(), "inscripciones_sorteos", data,
-                    ref -> android.widget.Toast.makeText(requireContext(), "Inscripción enviada al sorteo", android.widget.Toast.LENGTH_SHORT).show(),
-                    e -> android.widget.Toast.makeText(requireContext(), "No se pudo inscribir", android.widget.Toast.LENGTH_SHORT).show());
+            // Inscripción directa a AWS RDS en hilo secundario
+            Executors.newSingleThreadExecutor().execute(() -> {
+                boolean ok = AWSConnection.inscribirEnSorteo(userUid, seleccionado, creado);
+                requireActivity().runOnUiThread(() -> {
+                    if (ok) {
+                        Toast.makeText(requireContext(), "¡Inscrito en el sorteo!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(requireContext(), "No se pudo inscribir", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
         });
 
         return view;
@@ -104,52 +111,36 @@ public class SorteosFragment extends Fragment {
                 .show();
     }
 
+    // ─── Admin: crear sorteo directo en AWS RDS ───────────────────────────────
     private void crearSorteo(String nombre, String premio, String fecha) {
-        Map<String, Object> data = new java.util.HashMap<>();
-        data.put("nombre", nombre);
-        data.put("premio", premio);
-        data.put("fecha", fecha);
-        data.put("creado", System.currentTimeMillis());
+        long creado = System.currentTimeMillis();
 
-        Backend.postToCollection(requireContext(), "sorteos", data, resp -> {
-            Toast.makeText(requireContext(), "Sorteo creado", Toast.LENGTH_SHORT).show();
-            cargarSorteos();
-        }, t -> Toast.makeText(requireContext(), "Error al crear sorteo", Toast.LENGTH_SHORT).show());
+        Executors.newSingleThreadExecutor().execute(() -> {
+            boolean ok = AWSConnection.insertarSorteo(nombre, premio, fecha, creado);
+            requireActivity().runOnUiThread(() -> {
+                if (ok) {
+                    Toast.makeText(requireContext(), "Sorteo creado", Toast.LENGTH_SHORT).show();
+                    cargarSorteos();
+                } else {
+                    Toast.makeText(requireContext(), "Error al crear sorteo", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 
     private void cargarSorteos() {
-        Backend.getCollection(requireContext(), "sorteos", resp -> {
-            sorteos.clear();
-
-            Object data = resp.get("data");
-            if (data instanceof List) {
-                List<?> items = (List<?>) data;
-                for (Object item : items) {
-                    if (!(item instanceof Map)) {
-                        continue;
-                    }
-
-                    @SuppressWarnings("unchecked")
-                    Map<String, Object> document = (Map<String, Object>) item;
-                    String nombre = valorTexto(document.get("nombre"), "Sorteo");
-                    String premio = valorTexto(document.get("premio"), null);
-                    String fecha = valorTexto(document.get("fecha"), null);
-
-                    String sorteoInfo = nombre;
-                    if (premio != null) {
-                        sorteoInfo += " - Premio: " + premio;
-                    }
-                    if (fecha != null) {
-                        sorteoInfo += " (" + fecha + ")";
-                    }
-                    sorteos.add(sorteoInfo);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            List<AWSConnection.Sorteo> lista = AWSConnection.obtenerSorteos();
+            requireActivity().runOnUiThread(() -> {
+                sorteos.clear();
+                for (AWSConnection.Sorteo s : lista) {
+                    String info = s.nombre;
+                    if (s.premio != null) info += " - Premio: " + s.premio;
+                    if (s.fecha != null) info += " (" + s.fecha + ")";
+                    sorteos.add(info);
                 }
-            }
-
-            adapter.notifyDataSetChanged();
-        }, t -> {
-            sorteos.clear();
-            adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
+            });
         });
     }
 

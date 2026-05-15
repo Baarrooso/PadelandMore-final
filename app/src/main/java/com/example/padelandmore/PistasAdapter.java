@@ -15,8 +15,8 @@ public class PistasAdapter extends RecyclerView.Adapter<PistasAdapter.PistaViewH
 
     private List<Pista> pistas;
     private OnPistaClickListener listener;
+    private int selectedPosition = -1;
 
-    // Listener: selecciona una pista (haciendo click en el item)
     public interface OnPistaClickListener {
         void onPistaSelected(Pista pista);
     }
@@ -40,8 +40,18 @@ public class PistasAdapter extends RecyclerView.Adapter<PistasAdapter.PistaViewH
         holder.tvPistaNombre.setText(pista.getNombre());
         holder.tvPistaInfo.setText(pista.getTipo() + " - Capacidad: " + pista.getCapacidad());
 
-        // El item completo es clicable para seleccionar la pista
+        // Resaltar seleccionada
+        if (selectedPosition == position) {
+            holder.container.setBackgroundColor(0xFFFFA500); // Color naranja
+        } else {
+            holder.container.setBackgroundColor(0x00000000); // Transparente
+        }
+
         holder.container.setOnClickListener(v -> {
+            int old = selectedPosition;
+            selectedPosition = holder.getAdapterPosition();
+            notifyItemChanged(old);
+            notifyItemChanged(selectedPosition);
             if (listener != null) {
                 listener.onPistaSelected(pista);
             }
@@ -66,4 +76,3 @@ public class PistasAdapter extends RecyclerView.Adapter<PistasAdapter.PistaViewH
         }
     }
 }
-
